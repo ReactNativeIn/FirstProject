@@ -1,22 +1,14 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import DateHead from './components/DateHead';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import AddTodo from './components/AddTodo';
+
+import {NavigationContainer} from '@react-navigation/native';
+import MainScreen from './screen/MainScreen';
 
 function App() {
-  const today = new Date();
-
   return (
-    <SafeAreaProvider>
-      <SafeAreaView edges={['bottom']}>
-        <DateHead date={today} />
-        <AddTodo />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <NavigationContainer>
+      <MainScreen />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default App;
