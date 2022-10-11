@@ -4,6 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Text} from 'react-native';
 import SignInButton from '../components/SignInButton';
 import SignInForm from '../components/SignInForm';
+import {ScrollView} from 'react-native';
 
 function SignInScreen({navigation, route}) {
   const [form, setForm] = useState({
@@ -15,7 +16,7 @@ function SignInScreen({navigation, route}) {
     birthday: '',
     sex: '',
   });
-  const {isSignUp} = route.params ?? {}; // 로그인 되어 있는지 아닌지 물어보기 SignInButton 에서 받아옴
+  const {isSignUp} = route.params ?? {}; // 로그인인지 회원가입인지 SignInButton 에서 받아옴
   const [loading, setLoading] = useState(false); // 로딩상태를 표시할지 말지 나타냄
 
   const createChangeTextHandler = name => value => {
@@ -36,6 +37,11 @@ function SignInScreen({navigation, route}) {
     const info = {email, password};
     Alert.alert('연습용', '로그인되었습니다...');
     setLoading(false);
+    if (isSignUp) {
+      navigation.navigate('Welcome');
+    } else {
+      navigation.navigate('Main');
+    }
     // navigation.navigate()    // 로그인 후 메인탭으로 이동
 
     /*  데이터베이스에 정보를 저장되어있는거랑 비교할때 쓰는 기능
@@ -63,34 +69,47 @@ function SignInScreen({navigation, route}) {
   };
 
   return (
-    <SafeAreaView style={styles.box}>
-      <Text style={styles.text}>First</Text>
-      <View style={styles.form}>
-        <SignInForm
-          isSignUp={isSignUp}
-          onSubmit={onSubmit}
-          form={form}
-          createChangeTextHandler={createChangeTextHandler}
-        />
+    <>
+      <SafeAreaView style={styles.box}>
+        <ScrollView>
+          <Text style={styles.text}>First</Text>
+          <View style={styles.form}>
+            <SignInForm
+              isSignUp={isSignUp}
+              onSubmit={onSubmit}
+              form={form}
+              createChangeTextHandler={createChangeTextHandler}
+            />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+      <View style={styles.button}>
         <SignInButton
           isSignUp={isSignUp}
           onSubmit={onSubmit}
           loading={loading}
         />
       </View>
-    </SafeAreaView>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  box: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  box: {flex: 1},
   text: {
+    textAlign: 'center',
     fontSize: 32,
     fontStyle: 'italic',
     marginBottom: 32,
+    marginTop: 64,
   },
   form: {
     marginTop: 64,
+    width: '100%',
+    paddingHorizontal: 16,
+    flex: 1,
+  },
+  button: {
     width: '100%',
     paddingHorizontal: 16,
   },

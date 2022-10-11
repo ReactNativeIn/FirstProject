@@ -4,7 +4,7 @@ import {ScrollView} from 'react-native';
 
 function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
   return (
-    <ScrollView>
+    <>
       <BorderedInput // TextInput 개조형태...
         hasMarginBottom
         placeholder="이메일"
@@ -73,7 +73,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
           />
         </>
       )}
-    </ScrollView>
+    </>
   );
 }
 
