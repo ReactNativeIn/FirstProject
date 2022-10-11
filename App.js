@@ -1,11 +1,13 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import RootStack from './screens/RootStack';
+import MainScreen from './screen/MainScreen';
 
-export default function App() {
+function App() {
   return (
     <NavigationContainer>
-      <RootStack />
+      <MainScreen />
     </NavigationContainer>
   );
 }
+
+export default App;
