@@ -1,10 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import ProfileScreen from './ProfileScreen';
 
 function ProfileTab() {
   return (
     <View style={style.container}>
-      <Text>HomeTab</Text>
+      <ProfileScreen />
     </View>
   );
 }
