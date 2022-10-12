@@ -1,46 +1,56 @@
 import React, {useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
+import {View, Text, StatusBar, ScrollView, StyleSheet} from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionic from 'react-native-vector-icons/Ionicons';
+import Stories from '../screenComponents/Stories';
+import Post from '../screenComponents/Post';
 
-function HomeTab({navigation}) {
+const HomeTab = ({navigation}) => {
   useEffect(() => {
     navigation.setOptions({
-      headerLeft: () => <Entypo name="camera" style={styles.headerLeft} />,
-      title: 'Instagram',
-      headerTitleAlign: 'center',
+      headerLeft: () => (
+        <FontAwesome name="plus-square-o" style={styles.headerLeft} />
+      ),
+      headerTitle: () => <Text style={styles.title}>Instagram</Text>,
+      headerTitleAlign: 'center', //헤더의 텍스트를 가운데로 정렬
       headerRight: () => (
-        <MaterialCommunityIcons name="send" style={styles.headerRight} />
+        <Feather style={styles.headerRight} name="navigation" />
       ),
     });
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
-      <Text>HomeTab</Text>
+    <View style={styles.wrapper}>
+      <StatusBar
+        backgroundColor="white"
+        barStyle="dark-content"
+        animated={true}
+      />
+      <ScrollView>
+        <Stories />
+        <Post />
+      </ScrollView>
     </View>
   );
-}
-
+};
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  wrapper: {
+    backgroundColor: 'white',
+    height: '100%',
   },
   headerLeft: {
-    paddingLeft: 10,
     fontSize: 24,
-    color: 'black',
+    marginLeft: 10,
   },
-  headerTitle: {
-    fontSize: 20,
+  title: {
+    fontFamily: 'Lobster-Regular',
+    fontSize: 25,
+    fontWeight: '500',
   },
   headerRight: {
-    paddingLeft: 10,
     fontSize: 24,
-    color: 'black',
+    marginRight: 10,
   },
 });
-
 export default HomeTab;
