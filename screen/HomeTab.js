@@ -27,10 +27,11 @@ const HomeTab = ({navigation}) => {
         barStyle="dark-content"
         animated={true}
       />
-      <ScrollView>
-        <Stories />
+
+      <Stories />
+      <View style={{flex: 1}}>
         <Post />
-      </ScrollView>
+      </View>
     </View>
   );
 };
