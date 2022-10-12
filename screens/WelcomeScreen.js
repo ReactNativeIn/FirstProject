@@ -15,6 +15,8 @@ function WelcomeScreen() {
       <SafeAreaView style={styles.block}>
         <Text style={styles.title}>환영합니다!</Text>
         <Text style={styles.description}>프로필을 설정하세요.</Text>
+        <Text>프로필 설정 이미지 및 별명 입력란 만들기</Text>
+        <Text>프로필 설정은 나중에 하셔도 됩니다.</Text>
         <CustomButton
           title="다음"
           onPress={() => navigation.navigate('Main')}

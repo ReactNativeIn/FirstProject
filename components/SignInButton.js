@@ -24,8 +24,8 @@ function SignInButton({isSignUp, onSubmit, loading}) {
     );
   }
   return (
-    <View style={styles.buttons}>
-      <CustomButton title={primaryTitle} hasMarginBottom onPress={onSubmit} />
+    <View style={[styles.buttons]}>
+      <CustomButton title={primaryTitle} onPress={onSubmit} />
       <CustomButton
         title={secondaryTitle}
         theme="secondary"
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttons: {
-    marginTop: 64,
+    marginTop: 10,
   },
 });
 

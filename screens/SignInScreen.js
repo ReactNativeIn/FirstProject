@@ -1,10 +1,19 @@
-import React, {useState} from 'react';
-import {Keyboard, StyleSheet, View, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  Keyboard,
+  StyleSheet,
+  View,
+  Alert,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Text} from 'react-native';
 import SignInButton from '../components/SignInButton';
 import SignInForm from '../components/SignInForm';
 import {ScrollView} from 'react-native';
+import {useUserContext} from '../contexts/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {focusProps} from 'react-native-web/dist/cjs/modules/forwardedProps';
 
 function SignInScreen({navigation, route}) {
   const [form, setForm] = useState({
@@ -14,34 +23,60 @@ function SignInScreen({navigation, route}) {
     confirmPassword: '',
     name: '',
     birthday: '',
-    sex: '',
+    sex: '남',
   });
+  // console.log('form : ', form);
   const {isSignUp} = route.params ?? {}; // 로그인인지 회원가입인지 SignInButton 에서 받아옴
   const [loading, setLoading] = useState(false); // 로딩상태를 표시할지 말지 나타냄
+  const {joinUser, setJoinUser} = useUserContext(); // 유저가 로그인에 성공했을 경우, 해당 유저의 정보를 앱 실행하는 동안 저장해둠 (자동 로그인의 경우 지속적으로 저장)
 
   const createChangeTextHandler = name => value => {
     // form의 내용을 name과 value에 맞춰서 변경
     setForm({...form, [name]: value});
   };
 
+  useEffect(() => {
+    console.log('joinUser 목록: ', joinUser);
+  }, [joinUser]);
+
   const onSubmit = () => {
     // 입력창에 내용을 전부 입력하고 확인 버튼을 눌렀을때
     Keyboard.dismiss();
-    const {email, password, confirmPassword} = form;
+    const {email, password, confirmPassword, name, birthday, sex} = form;
 
-    if (isSignUp && password !== confirmPassword) {
+    if (email === '' || email === /\s/ || null) {
+      Alert.alert('실패', '이메일을 입력해주세요');
+      return;
+    } else if (password === '' || password === /\s/ || null) {
+      Alert.alert('실패', '비밀번호를 입력해주세요(스페이스바 제외)');
+      return;
+    } else if ((isSignUp && confirmPassword === '') || null) {
+      Alert.alert('실패', '비밀번호 확인란을 입력해주세요');
+      return;
+    } else if (isSignUp && password !== confirmPassword) {
       Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
+      return;
+    } else if ((isSignUp && name === '') || null) {
+      Alert.alert('실패', '이름을 입력해주세요');
+      return;
+    } else if ((isSignUp && birthday === '') || null) {
+      Alert.alert('실패', '생일을 입력해주세요');
       return;
     }
     setLoading(true);
     const info = {email, password};
-    Alert.alert('연습용', '로그인되었습니다...');
+    // console.log('info : ', info);
     setLoading(false);
     if (isSignUp) {
       navigation.navigate('Welcome');
     } else {
+      /*
+    이메일이 존재하지 않았을때, 비밀번호가 틀렸을때,
+    */
       navigation.navigate('Main');
     }
+    setJoinUser(() => (isSignUp ? joinUser.concat(form) : joinUser)); // 회원가입한 유저 정보 저장
+
     // navigation.navigate()    // 로그인 후 메인탭으로 이동
 
     /*  데이터베이스에 정보를 저장되어있는거랑 비교할때 쓰는 기능
@@ -69,7 +104,9 @@ function SignInScreen({navigation, route}) {
   };
 
   return (
-    <>
+    <KeyboardAvoidingView
+      style={styles.keyboardAvoidingView}
+      behavior={Platform.select({ios: 'padding'})}>
       <SafeAreaView style={styles.box}>
         <ScrollView>
           <Text style={styles.text}>First</Text>
@@ -82,15 +119,15 @@ function SignInScreen({navigation, route}) {
             />
           </View>
         </ScrollView>
+        <View style={styles.button}>
+          <SignInButton
+            isSignUp={isSignUp}
+            onSubmit={onSubmit}
+            loading={loading}
+          />
+        </View>
       </SafeAreaView>
-      <View style={styles.button}>
-        <SignInButton
-          isSignUp={isSignUp}
-          onSubmit={onSubmit}
-          loading={loading}
-        />
-      </View>
-    </>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -112,6 +149,9 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     paddingHorizontal: 16,
+  },
+  keyboardAvoidingView: {
+    flex: 1,
   },
 });
 
