@@ -89,15 +89,15 @@ export const ProfileBody = ({
         </View>
         <View style={{alignItems: 'center'}}>
           <Text style={{fontWeight: 'bold', fontSize: 18}}>{post}</Text>
-          <Text>Posts</Text>
+          <Text>게시물</Text>
         </View>
         <View style={{alignItems: 'center'}}>
           <Text style={{fontWeight: 'bold', fontSize: 18}}>{followers}</Text>
-          <Text>Followers</Text>
+          <Text>팔로워</Text>
         </View>
         <View style={{alignItems: 'center'}}>
           <Text style={{fontWeight: 'bold', fontSize: 18}}>{following}</Text>
-          <Text>Following</Text>
+          <Text>팔로잉</Text>
         </View>
       </View>
     </View>
@@ -146,7 +146,7 @@ export const ProfileButtons = ({id, name, accountName, profileImage}) => {
                   letterSpacing: 1,
                   opacity: 0.8,
                 }}>
-                Edit Profile
+                프로필 수정
               </Text>
             </View>
           </TouchableOpacity>

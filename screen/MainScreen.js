@@ -15,7 +15,7 @@ function MainScreen() {
         tabBarShowLabel: false,
       }}>
       <Tab.Screen
-        name="HomeTab"
+        name="홈"
         component={HomeTab}
         options={{
           tabBarIcon: ({color, size}) => (
@@ -24,7 +24,7 @@ function MainScreen() {
         }}
       />
       <Tab.Screen
-        name="SearchTab"
+        name="검색"
         component={SearchTab}
         options={{
           tabBarIcon: ({color, size}) => (
@@ -33,7 +33,7 @@ function MainScreen() {
         }}
       />
       <Tab.Screen
-        name="ProfileTab"
+        name="프로필"
         component={ProfileTab}
         options={{
           tabBarIcon: ({color, size}) => (
