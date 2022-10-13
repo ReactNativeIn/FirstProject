@@ -7,7 +7,6 @@ function BorderedInput({hasMarginBottom, ...rest}, ref) {
       style={[styles.input, hasMarginBottom && styles.margin]}
       ref={ref}
       {...rest}
-      onKeyPress={false}
     />
   );
 }

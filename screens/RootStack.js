@@ -14,7 +14,11 @@ function RootStack() {
     <Stack.Navigator>
       <Stack.Screen name="SignIn" component={SignInScreen} />
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      <Stack.Screen name="Main" component={MainScreen} />
+      <Stack.Screen
+        name="Main"
+        component={MainScreen}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 }

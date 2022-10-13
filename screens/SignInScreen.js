@@ -12,8 +12,6 @@ import SignInButton from '../components/SignInButton';
 import SignInForm from '../components/SignInForm';
 import {ScrollView} from 'react-native';
 import {useUserContext} from '../contexts/UserContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {focusProps} from 'react-native-web/dist/cjs/modules/forwardedProps';
 
 function SignInScreen({navigation, route}) {
   const [form, setForm] = useState({
@@ -34,7 +32,7 @@ function SignInScreen({navigation, route}) {
     // form의 내용을 name과 value에 맞춰서 변경
     setForm({...form, [name]: value});
   };
-
+  // 유저 저장 로그 확인용
   useEffect(() => {
     console.log('joinUser 목록: ', joinUser);
   }, [joinUser]);
@@ -42,7 +40,7 @@ function SignInScreen({navigation, route}) {
   const onSubmit = () => {
     // 입력창에 내용을 전부 입력하고 확인 버튼을 눌렀을때
     Keyboard.dismiss();
-    const {email, password, confirmPassword, name, birthday, sex} = form;
+    const {email, password, confirmPassword, name, birthday} = form;
 
     if (email === '' || email === /\s/ || null) {
       Alert.alert('실패', '이메일을 입력해주세요');
@@ -64,14 +62,14 @@ function SignInScreen({navigation, route}) {
       return;
     }
     setLoading(true);
-    const info = {email, password};
+    const info = {email, password}; // 회원가입시 사용한 정보가 들어감
     // console.log('info : ', info);
     setLoading(false);
     if (isSignUp) {
       navigation.navigate('Welcome');
     } else {
       /*
-    이메일이 존재하지 않았을때, 비밀번호가 틀렸을때,
+    TODO: 이메일이 존재하지 않았을때, 비밀번호가 틀렸을때,
     */
       navigation.navigate('Main');
     }
