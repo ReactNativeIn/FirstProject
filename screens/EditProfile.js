@@ -21,12 +21,12 @@ function EditProfile({route, navigation}) {
     <View style={{flex: 1}}>
       <View style={styles.headerStyle} /* 헤더부분 */>
         <TouchableOpacity
-          onPress={
-            () => Alert.alert('취소눌렀음', '취소!!!!')
+          onPress={() => {
+            Alert.alert('취소눌렀음', '취소!!!!');
             /* 변경사항 없이 뒤로가기
-          navigation.goBack()
-      */
-          }>
+             */
+            navigation.goBack();
+          }}>
           <Ionic name="close-outline" style={{fontSize: 35}} />
         </TouchableOpacity>
         <Text style={styles.headerText}>프로필 편집</Text>
@@ -100,7 +100,8 @@ function EditProfile({route, navigation}) {
       <Pressable
         android_ripple={{
           color: 'eee',
-        }}>
+        }}
+        onPress={() => navigation.push('EditPrivacy')}>
         <Text
           style={[
             styles.textColor,

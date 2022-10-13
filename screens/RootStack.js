@@ -2,8 +2,9 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignInScreen from './SignInScreen';
 import WelcomeScreen from './WelcomeScreen';
-import {useUserContext} from '../contexts/UserContext';
 import MainScreen from '../screen/MainScreen';
+import EditProfile from './EditProfile';
+import EditPrivacy from './EditPrivacy';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,8 @@ function RootStack() {
         component={MainScreen}
         options={{headerShown: false}}
       />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="EditPrivacy" component={EditPrivacy} />
     </Stack.Navigator>
   );
 }
