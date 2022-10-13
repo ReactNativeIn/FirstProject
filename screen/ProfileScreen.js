@@ -1,8 +1,9 @@
 import React from 'react';
 import {View, Text, ScrollView} from 'react-native';
-import { ProfileBody, ProfileButtons } from '../components/ProfileBody';
+import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MainScreen from './MainScreen';
+import PostGridItem from '../components/PostGridItem';
 
 const ProfileScreen = () => {
   let circuls = [];
@@ -65,7 +66,7 @@ const ProfileScreen = () => {
             letterSpacing: 1,
             fontSize: 14,
           }}>
-          Story Highlights
+          스토리 하이라이트
         </Text>
         <ScrollView
           horizontal={true}
@@ -77,6 +78,9 @@ const ProfileScreen = () => {
           {circuls}
         </ScrollView>
       </View>
+      <ScrollView>
+        <PostGridItem />
+      </ScrollView>
     </View>
   );
 };
