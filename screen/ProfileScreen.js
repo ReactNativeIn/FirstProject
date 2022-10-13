@@ -2,8 +2,7 @@ import React from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
 import Entypo from 'react-native-vector-icons/Entypo';
-import MainScreen from './MainScreen';
-import PostGridItem from '../components/PostGridItem';
+import ProfileGridview from '../components/ProfileGridview';
 
 const ProfileScreen = () => {
   let circuls = [];
@@ -79,7 +78,7 @@ const ProfileScreen = () => {
         </ScrollView>
       </View>
       <ScrollView>
-        <PostGridItem />
+        <ProfileGridview />
       </ScrollView>
     </View>
   );

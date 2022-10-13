@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 
-const SearchContent = props => {
+const ProfileGridview = props => {
   const searchData = [
     {
       id: 0,
@@ -52,8 +52,6 @@ const SearchContent = props => {
                   return (
                     <TouchableOpacity
                       key={imgIndex}
-                      onPressIn={() => props.data(imageData)}
-                      onPressOut={() => props.data(null)}
                       style={{paddingBottom: 2, width: '33%'}}>
                       <Image
                         source={imageData}
@@ -81,8 +79,6 @@ const SearchContent = props => {
                     return (
                       <TouchableOpacity
                         key={imgIndex}
-                        onPressIn={() => props.data(imageData)}
-                        onPressOut={() => props.data(null)}
                         style={{paddingBottom: 2, width: '49.5%'}}>
                         <Image
                           source={imageData}
@@ -92,10 +88,7 @@ const SearchContent = props => {
                     );
                   })}
                 </View>
-                <TouchableOpacity
-                  onPressIn={() => props.data(data.images[5])}
-                  onPressOut={() => props.data(null)}
-                  style={{marginLeft: 2, width: '33%'}}>
+                <TouchableOpacity style={{marginLeft: 2, width: '33%'}}>
                   <Image
                     source={data.images[5]}
                     style={{width: '100%', height: 300}}
@@ -109,10 +102,7 @@ const SearchContent = props => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                 }}>
-                <TouchableOpacity
-                  onPressIn={() => props.data(data.images[2])}
-                  onPressOut={() => props.data(null)}
-                  style={{paddingRight: 2, width: '66.5%'}}>
+                <TouchableOpacity style={{paddingRight: 2, width: '66.5%'}}>
                   <Image
                     source={data.images[2]}
                     style={{width: '100%', height: 300}}
@@ -129,8 +119,6 @@ const SearchContent = props => {
                     return (
                       <TouchableOpacity
                         key={imgIndex}
-                        onPressIn={() => props.data(imageData)}
-                        onPressOut={() => props.data(null)}
                         style={{paddingBottom: 2, width: '100%'}}>
                         <Image
                           source={imageData}
@@ -149,4 +137,4 @@ const SearchContent = props => {
   );
 };
 
-export default SearchContent;
+export default ProfileGridview;
