@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import HomeTab from './HomeTab';
+import HomeStack from './HomeStack';
 import SearchTab from './SearchTab';
 import ProfileTab from './ProfileTab';
 
@@ -10,17 +10,18 @@ const Tab = createBottomTabNavigator();
 function MainScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="HomeTab"
+      initialRouteName="HomeStack"
       screenOptions={{
         tabBarShowLabel: false,
       }}>
       <Tab.Screen
-        name="HomeTab"
-        component={HomeTab}
+        name="HomeStack"
+        component={HomeStack}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="home" color={color} size={size} />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
