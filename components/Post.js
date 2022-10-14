@@ -12,7 +12,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import ActionSheetModal from '../components/ActionSheetModal';
+import ActionSheetModal from './ActionSheetModal';
 import {useNavigation} from '@react-navigation/native';
 
 const Post = () => {

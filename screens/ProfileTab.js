@@ -9,7 +9,7 @@ function ProfileTab() {
     <View style={style.container}>
       <Pressable onPress={() => navigation.push('EditProfile')}>
         <Image
-          source={require('../images/1.png')}
+          source={require('../storage/images/user.png')}
           style={{width: 80, height: 80, borderRadius: 100}}
         />
       </Pressable>

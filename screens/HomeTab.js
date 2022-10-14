@@ -10,8 +10,8 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionic from 'react-native-vector-icons/Ionicons';
-import Stories from '../screenComponents/Stories';
-import Post from '../screenComponents/Post';
+import Stories from '../components/Stories';
+import Post from '../components/Post';
 import ActionSheetModal from '../components/ActionSheetModal';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
