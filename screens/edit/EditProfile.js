@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import Ionic from 'react-native-vector-icons/Ionicons';
-import ProfileModal from '../EditProfile/ProfileModal';
+import ProfileModal from '../../EditProfile/ProfileModal';
 
 function EditProfile({route, navigation}) {
   const [modalShown, setModalShown] = useState(false);
@@ -44,7 +44,7 @@ function EditProfile({route, navigation}) {
       <View style={{padding: 20, alignItems: 'center'}} /*프로필 사진 뷰*/>
         <Pressable onPress={() => setModalShown(true)}>
           <Image
-            source={require('../images/1.png')} // 내 디렉토리에 있는 이미지 썼음 나중엔 데이터베이스에 있는 프로필 사진 경로로 가야함
+            source={require('../../images/1.png')} // 내 디렉토리에 있는 이미지 썼음 나중엔 데이터베이스에 있는 프로필 사진 경로로 가야함
             style={{width: 80, height: 80, borderRadius: 100}}
           />
         </Pressable>
@@ -99,7 +99,7 @@ function EditProfile({route, navigation}) {
       </View>
       <Pressable
         android_ripple={{
-          color: 'eee',
+          color: '#eee',
         }}
         onPress={() => navigation.push('EditPrivacy')}>
         <Text
