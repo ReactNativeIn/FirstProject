@@ -41,46 +41,29 @@ const ProfileScreen = () => {
   }
 
   return (
-    <View style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
-      <View style={{width: '100%', padding: 10}}>
-        <ProfileBody
-          name="SadCat"
-          accountName="Sad_Cat"
-          profileImage={require('../storage/images/userProfile.png')}
-          followers="3.6M"
-          following="35"
-          post="458"
-        />
-        <ProfileButtons
-          id={0}
-          name="SadCat"
-          accountName="Sad_Cat"
-          profileImage={require('../storage/images/userProfile.png')}
-        />
-      </View>
-      <View style={styles.margin}>
-        <Text
-          style={{
-            padding: 10,
-            letterSpacing: 1,
-            fontSize: 14,
-          }}>
-          스토리 하이라이트
-        </Text>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          style={{
-            paddingVertical: 5,
-            paddingHorizontal: 10,
-          }}>
-          {circuls}
+    <ScrollView>
+      <View style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
+        <View style={{width: '100%', padding: 10}}>
+          <ProfileBody
+            name="SadCat"
+            accountName="Sad_Cat"
+            profileImage={require('../storage/images/userProfile.png')}
+            followers="3.6M"
+            following="35"
+            post="458"
+          />
+          <ProfileButtons
+            id={0}
+            name="SadCat"
+            accountName="Sad_Cat"
+            profileImage={require('../storage/images/userProfile.png')}
+          />
+        </View>
+        <ScrollView>
+          <ProfileGridview />
         </ScrollView>
       </View>
-      <ScrollView>
-        <ProfileGridview />
-      </ScrollView>
-    </View>
+    </ScrollView>
   );
 };
 

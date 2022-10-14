@@ -1,26 +1,27 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import HomeTab from './HomeTab';
+import HomeStack from './HomeStack';
 import SearchTab from './SearchTab';
-import ProfileTab from './ProfileTab';
+import ProfileStack from './ProfileStack';
 
 const Tab = createBottomTabNavigator();
 
 function MainScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="HomeTab"
+      initialRouteName="HomeStack"
       screenOptions={{
         tabBarShowLabel: false,
       }}>
       <Tab.Screen
-        name="홈"
-        component={HomeTab}
+        name="HomeStack"
+        component={HomeStack}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="home" color={color} size={size} />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -33,12 +34,13 @@ function MainScreen() {
         }}
       />
       <Tab.Screen
-        name="프로필"
-        component={ProfileTab}
+        name="ProfileStack"
+        component={ProfileStack}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="person" color={color} size={size} />
           ),
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

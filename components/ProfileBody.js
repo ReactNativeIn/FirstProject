@@ -121,6 +121,9 @@ export const ProfileButtons = ({id, name, accountName, profileImage}) => {
           <TouchableOpacity
             style={{
               width: '100%',
+            }}
+            onPress={() => {
+              navigation.push('EditProfile');
             }}>
             <View
               style={{
