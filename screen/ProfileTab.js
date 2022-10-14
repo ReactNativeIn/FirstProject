@@ -1,10 +1,21 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 function ProfileTab() {
+  const navigation = useNavigation();
   return (
     <View style={style.container}>
-      <Text>HomeTab</Text>
+      <Pressable onPress={() => navigation.push('EditProfile')}>
+        <Image
+          source={require('../images/1.png')}
+          style={{width: 80, height: 80, borderRadius: 100}}
+        />
+      </Pressable>
+      <Pressable onPress={() => navigation.push('EditProfile')}>
+        <Text>프로필 설정변경</Text>
+      </Pressable>
     </View>
   );
 }
