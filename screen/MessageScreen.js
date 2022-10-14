@@ -51,14 +51,15 @@ const MessageScreen = () => {
         ? Math.max(...messages.map(message => message.idd)) + 1
         : 1;
     console.log('go'.concat(nextIdd));
-    setMessages(
-      messages.concat({
+    setMessages([
+      ...messages,
+      {
         idd: nextIdd,
         id: messages[nextIdd - 1].id * -1,
         displayName: messages[nextIdd - 1].id === 1 ? 'test1' : 'test2',
         message: text,
-      }),
-    );
+      },
+    ]);
     setText('');
   };
 
