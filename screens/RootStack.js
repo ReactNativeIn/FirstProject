@@ -2,9 +2,9 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignInScreen from './SignInScreen';
 import WelcomeScreen from './WelcomeScreen';
-import MainScreen from '../screen/MainScreen';
-import EditProfile from './edit/EditProfile';
-import EditPrivacy from './edit/EditPrivacy';
+import MainScreen from './MainScreen';
+import EditProfile from './EditProfile';
+import EditPrivacy from './EditPrivacy';
 
 const Stack = createNativeStackNavigator();
 
