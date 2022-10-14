@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ProfileGridview from '../components/ProfileGridview';
@@ -58,7 +58,7 @@ const ProfileScreen = () => {
           profileImage={require('../storage/images/userProfile.png')}
         />
       </View>
-      <View>
+      <View style={styles.margin}>
         <Text
           style={{
             padding: 10,
@@ -83,5 +83,11 @@ const ProfileScreen = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  margin: {
+    marginBottom: 40,
+  },
+});
 
 export default ProfileScreen;

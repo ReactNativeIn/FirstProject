@@ -119,13 +119,6 @@ export const ProfileButtons = ({id, name, accountName, profileImage}) => {
             paddingVertical: 5,
           }}>
           <TouchableOpacity
-            onPress={() =>
-              navigation.push('EditProfile', {
-                name: name,
-                accountName: accountName,
-                profileImage: profileImage,
-              })
-            }
             style={{
               width: '100%',
             }}>
@@ -150,7 +143,7 @@ export const ProfileButtons = ({id, name, accountName, profileImage}) => {
               </Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </View> // 프로필수정 - End
       ) : (
         <View
           style={{
