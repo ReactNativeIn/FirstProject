@@ -1,8 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, TextInput} from 'react-native';
 import Ionic from 'react-native-vector-icons/Ionicons';
 
 const SearchBox = () => {
+  const [focusIn, setFocusIn] = useState(false);
+  const focusInEvent = () => {
+    setFocusIn(true);
+  };
+  const focusOut = () => {
+    setFocusIn(false);
+  };
+
   return (
     <View
       style={{
@@ -12,17 +20,9 @@ const SearchBox = () => {
         paddingVertical: 10,
         position: 'relative',
       }}>
-      <Ionic
-        name="search"
-        style={{
-          fontSize: 18,
-          opacity: 0.7,
-          position: 'absolute',
-          zIndex: 1,
-          left: 25,
-        }}
-      />
       <TextInput
+        onFocus={focusInEvent}
+        onBlur={focusOut}
         placeholder="Search"
         placeholderTextColor="#909090"
         style={{
@@ -34,6 +34,26 @@ const SearchBox = () => {
           fontSize: 15,
           padding: 4,
           paddingLeft: 40,
+        }}
+      />
+      <Ionic
+        name="close-circle-outline"
+        style={{
+          fontSize: 18,
+          opacity: 0.7,
+          position: 'absolute',
+          zIndex: 1,
+          right: 25,
+        }}
+      />
+      <Ionic
+        name="search"
+        style={{
+          fontSize: 18,
+          opacity: 0.7,
+          position: 'absolute',
+          zIndex: 1,
+          left: 25,
         }}
       />
     </View>
