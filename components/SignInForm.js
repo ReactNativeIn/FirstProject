@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {View, Text} from 'react-native';
 import BorderedInput from './BorderedInput';
 import {RadioButton} from 'react-native-paper';
@@ -10,6 +10,9 @@ import {format} from 'date-fns';
 function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
   const [checked, setChecked] = useState('남'); // 라디오버튼 상태(기본값은 남)
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false); // 모달창이 보이거나 안보이게
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
+  const nameRef = useRef();
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -36,7 +39,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
         autoCompleteType="email"
         keyboardType="email-address"
         returnKeyType="next"
-        // onSubmitEditing={() => passwordRef.current.focus()}
+        onSubmitEditing={() => passwordRef.current.focus()}
       />
       <BorderedInput
         placeholder="비밀번호"
@@ -44,15 +47,15 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
         hasMarginBottom={isSignUp}
         value={form.password}
         onChangeText={createChangeTextHandler('password')}
-        // ref={passwordRef}
+        ref={passwordRef}
         returnKeyType={isSignUp ? 'next' : 'done'}
-        // onSubmitEditing={() => {
-        //   if (isSignUp) {
-        //     confirmPasswordRef.current.focus();
-        //   } else {
-        //     onSubmit();
-        //   }
-        // }}
+        onSubmitEditing={() => {
+          if (isSignUp) {
+            confirmPasswordRef.current.focus();
+          } else {
+            onSubmit();
+          }
+        }}
       />
       {isSignUp && (
         <>
@@ -62,14 +65,17 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
             secureTextEntry
             value={form.confirmPassword}
             onChangeText={createChangeTextHandler('confirmPassword')}
-            // ref={confirmPasswordRef}
+            ref={confirmPasswordRef}
             returnKeyType="done"
-            onSubmitEditing={onSubmit}
+            onSubmitEditing={() => {
+              nameRef.current.focus();
+            }}
           />
           <BorderedInput
             hasMarginBottom
             placeholder="이름"
             value={form.name}
+            ref={nameRef}
             onChangeText={createChangeTextHandler('name')}
             returnKeyType="done"
             onSubmitEditing={onSubmit}

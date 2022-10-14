@@ -20,12 +20,6 @@ function RootStack() {
         component={MainScreen}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name="EditProfile"
-        component={EditProfile}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen name="EditPrivacy" component={EditPrivacy} />
     </Stack.Navigator>
   );
 }

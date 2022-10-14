@@ -1,10 +1,16 @@
 import React, {useEffect} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import Ionic from 'react-native-vector-icons/Ionicons';
 
 export default function EditPrivacy({navigation}) {
   useEffect(() => {
     navigation.setOptions({
       title: '개인정보',
+      headerRight: () => (
+        <Pressable onPress={() => navigation.navigate('ProfileTab')}>
+          <Ionic name="checkmark" style={{fontSize: 35, color: '#3493D9'}} />
+        </Pressable>
+      ),
     });
   }, [navigation]);
 
@@ -20,24 +26,19 @@ export default function EditPrivacy({navigation}) {
         }}>
         <Text>회원님의 정보를 정확히 입력해 주세요</Text>
       </View>
-      <Pressable
-        android_ripple={{
-          color: '#eee',
-        }}>
-        <View style={styles.viewPadding}>
-          <Text
-            style={{
-              opacity: 0.5,
-            }}>
-            이메일 주소
-          </Text>
-          <TextInput
-            placeholder="이메일"
-            defaultValue="hello@1234.com"
-            style={styles.textInputStyle}
-          />
-        </View>
-      </Pressable>
+      <View style={styles.viewPadding}>
+        <Text
+          style={{
+            opacity: 0.5,
+          }}>
+          이메일 주소
+        </Text>
+        <TextInput
+          placeholder="이메일"
+          defaultValue="hello@1234.com"
+          style={styles.textInputStyle}
+        />
+      </View>
       <View style={styles.viewPadding}>
         <Text
           style={{
