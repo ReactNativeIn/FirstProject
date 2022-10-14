@@ -2,7 +2,8 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeTab from './HomeTab';
 import ProfileTab from './ProfileTab';
-import MessageScreen from './MessageScreen';
+import CommentScreen from './CommentScreen';
+import EditPostScreen from './EditPostScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -11,7 +12,8 @@ function HomeStack() {
     <Stack.Navigator>
       <Stack.Screen name="HomeTab" component={HomeTab} />
       <Stack.Screen name="ProfileTab" component={ProfileTab} />
-      <Stack.Screen name="MessageScreen" component={MessageScreen} />
+      <Stack.Screen name="CommentScreen" component={CommentScreen} />
+      <Stack.Screen name="EditPostScreen" component={EditPostScreen} />
     </Stack.Navigator>
   );
 }

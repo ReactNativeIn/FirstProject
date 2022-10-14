@@ -26,6 +26,7 @@ const Post = () => {
       postTitle: 'mr shermon',
       postPersonImage: require('../storage/images/userProfile.png'),
       postImage: require('../storage/images/post1.jpg'),
+      description: 'If enjoy the video ! Please like and Subscribe :)',
       likes: 765,
       date: new Date(),
       isLiked: false,
@@ -34,6 +35,7 @@ const Post = () => {
       postTitle: 'chillhouse',
       postPersonImage: require('../storage/images/profile5.jpg'),
       postImage: require('../storage/images/post2.jpg'),
+      description: 'If enjoy the video ! Please like and Subscribe :)',
       likes: 345,
       date: new Date(),
       isLiked: false,
@@ -42,6 +44,7 @@ const Post = () => {
       postTitle: 'Tom',
       postPersonImage: require('../storage/images/profile4.jpg'),
       postImage: require('../storage/images/post3.jpg'),
+      description: 'If enjoy the video ! Please like and Subscribe :)',
       likes: 734,
       date: new Date(),
       isLiked: false,
@@ -50,6 +53,7 @@ const Post = () => {
       postTitle: 'The_Groot',
       postPersonImage: require('../storage/images/profile3.jpg'),
       postImage: require('../storage/images/post4.jpg'),
+      description: 'If enjoy the video ! Please like and Subscribe :)',
       likes: 875,
       date: new Date(),
       isLiked: true,
@@ -102,7 +106,10 @@ const Post = () => {
                       icon: 'edit',
                       text: '설명 수정',
                       onPress: () => {
-                        alert('수정');
+                        navigation.push('EditPostScreen', {
+                          description: item.description,
+                          postImage: item.postImage,
+                        });
                       },
                     },
                     {
@@ -129,7 +136,10 @@ const Post = () => {
                 style={[styles.like, {color: like ? 'red' : 'black'}]}
               />
             </Pressable>
-            <Pressable>
+            <Pressable
+              onPress={() => {
+                navigation.push('CommentScreen');
+              }}>
               <Ionic name="ios-chatbubble-outline" style={styles.comment} />
             </Pressable>
           </View>
@@ -139,9 +149,7 @@ const Post = () => {
             Liked by {like ? 'you and' : ''}{' '}
             {like ? item.likes + 1 : item.likes} others
           </Text>
-          <Text style={styles.explanation}>
-            If enjoy the video ! Please like and Subscribe :)
-          </Text>
+          <Text style={styles.explanation}>{item.description}</Text>
           <Text>
             {year}년 {month}월 {day}일
           </Text>

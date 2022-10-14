@@ -50,7 +50,6 @@ const MessageScreen = () => {
       messages.length > 0
         ? Math.max(...messages.map(message => message.idd)) + 1
         : 1;
-    console.log('go'.concat(nextIdd));
     setMessages([
       ...messages,
       {
@@ -67,7 +66,7 @@ const MessageScreen = () => {
     return (
       <View
         style={{
-          alignItems: item.id === 1 ? 'flex-start' : 'flex-end',
+          alignItems: 'flex-start',
         }}>
         <View
           style={{
@@ -106,8 +105,9 @@ const MessageScreen = () => {
           renderItem={renderItem}
           keyExtractor={item => item.idd}
         />
+
         <TextInput
-          placeholder="메세지를 입력하세요"
+          placeholder="댓글을 입력해주세요"
           style={styles.input}
           value={text}
           onChangeText={setText}
