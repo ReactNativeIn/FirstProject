@@ -1,10 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import SearchScreen from './SearchScreen';
 
 function SearchTab() {
   return (
     <View style={style.container}>
-      <Text>HomeTab</Text>
+      <SearchScreen />
     </View>
   );
 }
