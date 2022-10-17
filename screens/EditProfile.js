@@ -15,11 +15,17 @@ import {TouchableOpacity} from 'react-native';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import ProfileModal from '../components/ProfileModal';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {useUserContext} from '../contexts/UserContext';
 
 function EditProfile({route, navigation}) {
+  const {user, setUser, joinUser, setJoinUser} = useUserContext(); // 사진의 res 정보를 바로 user에 담음
   const [modalShown, setModalShown] = useState(false);
+  const [response, setResponse] = useState(user.profileImage);
   const modalClose = () => setModalShown(false); // ProfileModal 모달 닫기용
-  const [response, setResponse] = useState(null); // 사진 res 정보
+  const [name, setName] = useState(user.name); // 유저 이름
+  const [nickname, setNickname] = useState(user.nickname); // 닉네임
+  const [introduce, setIntroduce] = useState(user.introduce); // 소개
+
   const onSelectImage = () => {
     launchImageLibrary(
       {
@@ -30,7 +36,6 @@ function EditProfile({route, navigation}) {
       },
       res => {
         if (res.didCancel) {
-          // 사진선택을 취소했을 경우,
           return;
         }
         setResponse(res);
@@ -43,6 +48,25 @@ function EditProfile({route, navigation}) {
     setModalShown(false);
   };
 
+  const onSubmit = () => {
+    setUser({
+      ...user,
+      name: name,
+      nickname,
+      profileImage: response,
+      introduce,
+    });
+    if (joinUser.email === user.email) {
+      setJoinUser({
+        ...joinUser,
+        name: name,
+        nickname,
+        profileImage: response,
+        introduce,
+      });
+    }
+    setModalShown(false);
+  };
   return (
     <KeyboardAvoidingView>
       <ScrollView>
@@ -61,11 +85,10 @@ function EditProfile({route, navigation}) {
             <TouchableOpacity
               onPress={() => {
                 Alert.alert('눌렸음', '변경이 눌렸따!');
-                /*  TODO: 변경이 눌린 후 변경사항을 저장하고(현재 컴포넌트(EditProfile.js의 상태를 저장))
-              내비게이션을 뒤로 돌림
-              navigation.goBack();
-              */
-                navigation.navigate('ProfileTab');
+                //  TODO: 변경이 눌린 후 변경사항을 저장하고(현재 컴포넌트(EditProfile.js의 상태를 저장))
+                onSubmit();
+
+                navigation.pop();
               }}>
               <Ionic
                 name="checkmark"
@@ -109,8 +132,9 @@ function EditProfile({route, navigation}) {
             </Text>
             <TextInput
               placeholder="이름"
-              defaultValue="김덕순"
+              value={name}
               style={styles.textInputStyle}
+              onChangeText={setName}
             />
           </View>
           <View style={styles.viewPadding}>
@@ -122,8 +146,9 @@ function EditProfile({route, navigation}) {
             </Text>
             <TextInput
               placeholder="사용자 이름"
-              defaultValue="user1234"
+              value={nickname}
               style={styles.textInputStyle}
+              onChangeText={setNickname}
             />
           </View>
           <View style={styles.viewPadding}>
@@ -133,7 +158,12 @@ function EditProfile({route, navigation}) {
               }}>
               소개
             </Text>
-            <TextInput placeholder="소개" style={styles.textInputStyle} />
+            <TextInput
+              placeholder="소개"
+              value={introduce}
+              style={styles.textInputStyle}
+              onChangeText={setIntroduce}
+            />
           </View>
           <Pressable
             android_ripple={{

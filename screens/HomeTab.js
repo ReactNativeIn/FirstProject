@@ -8,12 +8,9 @@ import {
   Pressable,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
-import Ionic from 'react-native-vector-icons/Ionicons';
 import Stories from '../components/Stories';
 import Post from '../components/Post';
 import ActionSheetModal from '../components/ActionSheetModal';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 
 const imagePickerOption = {
@@ -68,11 +65,6 @@ const HomeTab = ({navigation}) => {
       ),
       headerTitle: () => <Text style={styles.title}>Instagram</Text>,
       headerTitleAlign: 'center', //헤더의 텍스트를 가운데로 정렬
-      headerRight: () => (
-        <Pressable onPress={() => navigation.push('MessageScreen')}>
-          <Feather style={styles.headerRight} name="navigation" />
-        </Pressable>
-      ),
     });
   }, [navigation, modalVisible]);
 

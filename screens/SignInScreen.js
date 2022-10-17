@@ -23,11 +23,15 @@ function SignInScreen({navigation, route}) {
     birthday: '',
     gender: '남',
     phone: '',
+    profileImage: null,
+    nickname: '',
+    introduce: '',
   });
   // console.log('form : ', form);
   const {isSignUp} = route.params ?? {}; // 로그인인지 회원가입인지 SignInButton 에서 받아옴
   const [loading, setLoading] = useState(false); // 로딩상태를 표시할지 말지 나타냄
-  const {joinUser, setJoinUser} = useUserContext(); // 유저가 로그인에 성공했을 경우, 해당 유저의 정보를 앱 실행하는 동안 저장해둠 (자동 로그인의 경우 지속적으로 저장)
+  const {joinUser, setJoinUser} = useUserContext(); // 유저가 회원가입에 성공했을 경우, 해당 유저의 정보를 앱 실행하는 동안 저장해둠 (자동 로그인의 경우 지속적으로 저장)
+  const {setUser} = useUserContext(); // 지금 내 유저 정보
 
   const createChangeTextHandler = name => value => {
     // form의 내용을 name과 value에 맞춰서 변경
@@ -61,13 +65,15 @@ function SignInScreen({navigation, route}) {
     if (!email_check(email)) {
       Alert.alert('실패', '이메일을 입력해주세요');
       return;
-    } else if (!password_check(password)) {
-      Alert.alert('실패', '비밀번호를 입력해주세요(8~15자리)');
-      return;
-    } else if ((isSignUp && confirmPassword === '') || undefined) {
-      Alert.alert('실패', '비밀번호 확인란을 입력해주세요');
-      return;
-    } else if (isSignUp && password !== confirmPassword) {
+    }
+    // else if (!password_check(password)) {
+    //   Alert.alert('실패', '비밀번호를 입력해주세요(8~15자리)');
+    //   return;
+    // } else if ((isSignUp && confirmPassword === '') || undefined) {
+    //   Alert.alert('실패', '비밀번호 확인란을 입력해주세요');
+    //   return;
+    // }
+    else if (isSignUp && password !== confirmPassword) {
       Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
       return;
     } else if ((isSignUp && name === '') || null) {
@@ -85,14 +91,13 @@ function SignInScreen({navigation, route}) {
     // console.log('info : ', info);
     setLoading(false);
     if (isSignUp) {
-      navigation.navigate('Welcome');
+      navigation.navigate('Welcome', {form});
     } else {
       /*
-    TODO: 이메일이 존재하지 않았을때, 비밀번호가 틀렸을때,
-    */
+      TODO: 이메일이 존재하지 않았을때, 비밀번호가 틀렸을때,
+      */
       navigation.navigate('Main');
     }
-    setJoinUser(() => (isSignUp ? joinUser.concat(form) : joinUser)); // 회원가입한 유저 정보 저장
 
     // navigation.navigate()    // 로그인 후 메인탭으로 이동
 
