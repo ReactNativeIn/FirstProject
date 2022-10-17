@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,52 +14,66 @@ import Ionic from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ActionSheetModal from './ActionSheetModal';
 import {useNavigation} from '@react-navigation/native';
+import {usePostContext} from '../contexts/PostContext';
+import {useLikingContext} from '../contexts/LikingContext';
+import {useUserContext} from '../contexts/UserContext';
+import {useCommentsContext} from '../contexts/CommentsContext';
 
 const Post = () => {
-  const [like, setLike] = useState(false);
+  const navigation = useNavigation();
   const [hidden, setHidden] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
-  const navigation = useNavigation();
 
-  const postInfo = [
-    {
-      postTitle: 'mr shermon',
-      postPersonImage: require('../storage/images/userProfile.png'),
-      postImage: require('../storage/images/post1.jpg'),
-      likes: 765,
-      date: new Date(),
-      isLiked: false,
-    },
-    {
-      postTitle: 'chillhouse',
-      postPersonImage: require('../storage/images/profile5.jpg'),
-      postImage: require('../storage/images/post2.jpg'),
-      likes: 345,
-      date: new Date(),
-      isLiked: false,
-    },
-    {
-      postTitle: 'Tom',
-      postPersonImage: require('../storage/images/profile4.jpg'),
-      postImage: require('../storage/images/post3.jpg'),
-      likes: 734,
-      date: new Date(),
-      isLiked: false,
-    },
-    {
-      postTitle: 'The_Groot',
-      postPersonImage: require('../storage/images/profile3.jpg'),
-      postImage: require('../storage/images/post4.jpg'),
-      likes: 875,
-      date: new Date(),
-      isLiked: true,
-    },
-  ];
+  const {post, setPost} = usePostContext();
+
+  const [like, setLike] = useState(false);
+  const {comments} = useCommentsContext();
+  const {liking, setLiking} = useLikingContext();
+  const {joinUser} = useUserContext();
 
   const renderItem = ({item}) => {
-    const year = item.date.getFullYear();
-    const month = item.date.getMonth() + 1;
-    const day = item.date.getDate();
+    const date = item.date.split('-');
+
+    let commentNum = 0,
+      likeNum = 0,
+      user = {};
+
+    for (let i = 0; i < post.length; i++) {
+      if (post[i].postIndex === item.postIndex) {
+        commentNum = commentNum + 1;
+      }
+    }
+
+    for (let i = 0; i < joinUser.length; i++) {
+      if (joinUser[i].email === item.email) {
+        user = joinUser[i];
+        break;
+      }
+    }
+
+    for (let i = 0; i < liking.length - 1; i++) {
+      if (liking[i].postIndex === item.postIndex) {
+        likeNum = likeNum + 1;
+        setLike(true);
+      }
+    }
+    console.log(item.postIndex);
+    console.log('------');
+    liking.map((i, index) => {
+      console.log(i);
+    });
+    console.log('------');
+
+    const likeClick = () => {
+      setLiking([
+        ...liking,
+        {
+          postIndex: item.postIndex,
+          email: item.email,
+        },
+      ]);
+      setLike(!like);
+    };
 
     const follow = () => {
       alert('팔로우');
@@ -70,11 +84,19 @@ const Post = () => {
       <View style={styles.wrapper}>
         <View style={styles.posteHeader}>
           <View style={styles.avatarWrapper}>
-            <Pressable onPress={() => navigation.push('ProfileTab')}>
-              <Image source={item.postPersonImage} style={styles.avatarImage} />
+            <Pressable
+              onPress={() => navigation.push('ProfileTab', item.email)}>
+              <Image
+                source={
+                  user.profileImage
+                    ? require('../storage/images/user.png')
+                    : {uri: user.profileImage}
+                }
+                style={styles.avatarImage}
+              />
             </Pressable>
             <View style={{paddingLeft: 5}}>
-              <Text style={styles.avatarText}>{item.postTitle}</Text>
+              <Text style={styles.avatarText}>{item.nickname}</Text>
             </View>
           </View>
           <View>
@@ -102,14 +124,17 @@ const Post = () => {
                       icon: 'edit',
                       text: '설명 수정',
                       onPress: () => {
-                        alert('수정');
+                        navigation.push('EditPostScreen', {
+                          description: item.description,
+                          postImage: item.postImage,
+                        });
                       },
                     },
                     {
                       icon: 'delete',
                       text: '게시물 삭제',
                       onPress: () => {
-                        alert('삭제');
+                        post.filter(pos => pos.postIndex !== item.postIndex);
                       },
                     },
                   ]}
@@ -119,31 +144,33 @@ const Post = () => {
           </View>
         </View>
         <View style={styles.postWrapper}>
-          <Image source={item.postImage} style={styles.postImage} />
+          <Image source={item.photoURL} style={styles.postImage} />
         </View>
         <View style={styles.postFooter}>
           <View style={styles.likeCommentWrapper}>
-            <Pressable onPress={() => setLike(!like)}>
+            <Pressable onPress={likeClick}>
               <AntDesign
                 name={like ? 'heart' : 'hearto'}
                 style={[styles.like, {color: like ? 'red' : 'black'}]}
               />
             </Pressable>
-            <Pressable>
+            <Pressable
+              onPress={() => {
+                navigation.push('CommentScreen');
+              }}>
               <Ionic name="ios-chatbubble-outline" style={styles.comment} />
             </Pressable>
           </View>
         </View>
         <View style={{paddingHorizontal: 15}}>
           <Text>
-            Liked by {like ? 'you and' : ''}{' '}
-            {like ? item.likes + 1 : item.likes} others
+            Liked by {like ? 'you and' : ''} {likeNum} others
           </Text>
           <Text style={styles.explanation}>
-            If enjoy the video ! Please like and Subscribe :
+            If enjoy the video ! Please like and Subscribe :)
           </Text>
           <Text>
-            {year}년 {month}월 {day}일
+            {date[0]}년 {date[1]}월 {date[2]}일
           </Text>
         </View>
       </View>
@@ -153,9 +180,9 @@ const Post = () => {
   return (
     <SafeAreaView>
       <FlatList
-        data={postInfo}
+        data={post}
         renderItem={renderItem}
-        keyExtractor={item => item.postTitle}
+        keyExtractor={item => item.postIndex}
       />
     </SafeAreaView>
   );

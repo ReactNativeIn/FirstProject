@@ -1684,6 +1684,7 @@
     "@react-native-community/cli-server-api" "^8.0.4"
     "@react-native-community/cli-tools" "^8.0.4"
     "@react-native-community/cli-types" "^8.0.0"
+<<<<<<< HEAD
     "chalk" "^4.1.2"
     "commander" "^2.19.0"
     "execa" "^1.0.0"
@@ -1702,6 +1703,26 @@
   "version" "6.5.2"
   dependencies:
     "invariant" "^2.2.4"
+=======
+    chalk "^4.1.2"
+    commander "^2.19.0"
+    execa "^1.0.0"
+    find-up "^4.1.0"
+    fs-extra "^8.1.0"
+    graceful-fs "^4.1.3"
+    leven "^3.1.0"
+    lodash "^4.17.15"
+    minimist "^1.2.0"
+    prompts "^2.4.0"
+    semver "^6.3.0"
+
+"@react-native-community/datetimepicker@^6.2.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.5.0.tgz#ecbcb0f995f57570ae5fa11ed66d23fcc67c2a3c"
+  integrity sha512-s0gxsz/l3Ln2+dZV+4RZI94+A+JO8ywrjC17cGK8ozM+VLXHAUARgGLGc+vqNJkxzZzGUqnkO6/kypQGoK7t/A==
+  dependencies:
+    invariant "^2.2.4"
+>>>>>>> df42d2943e073023bf218c2321cf7f82ca618548
 
 "@react-native/assets@1.0.0":
   "integrity" "sha512-KrwSpS1tKI70wuKl68DwJZYEvXktDHdZMG0k2AXD/rJVSlB23/X2CB2cutVR0HwNMJIal9HOUOBB2rVfa6UGtQ=="
