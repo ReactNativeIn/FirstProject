@@ -25,54 +25,96 @@ const Post = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const {post, setPost} = usePostContext();
-
   const [like, setLike] = useState(false);
   const {comments} = useCommentsContext();
   const {liking, setLiking} = useLikingContext();
-  const {joinUser} = useUserContext();
+  const {user, joinUser} = useUserContext();
 
-  const renderItem = ({item}) => {
-    const date = item.date.split('-');
+  let postInfo = post;
+  console.log('확확호학1 -' + postInfo);
 
+  const nextPostInfo = postInfo.map((pos, index) => {
     let commentNum = 0,
       likeNum = 0,
-      user = {};
+      userAvatar = '',
+      likeSet = false;
 
     for (let i = 0; i < post.length; i++) {
-      if (post[i].postIndex === item.postIndex) {
+      if (postInfo[i].postIndex === pos.postIndex) {
         commentNum = commentNum + 1;
       }
     }
 
+    pos.postIndex === index + 1 && {...postInfo, commentNum: commentNum};
+
+    for (let i = 0; i < liking.length; i++) {
+      if (liking[i].postIndex === pos.postIndex) {
+        likeNum = likeNum + 1;
+      }
+    }
+
+    pos.postIndex === index + 1 && {...postInfo, likeNum: likeNum};
+
     for (let i = 0; i < joinUser.length; i++) {
-      if (joinUser[i].email === item.email) {
-        user = joinUser[i];
+      if (joinUser[i].email === pos.email) {
+        userAvatar = joinUser[i].profileImage;
         break;
       }
     }
 
-    for (let i = 0; i < liking.length - 1; i++) {
-      if (liking[i].postIndex === item.postIndex) {
-        likeNum = likeNum + 1;
-        setLike(true);
-      }
-    }
-    console.log(item.postIndex);
-    console.log('------');
-    liking.map((i, index) => {
-      console.log(i);
-    });
-    console.log('------');
+    pos.postIndex === index + 1
+      ? {...postInfo, userAvatar: userAvatar}
+      : console.log(pos.postIndex === index + 1);
+
+    // liking.map(l => {
+    //   l.postIndex === pos.postIndex && l.email === pos.email
+    //     ? {...postInfo, likeSet: true}
+    //     : {...postInfo, likeSet: false};
+    // });
+
+    // for (let i = 0; i < liking.length; i++) {
+    //   if (
+    //     liking[i].postIndex === pos.postIndex &&
+    //     liking[i].email === pos.email
+    //   ) {
+
+    //   }
+    // }
+  });
+
+  nextPostInfo.map(pos => {
+    console.log('-------' + userAvatar);
+  });
+
+  // for (let i = 0; i < post.length; i++) {
+  //   if (post[i].postIndex === i + 1) {
+  //     commentNum = commentNum + 1;
+  //   }
+  // }
+
+  // for (let i = 0; i < joinUser.length; i++) {
+  //   if (joinUser[i].email === item.email) {
+  //     userAvatar = joinUser[i];
+  //     break;
+  //   }
+  // }
+
+  // for (let i = 0; i < liking.length; i++) {
+  //   if (liking[i].postIndex === item.postIndex) {
+  //     likeNum = likeNum + 1;
+  //     if (liking[i].email === user.email) {
+  //       likeSet = true;
+  //     }
+  //   }
+  // }
+
+  // console.log('확212인' + postInfo); // 삭제 기능 확인
+
+  const renderItem = ({item, index}) => {
+    const date = item.date.split('-');
 
     const likeClick = () => {
-      setLiking([
-        ...liking,
-        {
-          postIndex: item.postIndex,
-          email: item.email,
-        },
-      ]);
-      setLike(!like);
+      alert('click');
     };
 
     const follow = () => {
@@ -88,9 +130,9 @@ const Post = () => {
               onPress={() => navigation.push('ProfileTab', item.email)}>
               <Image
                 source={
-                  user.profileImage
+                  item.userAvatar
                     ? require('../storage/images/user.png')
-                    : {uri: user.profileImage}
+                    : {uri: item.userAvatar}
                 }
                 style={styles.avatarImage}
               />
@@ -134,7 +176,9 @@ const Post = () => {
                       icon: 'delete',
                       text: '게시물 삭제',
                       onPress: () => {
-                        post.filter(pos => pos.postIndex !== item.postIndex);
+                        setPost(
+                          post.filter(pos => pos.postIndex !== item.postIndex),
+                        );
                       },
                     },
                   ]}
@@ -144,14 +188,21 @@ const Post = () => {
           </View>
         </View>
         <View style={styles.postWrapper}>
-          <Image source={item.photoURL} style={styles.postImage} />
+          <Image
+            source={
+              item.photoURL
+                ? require('../storage/images/post1.jpg')
+                : {uri: item.photoURL}
+            }
+            style={styles.postImage}
+          />
         </View>
         <View style={styles.postFooter}>
           <View style={styles.likeCommentWrapper}>
             <Pressable onPress={likeClick}>
               <AntDesign
-                name={like ? 'heart' : 'hearto'}
-                style={[styles.like, {color: like ? 'red' : 'black'}]}
+                name={item.likeSet ? 'heart' : 'hearto'}
+                style={[styles.like, {color: item.likeSet ? 'red' : 'black'}]}
               />
             </Pressable>
             <Pressable
@@ -164,7 +215,7 @@ const Post = () => {
         </View>
         <View style={{paddingHorizontal: 15}}>
           <Text>
-            Liked by {like ? 'you and' : ''} {likeNum} others
+            Liked by {item.likeSet ? 'you and' : ''} {item.likeNum} others
           </Text>
           <Text style={styles.explanation}>{item.content}</Text>
           <Text>
@@ -178,7 +229,7 @@ const Post = () => {
   return (
     <SafeAreaView>
       <FlatList
-        data={post}
+        data={postInfo}
         renderItem={renderItem}
         keyExtractor={item => item.postIndex}
       />

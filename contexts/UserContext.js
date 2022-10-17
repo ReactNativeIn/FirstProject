@@ -1,7 +1,7 @@
 import React, {useContext, createContext, useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 /*
-email pk
+email pk 
 name 
 password
 birthday

@@ -17,6 +17,7 @@ function ActionSheetModal({visible, onClose, actions}) {
               android_ripple={{color: '#eee'}}
               onPress={() => {
                 action.onPress();
+                console.log('ac확인');
                 onClose();
               }}
               key={action.text}>
