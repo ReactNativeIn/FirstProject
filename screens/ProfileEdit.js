@@ -1,7 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+
+const [change, setChange] = useState(null);
 
 function ProfileTab() {
   const navigation = useNavigation();
@@ -13,9 +15,15 @@ function ProfileTab() {
           style={{width: 80, height: 80, borderRadius: 100}}
         />
       </Pressable>
+      email ? (
       <Pressable onPress={() => navigation.push('EditProfile')}>
         <Text>프로필 설정변경</Text>
       </Pressable>
+      ) : (
+      <Pressable onPress={() => navigation.push('EditProfile')}>
+        <Text>Follow</Text>
+      </Pressable>
+      )
     </View>
   );
 }

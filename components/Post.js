@@ -140,7 +140,7 @@ const Post = () => {
             {like ? item.likes + 1 : item.likes} others
           </Text>
           <Text style={styles.explanation}>
-            If enjoy the video ! Please like and Subscribe :)
+            If enjoy the video ! Please like and Subscribe :
           </Text>
           <Text>
             {year}년 {month}월 {day}일
