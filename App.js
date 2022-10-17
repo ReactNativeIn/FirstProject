@@ -11,17 +11,17 @@ import {FollowContextProvider} from './contexts/FollowContext';
 function App() {
   return (
     <UserContextProvider>
-      <FollowContextProvider>
-        <PostContextProvider>
-          <CommentsContextProvider>
-            <LikingContextProvider>
+      <PostContextProvider>
+        <CommentsContextProvider>
+          <LikingContextProvider>
+            <FollowContextProvider>
               <NavigationContainer>
                 <RootStack />
               </NavigationContainer>
-            </LikingContextProvider>
-          </CommentsContextProvider>
-        </PostContextProvider>
-      </FollowContextProvider>
+            </FollowContextProvider>
+          </LikingContextProvider>
+        </CommentsContextProvider>
+      </PostContextProvider>
     </UserContextProvider>
   );
 }
