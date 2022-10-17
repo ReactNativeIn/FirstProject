@@ -21,7 +21,8 @@ function SignInScreen({navigation, route}) {
     confirmPassword: '',
     name: '',
     birthday: '',
-    sex: '남',
+    gender: '남',
+    phone: '',
   });
   // console.log('form : ', form);
   const {isSignUp} = route.params ?? {}; // 로그인인지 회원가입인지 SignInButton 에서 받아옴
@@ -33,22 +34,37 @@ function SignInScreen({navigation, route}) {
     setForm({...form, [name]: value});
   };
   // 유저 저장 로그 확인용
-  useEffect(() => {
-    console.log('joinUser 목록: ', joinUser);
-  }, [joinUser]);
+  // useEffect(() => {
+  //   console.log('joinUser 목록: ', joinUser);
+  // }, [joinUser]);
 
   const onSubmit = () => {
     // 입력창에 내용을 전부 입력하고 확인 버튼을 눌렀을때
     Keyboard.dismiss();
-    const {email, password, confirmPassword, name, birthday} = form;
+    const {email, password, confirmPassword, name, birthday, phone} = form;
 
-    if (email === '' || email === /\s/ || null) {
+    function email_check(email) {
+      const check =
+        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; // 이메일 정규표현식
+      return email != '' && email != 'undefined' && check.test(email);
+    }
+    function phone_check(phone) {
+      const check = /^\d{3}-\d{3,4}-\d{4}$/; // 전화번호(스마트폰 기준) 정규표현식
+      return phone != '' && phone != 'undefined' && check.test(phone);
+    }
+    function password_check(pass) {
+      const check =
+        /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/; // 비밀번호 정규 표현식
+      return pass != '' && pass != 'undefined' && check.test(pass);
+    }
+
+    if (!email_check(email)) {
       Alert.alert('실패', '이메일을 입력해주세요');
       return;
-    } else if (password === '' || password === /\s/ || null) {
-      Alert.alert('실패', '비밀번호를 입력해주세요(스페이스바 제외)');
+    } else if (!password_check(password)) {
+      Alert.alert('실패', '비밀번호를 입력해주세요(8~15자리)');
       return;
-    } else if ((isSignUp && confirmPassword === '') || null) {
+    } else if ((isSignUp && confirmPassword === '') || undefined) {
       Alert.alert('실패', '비밀번호 확인란을 입력해주세요');
       return;
     } else if (isSignUp && password !== confirmPassword) {
@@ -56,6 +72,9 @@ function SignInScreen({navigation, route}) {
       return;
     } else if ((isSignUp && name === '') || null) {
       Alert.alert('실패', '이름을 입력해주세요');
+      return;
+    } else if (isSignUp && !phone_check(phone)) {
+      Alert.alert('실패', '전화번호를 입력해 주세요');
       return;
     } else if ((isSignUp && birthday === '') || null) {
       Alert.alert('실패', '생일을 입력해주세요');
@@ -107,7 +126,7 @@ function SignInScreen({navigation, route}) {
       behavior={Platform.select({ios: 'padding'})}>
       <SafeAreaView style={styles.box}>
         <ScrollView>
-          <Text style={styles.text}>First</Text>
+          <Text style={styles.title}>Instagram</Text>
           <View style={styles.form}>
             <SignInForm
               isSignUp={isSignUp}
@@ -131,12 +150,13 @@ function SignInScreen({navigation, route}) {
 
 const styles = StyleSheet.create({
   box: {flex: 1},
-  text: {
+  title: {
     textAlign: 'center',
     fontSize: 32,
-    fontStyle: 'italic',
     marginBottom: 32,
     marginTop: 64,
+    fontFamily: 'Lobster-Regular',
+    fontWeight: '500',
   },
   form: {
     marginTop: 64,

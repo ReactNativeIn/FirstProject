@@ -13,6 +13,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const nameRef = useRef();
+  const phoneRef = useRef();
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -31,7 +32,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
     <>
       <BorderedInput // TextInput 개조형태...
         hasMarginBottom
-        placeholder="이메일"
+        placeholder="이메일 (abcd@xxxx.xxx)"
         value={form.email}
         onChangeText={createChangeTextHandler('email')}
         autoCapitalize="none"
@@ -42,7 +43,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
         onSubmitEditing={() => passwordRef.current.focus()}
       />
       <BorderedInput
-        placeholder="비밀번호"
+        placeholder="비밀번호(8~15 문자/특수문자/숫자 포함"
         secureTextEntry
         hasMarginBottom={isSignUp}
         value={form.password}
@@ -78,6 +79,17 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
             ref={nameRef}
             onChangeText={createChangeTextHandler('name')}
             returnKeyType="done"
+            onSubmitEditing={() => {
+              phoneRef.current.focus();
+            }}
+          />
+          <BorderedInput
+            hasMarginBottom
+            placeholder="전화번호 (010-xxxx-xxxx)"
+            value={form.phone}
+            ref={phoneRef}
+            onChangeText={createChangeTextHandler('phone')}
+            returnKeyType="done"
             onSubmitEditing={onSubmit}
           />
           <TouchableOpacity onPress={showDatePicker}>
@@ -101,7 +113,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
                 status={checked === '남' ? 'checked' : 'unchecked'}
                 onPress={() => {
                   setChecked('남');
-                  form.sex = '남';
+                  form.gender = '남';
                 }}
               />
               <Text>남</Text>
@@ -110,7 +122,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
                 status={checked === '여' ? 'checked' : 'unchecked'}
                 onPress={() => {
                   setChecked('여');
-                  form.sex = '여';
+                  form.gender = '여';
                 }}
               />
               <Text>여</Text>

@@ -1,5 +1,12 @@
 import React, {useEffect} from 'react';
-import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Ionic from 'react-native-vector-icons/Ionicons';
 
 export default function EditPrivacy({navigation}) {
@@ -72,11 +79,11 @@ export default function EditPrivacy({navigation}) {
           }}>
           생일
         </Text>
-        <TextInput
-          placeholder="생일"
-          defaultValue="1234-01-12"
-          style={styles.textInputStyle}
-        />
+        <TouchableOpacity>
+          <Text style={styles.textInputStyle}>
+            SignInForm의 form.birthday 정보를 가져올것
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
