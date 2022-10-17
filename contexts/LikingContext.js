@@ -1,8 +1,7 @@
 import React, {useContext, createContext, useState} from 'react';
 /*
-likeIndex pk
-postIndex fk
-email fk
+(postIndex fk
+email fk) pk
 
 */
 const LikingContext = createContext(null);

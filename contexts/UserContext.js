@@ -52,6 +52,15 @@ export function UserContextProvider({children}) {
       gender: '남',
       profileImage: '../storage/images/post3.jpg',
     },
+    {
+      email: 'test3@first.com',
+      name: '테스트3',
+      password: '123456',
+      birthday: '22-10-12',
+      nickname: 'test3',
+      gender: '남',
+      profileImage: '../storage/images/post3.jpg',
+    },
   ]); // 회원 배열저장 임시
 
   /*잠깐 주석 처리, 그리고 joinUser가 아니고 user를 불러와야하는거 같음

@@ -31,37 +31,38 @@ const Post = () => {
   const {liking, setLiking} = useLikingContext();
   const {joinUser} = useUserContext();
 
-  let commentNum = [0],
-    likeNum = [0],
-    user = {};
-  console.log('인정?');
-
-  for (let i = 0; i < post.lenghth; i++) {
-    console.log('for확');
-    for (let j = 0; j < comments.lenghth; j++) {
-      if (post[i].postIndex === comments[j].postIndex) {
-        commentNum[i] = [...commentNum, commentNum[i] + 1];
-        likeNum[i] = [...likeNum, likeNum[i] + 1];
-      }
-    }
-  }
-
-  for (let i = 1; i <= joinUser.lenghth; i++) {
-    if (joinUser[i].email === item.email) {
-      user = joinUser[i];
-      break;
-    }
-  }
-
-  for (let i = 1; i <= liking.lenghth; i++) {
-    if (liking[i].postIndex === item.postIndex) {
-      setLike(true);
-      break;
-    }
-  }
-
   const renderItem = ({item}) => {
     const date = item.date.split('-');
+
+    let commentNum = 0,
+      likeNum = 0,
+      user = {};
+
+    for (let i = 0; i < post.length; i++) {
+      if (post[i].postIndex === item.postIndex) {
+        commentNum = commentNum + 1;
+      }
+    }
+
+    for (let i = 0; i < joinUser.length; i++) {
+      if (joinUser[i].email === item.email) {
+        user = joinUser[i];
+        break;
+      }
+    }
+
+    for (let i = 0; i < liking.length - 1; i++) {
+      if (liking[i].postIndex === item.postIndex) {
+        likeNum = likeNum + 1;
+        setLike(true);
+      }
+    }
+    console.log(item.postIndex);
+    console.log('------');
+    liking.map((i, index) => {
+      console.log(i);
+    });
+    console.log('------');
 
     const likeClick = () => {
       setLiking([
@@ -72,7 +73,6 @@ const Post = () => {
         },
       ]);
       setLike(!like);
-      console.log(liking);
     };
 
     const follow = () => {

@@ -1,9 +1,10 @@
 import React, {useContext, createContext, useState} from 'react';
 
 /*
-followIndex pk
+(
 from_member fk
 to_member fk
+)
 */
 const FollowContext = createContext(null);
 
@@ -20,6 +21,10 @@ export function FollowContextProvider({children}) {
     {
       from_member: 'test1@first.com',
       to_member: 'test2@first.com',
+    },
+    {
+      from_member: 'test@first.com',
+      to_member: 'test3@first.com',
     },
   ]);
   return (

@@ -7,7 +7,6 @@ nickname
 content
 date
 email fk
-
 */
 const PostContext = createContext(null);
 
@@ -27,7 +26,7 @@ export function PostContextProvider({children}) {
       nickname: 'test',
       content: '테스트다2',
       date: '22-10-12',
-      email: 'test@first.com',
+      email: 'test1@first.com',
     },
     {
       postIndex: 3,
@@ -35,7 +34,7 @@ export function PostContextProvider({children}) {
       nickname: 'test',
       content: '테스트다3',
       date: '22-10-13',
-      email: 'test@first.com',
+      email: 'test1@first.com',
     },
     {
       postIndex: 4,
@@ -43,7 +42,7 @@ export function PostContextProvider({children}) {
       nickname: 'test',
       content: '테스트다4',
       date: '22-10-14',
-      email: 'test@first.com',
+      email: 'test1@first.com',
     },
   ]);
 
