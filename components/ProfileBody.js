@@ -1,7 +1,16 @@
 import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
+
 export const ProfileBody = ({
   name,
   accountName,
@@ -10,6 +19,7 @@ export const ProfileBody = ({
   followers,
   following,
 }) => {
+  const navigation = useNavigation();
   return (
     <View>
       {accountName ? (
@@ -42,20 +52,17 @@ export const ProfileBody = ({
             />
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Feather
-              name="plus-square"
-              style={{
-                fontSize: 25,
-                color: 'black',
-                paddingHorizontal: 15,
-              }}
-            />
-            <Feather
-              name="menu"
-              style={{
-                fontSize: 25,
-              }}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                Alert.alert('아직 구현되지 않은 기능입니다.');
+              }}>
+              <AntDesign
+                name="setting"
+                style={{
+                  fontSize: 25,
+                }}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       ) : null}
@@ -92,8 +99,13 @@ export const ProfileBody = ({
           <Text>게시물</Text>
         </View>
         <View style={{alignItems: 'center'}}>
-          <Text style={{fontWeight: 'bold', fontSize: 18}}>{followers}</Text>
-          <Text>팔로워</Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.push('FollowList');
+            }}>
+            <Text style={{fontWeight: 'bold', fontSize: 18}}>{followers}</Text>
+            <Text>팔로워</Text>
+          </TouchableOpacity>
         </View>
         <View style={{alignItems: 'center'}}>
           <Text style={{fontWeight: 'bold', fontSize: 18}}>{following}</Text>
@@ -110,14 +122,7 @@ export const ProfileButtons = ({id, name, accountName, profileImage}) => {
   return (
     <>
       {id === 0 ? (
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-            paddingVertical: 5,
-          }}>
+        <View style={styles.profileedit}>
           <TouchableOpacity
             style={{
               width: '100%',
@@ -125,84 +130,53 @@ export const ProfileButtons = ({id, name, accountName, profileImage}) => {
             onPress={() => {
               navigation.push('EditProfile');
             }}>
-            <View
-              style={{
-                width: '100%',
-                height: 35,
-                borderRadius: 5,
-                borderColor: '#DEDEDE',
-                borderWidth: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: 14,
-                  letterSpacing: 1,
-                  opacity: 0.8,
-                }}>
-                프로필 수정
-              </Text>
+            <View style={styles.edit}>
+              <Text style={styles.edittext}>프로필 수정</Text>
             </View>
           </TouchableOpacity>
         </View> // 프로필수정 - End
       ) : (
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-          }}>
+        <Pressable>
+          <Text style={styles.follow}>Follow</Text>
           <TouchableOpacity
-            onPress={() => setFollow(!follow)}
-            style={{width: '42%'}}>
-            <View
-              style={{
-                width: '100%',
-                height: 35,
-                borderRadius: 5,
-                backgroundColor: follow ? null : '#3493D9',
-                borderWidth: follow ? 1 : 0,
-                borderColor: '#DEDEDE',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={{color: follow ? 'black' : 'white'}}>
-                {follow ? 'Following' : 'Follow'}
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <View
             style={{
-              width: '42%',
-              height: 35,
-              borderWidth: 1,
-              borderColor: '#DEDEDE',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 5,
-            }}>
-            <Text>Message</Text>
-          </View>
-          <View
-            style={{
-              width: '10%',
-              height: 35,
-              borderWidth: 1,
-              borderColor: '#DEDEDE',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 5,
-            }}>
-            <Feather
-              name="chevron-down"
-              style={{fontSize: 20, color: 'black'}}
-            />
-          </View>
-        </View>
+              width: '100%',
+            }}
+            onPress={() => {
+              alert.alert('팔로우 하였습니다.');
+            }}></TouchableOpacity>
+        </Pressable>
       )}
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  profileedit: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    letterSpacing: 1,
+    opacity: 0.8,
+  },
+  edit: {
+    width: '100%',
+    height: 35,
+    borderRadius: 5,
+    borderColor: '#DEDEDE',
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  edittext: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    letterSpacing: 1,
+    opacity: 0.8,
+  },
+  follow: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    letterSpacing: 1,
+    opacity: 0.8,
+  },
+});

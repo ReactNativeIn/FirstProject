@@ -4,39 +4,6 @@ import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
 import ProfileGridview from '../components/ProfileGridview';
 
 const ProfileScreen = () => {
-  let circuls = [];
-  let numberofcircels = 10;
-
-  for (let index = 0; index < numberofcircels; index++) {
-    circuls.push(
-      <View key={index}>
-        {index === 0 ? (
-          <View
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: 100,
-              borderWidth: 1,
-              opacity: 0.7,
-              marginHorizontal: 5,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}></View>
-        ) : (
-          <View
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: 100,
-              backgroundColor: 'black',
-              opacity: 0.1,
-              marginHorizontal: 5,
-            }}></View>
-        )}
-      </View>,
-    );
-  }
-
   return (
     <ScrollView>
       <View style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
