@@ -9,54 +9,41 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import {FlatList, TextInput} from 'react-native-gesture-handler';
+import {useRoute} from '@react-navigation/native';
+import {useCommentsContext} from '../contexts/CommentsContext';
+import {useUserContext} from '../contexts/UserContext';
 
 const MessageScreen = () => {
   const [text, setText] = useState('');
-  const [messages, setMessages] = useState([
-    {
-      idd: 0,
-      id: 1,
-      displayName: 'test1',
-      message: '안녕1111111111111111111111111111111111111111111',
-    },
-    {
-      idd: 1,
-      id: -1,
-      displayName: 'test2',
-      message: '안녕222222222222222222222222222222222222222222222222222222',
-    },
-    {
-      idd: 2,
-      id: 1,
-      displayName: 'test1',
-      message: '어쩔',
-    },
-    {
-      idd: 3,
-      id: -1,
-      displayName: 'test2',
-      message: '그래',
-    },
-    {
-      idd: 4,
-      id: 1,
-      displayName: 'test1',
-      message: 'ㅇㅇ',
-    },
-  ]);
+  const {comments, setComments} = useCommentsContext();
+  const {user} = useUserContext();
 
-  const setMessage = () => {
-    const nextIdd =
-      messages.length > 0
-        ? Math.max(...messages.map(message => message.idd)) + 1
+  const route = useRoute();
+  comments.map(com => {
+    console.log('오우' + com.commentIndex);
+  });
+
+  //commentIndex값은 원래는 자동으로 들어감
+  const setComment = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    const nextCommentIndex =
+      comments.length > 0
+        ? Math.max(...comments.map(com => com.commentIndex)) + 1
         : 1;
-    setMessages([
-      ...messages,
+
+    setComments([
+      ...comments,
       {
-        idd: nextIdd,
-        id: messages[nextIdd - 1].id * -1,
-        displayName: messages[nextIdd - 1].id === 1 ? 'test1' : 'test2',
-        message: text,
+        commentIndex: nextCommentIndex,
+        nickname: user.nickname,
+        content: text,
+        date: new Date(),
+        postIndex: route.params.postIndex,
+        email: user.email,
       },
     ]);
     setText('');
@@ -64,33 +51,15 @@ const MessageScreen = () => {
 
   const renderItem = ({item}) => {
     return (
-      <View
-        style={{
-          alignItems: 'flex-start',
-        }}>
-        <View
-          style={{
-            backgroundColor: 'blue',
-            borderRadius: 10,
-            padding: 3,
-            minWidth: 60,
-            alignItems: 'center',
-            marginVertical: 15,
-          }}>
-          <Text style={{color: 'white', fontSize: 15, fontWeight: 'bold'}}>
-            {item.displayName}
-          </Text>
-        </View>
-        <Text
-          style={{
-            color: 'black',
-            marginHorizontal: 50,
-            borderWidth: 1,
-            borderRadius: 5,
-            minWidth: 50,
-          }}>
-          {item.message}
-        </Text>
+      <View style={styles.renderWrapper}>
+        {item.postIndex === route.params.postIndex && (
+          <>
+            <View style={styles.nicknameView}>
+              <Text style={styles.nickname}>{item.nickname}</Text>
+            </View>
+            <Text style={styles.content}>{item.content}</Text>
+          </>
+        )}
       </View>
     );
   };
@@ -101,9 +70,9 @@ const MessageScreen = () => {
       style={styles.avoid}>
       <View style={styles.wrapper}>
         <FlatList
-          data={messages}
+          data={comments}
           renderItem={renderItem}
-          keyExtractor={item => item.idd}
+          keyExtractor={item => item.commentIndex}
         />
 
         <TextInput
@@ -111,7 +80,7 @@ const MessageScreen = () => {
           style={styles.input}
           value={text}
           onChangeText={setText}
-          onSubmitEditing={setMessage}
+          onSubmitEditing={setComment}
         />
       </View>
     </KeyboardAvoidingView>
@@ -132,6 +101,29 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     borderWidth: 1,
     borderRadius: 10,
+  },
+  renderWrapper: {
+    alignItems: 'flex-start',
+  },
+  nicknameView: {
+    backgroundColor: 'blue',
+    borderRadius: 10,
+    padding: 3,
+    minWidth: 60,
+    alignItems: 'center',
+    marginVertical: 15,
+  },
+  nickname: {
+    color: 'white',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  content: {
+    color: 'black',
+    marginHorizontal: 50,
+    borderWidth: 1,
+    borderRadius: 5,
+    minWidth: 50,
   },
 });
 export default MessageScreen;

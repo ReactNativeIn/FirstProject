@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useMemo} from 'react';
 import {
   View,
   Text,
@@ -24,97 +24,71 @@ const Post = () => {
   const [hidden, setHidden] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const {post, setPost} = usePostContext();
-  const [like, setLike] = useState(false);
-  const {comments} = useCommentsContext();
-  const {liking, setLiking} = useLikingContext();
-  const {user, joinUser} = useUserContext();
+  const {post, setPost} = usePostContext(); // post 목록
+  const {comments} = useCommentsContext(); // 댓글 목록
+  const {liking, setLiking} = useLikingContext(); //좋아요 목록
+  const {user, joinUser} = useUserContext(); // 로그인 유저, 유저 목록
 
-  let postInfo = post;
-  console.log('확확호학1 -' + postInfo);
+  let commentNum = 0,
+    likeNum = 0,
+    userAvatar = '',
+    likeSet = false;
 
-  const nextPostInfo = postInfo.map((pos, index) => {
-    let commentNum = 0,
-      likeNum = 0,
-      userAvatar = '',
-      likeSet = false;
+  console.log('랜더 확인');
+  liking.map(lik => {
+    console.log(lik);
+  });
 
-    for (let i = 0; i < post.length; i++) {
-      if (postInfo[i].postIndex === pos.postIndex) {
+  const imsi = post.map(po => {
+    (commentNum = 0), (likeNum = 0), (userAvatar = ''), (likeSet = false);
+    comments.map(com => {
+      if (po.postIndex === com.postIndex) {
         commentNum = commentNum + 1;
       }
-    }
-
-    pos.postIndex === index + 1 && {...postInfo, commentNum: commentNum};
-
-    for (let i = 0; i < liking.length; i++) {
-      if (liking[i].postIndex === pos.postIndex) {
+    });
+    liking.map(lik => {
+      if (po.postIndex === lik.postIndex) {
         likeNum = likeNum + 1;
       }
-    }
-
-    pos.postIndex === index + 1 && {...postInfo, likeNum: likeNum};
-
-    for (let i = 0; i < joinUser.length; i++) {
-      if (joinUser[i].email === pos.email) {
-        userAvatar = joinUser[i].profileImage;
-        break;
+    });
+    joinUser.map(jo => {
+      if (po.email === jo.email) {
+        userAvatar = jo.profileImage;
       }
-    }
-
-    pos.postIndex === index + 1
-      ? {...postInfo, userAvatar: userAvatar}
-      : console.log(pos.postIndex === index + 1);
-
-    // liking.map(l => {
-    //   l.postIndex === pos.postIndex && l.email === pos.email
-    //     ? {...postInfo, likeSet: true}
-    //     : {...postInfo, likeSet: false};
-    // });
-
-    // for (let i = 0; i < liking.length; i++) {
-    //   if (
-    //     liking[i].postIndex === pos.postIndex &&
-    //     liking[i].email === pos.email
-    //   ) {
-
-    //   }
-    // }
+    });
+    liking.map(lik => {
+      if (po.postIndex === lik.postIndex && lik.email === user.email) {
+        likeSet = true;
+      }
+    });
+    po.commentNum = commentNum;
+    po.likeNum = likeNum;
+    po.userAvatar = userAvatar;
+    po.likeSet = likeSet;
+    console.log('확인!!' + po.postIndex + ' _ ' + po.userAvatar);
+    return po; //{}했기 때문에 return 해줘야함
   });
 
-  nextPostInfo.map(pos => {
-    console.log('-------' + userAvatar);
-  });
+  let postInfo = [...imsi];
 
-  // for (let i = 0; i < post.length; i++) {
-  //   if (post[i].postIndex === i + 1) {
-  //     commentNum = commentNum + 1;
-  //   }
-  // }
+  console.log('확212인' + postInfo); // 삭제 기능 확인
 
-  // for (let i = 0; i < joinUser.length; i++) {
-  //   if (joinUser[i].email === item.email) {
-  //     userAvatar = joinUser[i];
-  //     break;
-  //   }
-  // }
-
-  // for (let i = 0; i < liking.length; i++) {
-  //   if (liking[i].postIndex === item.postIndex) {
-  //     likeNum = likeNum + 1;
-  //     if (liking[i].email === user.email) {
-  //       likeSet = true;
-  //     }
-  //   }
-  // }
-
-  // console.log('확212인' + postInfo); // 삭제 기능 확인
-
-  const renderItem = ({item, index}) => {
+  const renderItem = ({item}) => {
     const date = item.date.split('-');
 
     const likeClick = () => {
-      alert('click');
+      console.log(item.likeSet);
+      if (item.likeSet) {
+        console.log('te');
+        setLiking(
+          liking.filter(
+            lik => lik.postIndex !== item.postIndex || lik.email !== user.email,
+          ),
+        );
+        item = {...item, likeSet: false};
+      } else {
+        setLiking([...liking, {postIndex: item.postIndex, email: user.email}]);
+      }
     };
 
     const follow = () => {
@@ -167,8 +141,8 @@ const Post = () => {
                       text: '설명 수정',
                       onPress: () => {
                         navigation.push('EditPostScreen', {
-                          description: item.description,
-                          postImage: item.postImage,
+                          description: item.content,
+                          postImage: item.photoURL,
                         });
                       },
                     },
@@ -207,16 +181,15 @@ const Post = () => {
             </Pressable>
             <Pressable
               onPress={() => {
-                navigation.push('CommentScreen');
+                navigation.push('CommentScreen', {postIndex: item.postIndex});
               }}>
               <Ionic name="ios-chatbubble-outline" style={styles.comment} />
             </Pressable>
           </View>
         </View>
         <View style={{paddingHorizontal: 15}}>
-          <Text>
-            Liked by {item.likeSet ? 'you and' : ''} {item.likeNum} others
-          </Text>
+          <Text>좋아요 개수: {item.likeNum}</Text>
+          <Text>댓글 개수: {item.commentNum}</Text>
           <Text style={styles.explanation}>{item.content}</Text>
           <Text>
             {date[0]}년 {date[1]}월 {date[2]}일

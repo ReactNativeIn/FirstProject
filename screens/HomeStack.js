@@ -11,9 +11,27 @@ function HomeStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="HomeTab" component={HomeTab} />
-      <Stack.Screen name="ProfileTab" component={ProfileTab} />
-      <Stack.Screen name="CommentScreen" component={CommentScreen} />
-      <Stack.Screen name="EditPostScreen" component={EditPostScreen} />
+      <Stack.Screen
+        name="ProfileTab"
+        component={ProfileTab}
+        options={{
+          title: '프로필',
+        }}
+      />
+      <Stack.Screen
+        name="CommentScreen"
+        component={CommentScreen}
+        options={{
+          title: '댓글',
+        }}
+      />
+      <Stack.Screen
+        name="EditPostScreen"
+        component={EditPostScreen}
+        options={{
+          title: '게시물 수정',
+        }}
+      />
     </Stack.Navigator>
   );
 }
