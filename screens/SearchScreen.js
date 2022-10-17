@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   StatusBar,
@@ -9,19 +9,20 @@ import {
   Text,
 } from 'react-native';
 import SearchBox from '../components/SearchBox';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionic from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
+import SearchContext from '../contexts/SearchContext';
+import SearchUserList from '../components/SearchUserList';
+import useUserContext from '../contexts/UserContext';
+import {UserContext} from '../contexts/UserContext';
 
-const SearchScreen = () => {
-  const [image, setImage] = useState(null);
-
-  const getData = data => {
-    setImage(data);
-  };
-
-  const windowWidth = Dimensions.get('window').width;
-  const windoeHeight = Dimensions.get('window').height;
+function SearchScreen({}) {
+  const {keyword} = useContext(SearchContext);
+  const {joinUser} = useContext(UserContext);
+  const filtered =
+    keyword === ''
+      ? []
+      : joinUser.filter(log =>
+          [log.email].some(text => text.includes(keyword)),
+        );
 
   return (
     <View
@@ -31,11 +32,10 @@ const SearchScreen = () => {
         backgroundColor: 'white',
         position: 'relative',
       }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <SearchBox />
-      </ScrollView>
+      <SearchBox />
+      <SearchUserList logs={filtered} />
     </View>
   );
-};
+}
 
 export default SearchScreen;

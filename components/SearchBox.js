@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
-import {View, TextInput} from 'react-native';
+import React, {useState, useContext} from 'react';
+import {Pressable, View, TextInput} from 'react-native';
 import Ionic from 'react-native-vector-icons/Ionicons';
+import SearchContext from '../contexts/SearchContext';
 
 const SearchBox = () => {
   const [focusIn, setFocusIn] = useState(false);
+  const {keyword, onChangeText} = useContext(SearchContext);
   const focusInEvent = () => {
     setFocusIn(true);
   };
@@ -25,6 +27,8 @@ const SearchBox = () => {
         onBlur={focusOut}
         placeholder="Search"
         placeholderTextColor="#909090"
+        value={keyword}
+        onChangeText={onChangeText}
         style={{
           width: '94%',
           backgroundColor: '#EBEBEB',
@@ -36,6 +40,9 @@ const SearchBox = () => {
           paddingLeft: 40,
         }}
       />
+      <Pressable
+        styles={({pressed}) => [styles.button, pressed && {opacity: 0.5}]}
+        onPress={() => onChangeText('')}></Pressable>
       <Ionic
         name="close-circle-outline"
         style={{
