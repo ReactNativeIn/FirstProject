@@ -1,6 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ProfileTab from './ProfileTab';
+// import UserProfileTab from './UserProfileTab';
 import MessageScreen from './MessageScreen';
 import EditProfile from './EditProfile';
 
