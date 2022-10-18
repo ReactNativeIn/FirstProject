@@ -20,6 +20,10 @@ export function LikingContextProvider({children}) {
       postIndex: 2,
       email: 'test@first.com',
     },
+    {
+      postIndex: 3,
+      email: 'test@first.com',
+    },
   ]);
   return (
     <LikingContext.Provider
