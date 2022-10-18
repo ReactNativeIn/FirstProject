@@ -27,7 +27,7 @@ const HomeTab = ({navigation}) => {
     if (res.didCancel || !res) {
       return;
     }
-    navigation.push('Upload', {res});
+    navigation.push('UploadScrenn', {res});
   };
 
   const onLaunchCamera = () => {

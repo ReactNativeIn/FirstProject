@@ -4,9 +4,14 @@ import HomeTab from './HomeTab';
 import ProfileTab from './ProfileTab';
 import CommentScreen from './CommentScreen';
 import EditPostScreen from './EditPostScreen';
+import UploadScreen from './UploadScreen';
 
 const Stack = createNativeStackNavigator();
-
+/*
+UploadScreen -> 사진 올리기 화면
+은 HomeTab의 하단 탭을 가리고 그 위에 띄울 것이기 때문에 RootStack에 등록
+그리고 로그인 상태에서만 접근 가능
+*/
 function HomeStack() {
   return (
     <Stack.Navigator>

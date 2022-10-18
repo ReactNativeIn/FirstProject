@@ -30,61 +30,65 @@ const Post = () => {
   const {liking, setLiking} = useLikingContext();
   const {user, joinUser} = useUserContext();
 
-  let postInfo = post;
+  post.map(po => {
+    console.log('확인post: ');
+    console.log(po);
+  });
+  let postInfo = [];
   console.log('확확호학1 -' + postInfo);
 
-  const nextPostInfo = postInfo.map((pos, index) => {
-    let commentNum = 0,
-      likeNum = 0,
-      userAvatar = '',
-      likeSet = false;
+  // const nextPostInfo = postInfo.map((pos, index) => {
+  //   let commentNum = 0,
+  //     likeNum = 0,
+  //     userAvatar = '',
+  //     likeSet = false;
 
-    for (let i = 0; i < post.length; i++) {
-      if (postInfo[i].postIndex === pos.postIndex) {
-        commentNum = commentNum + 1;
-      }
-    }
+  //   for (let i = 0; i < post.length; i++) {
+  //     if (postInfo[i].postIndex === pos.postIndex) {
+  //       commentNum = commentNum + 1;
+  //     }
+  //   }
 
-    pos.postIndex === index + 1 && {...postInfo, commentNum: commentNum};
+  //   pos.postIndex === index + 1 && {...postInfo, commentNum: commentNum};
 
-    for (let i = 0; i < liking.length; i++) {
-      if (liking[i].postIndex === pos.postIndex) {
-        likeNum = likeNum + 1;
-      }
-    }
+  //   for (let i = 0; i < liking.length; i++) {
+  //     if (liking[i].postIndex === pos.postIndex) {
+  //       likeNum = likeNum + 1;
+  //     }
+  //   }
 
-    pos.postIndex === index + 1 && {...postInfo, likeNum: likeNum};
+  //   pos.postIndex === index + 1 && {...postInfo, likeNum: likeNum};
 
-    for (let i = 0; i < joinUser.length; i++) {
-      if (joinUser[i].email === pos.email) {
-        userAvatar = joinUser[i].profileImage;
-        break;
-      }
-    }
+  //   for (let i = 0; i < joinUser.length; i++) {
+  //     if (joinUser[i].email === pos.email) {
+  //       userAvatar = joinUser[i].profileImage;
+  //       break;
+  //     }
+  //   }
 
-    pos.postIndex === index + 1
-      ? {...postInfo, userAvatar: userAvatar}
-      : console.log(pos.postIndex === index + 1);
+  //   pos.postIndex === index + 1
+  //     ? {...postInfo, userAvatar: userAvatar}
+  //     : console.log(pos.postIndex === index + 1);
 
-    // liking.map(l => {
-    //   l.postIndex === pos.postIndex && l.email === pos.email
-    //     ? {...postInfo, likeSet: true}
-    //     : {...postInfo, likeSet: false};
-    // });
+  // liking.map(l => {
+  //   l.postIndex === pos.postIndex && l.email === pos.email
+  //     ? {...postInfo, likeSet: true}
+  //     : {...postInfo, likeSet: false};
+  // });
 
-    // for (let i = 0; i < liking.length; i++) {
-    //   if (
-    //     liking[i].postIndex === pos.postIndex &&
-    //     liking[i].email === pos.email
-    //   ) {
+  // for (let i = 0; i < liking.length; i++) {
+  //   if (
+  //     liking[i].postIndex === pos.postIndex &&
+  //     liking[i].email === pos.email
+  //   ) {
 
-    //   }
-    // }
-  });
+  //   }
+  // }
+  // });
 
-  nextPostInfo.map(pos => {
-    console.log('-------' + userAvatar);
-  });
+  // nextPostInfo.map(pos => {
+  //   console.log('-------' + userAvatar);
+  // });
 
   // for (let i = 0; i < post.length; i++) {
   //   if (post[i].postIndex === i + 1) {
