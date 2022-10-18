@@ -35,7 +35,7 @@ const Post = () => {
     likeSet = false;
 
   console.log('랜더 확인');
-  liking.map(lik => {
+  post.map(lik => {
     console.log(lik);
   });
 
@@ -69,9 +69,12 @@ const Post = () => {
     return po; //{}했기 때문에 return 해줘야함
   });
 
-  let postInfo = [...imsi];
+  const postInfo = [...imsi];
+  const [postIndex, setPostIndex] = useState();
 
-  console.log('확212인' + postInfo); // 삭제 기능 확인
+  post.map(po => {
+    console.log('레전드' + po.content);
+  });
 
   const renderItem = ({item}) => {
     const date = item.date.split('-');
@@ -129,34 +132,10 @@ const Post = () => {
                   hitSlop={8}
                   onPress={() => {
                     setModalVisible(true);
+                    setPostIndex(item.postIndex);
                   }}>
                   <Feather name="more-vertical" style={{fontSize: 20}} />
                 </Pressable>
-                <ActionSheetModal
-                  visible={modalVisible}
-                  onClose={() => setModalVisible(false)}
-                  actions={[
-                    {
-                      icon: 'edit',
-                      text: '설명 수정',
-                      onPress: () => {
-                        navigation.push('EditPostScreen', {
-                          description: item.content,
-                          postImage: item.photoURL,
-                        });
-                      },
-                    },
-                    {
-                      icon: 'delete',
-                      text: '게시물 삭제',
-                      onPress: () => {
-                        setPost(
-                          post.filter(pos => pos.postIndex !== item.postIndex),
-                        );
-                      },
-                    },
-                  ]}
-                />
               </>
             )}
           </View>
@@ -205,6 +184,28 @@ const Post = () => {
         data={postInfo}
         renderItem={renderItem}
         keyExtractor={item => item.postIndex}
+      />
+      <ActionSheetModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        actions={[
+          {
+            icon: 'edit',
+            text: '설명 수정',
+            onPress: () => {
+              navigation.push('EditPostScreen', {
+                postIndex: postIndex,
+              });
+            },
+          },
+          {
+            icon: 'delete',
+            text: '게시물 삭제',
+            onPress: () => {
+              setPost(post.filter(pos => pos.postIndex !== postIndex));
+            },
+          },
+        ]}
       />
     </SafeAreaView>
   );

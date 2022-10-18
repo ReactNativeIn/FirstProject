@@ -6,30 +6,50 @@ import {
   Platform,
   KeyboardAvoidingView,
   Image,
-  Pressable,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
+import IconRightButton from '../components/IconRightButton';
+import {usePostContext} from '../contexts/PostContext';
 
-function EditPostScreen() {
+const EditPostScreen = () => {
   const navigation = useNavigation();
-  navigation.setOptions({
-    headerRight: () => (
-      <Pressable onPress={() => navigation.navigate('HomeTab')}>
-        <Feather name="send" style={styles.sendIcon} />
-      </Pressable>
-    ),
-  });
-  const {params} = useRoute();
+  const {post, setPost} = usePostContext();
+  const route = useRoute();
+  const {params} = route.params || {};
+  const {res} = route.params || {};
 
-  // 라우트 파라미터의 description을 초깃값으로 사용
-  const [description, setDescription] = useState(params.description);
+  const selectPost = post.find(po => po.postIndex === params.postIndex);
+
+  const [content, setContent] = useState(selectPost.content);
 
   const onSubmit = useCallback(() => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     // TODO: 포스트 수정
     // TODO: 포스트 및 포스트 목록 업데이트
+    setPost(
+      post.map(item =>
+        item.postIndex === selectPost.postIndex
+          ? {
+              ...item,
+              photoURL: res ? res.assets[0]?.uri : selectPost.photoURL,
+              content: content,
+              date: year + '-' + month + '-' + day,
+            }
+          : item,
+      ),
+    );
     navigation.pop();
-  }, [navigation]);
+  }, [res, navigation, post, content]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <IconRightButton onPress={onSubmit} name="send" />,
+    });
+  }, [navigation, onSubmit]);
 
   return (
     <KeyboardAvoidingView
@@ -38,20 +58,25 @@ function EditPostScreen() {
       keyboardVerticalOffset={Platform.select({
         ios: 88,
       })}>
-      <ScrollView>
-        <Image source={params.postImage} style={styles.postImage} />
-        <TextInput
-          style={styles.input}
-          multiline={true}
-          placeholder="이 사진에 대한 설명을 입력하세요..."
-          textAlignVertical="top"
-          value={description}
-          onChangeText={setDescription}
-        />
-      </ScrollView>
+      <AnimatedImage res={res} />
+      <Image
+        source={
+          selectPost.photoURL
+            ? require('../storage/images/post1.jpg')
+            : {uri: selectPost.photoURL}
+        }
+        style={styles.postImage}
+      />
+      <TextInput
+        style={styles.input}
+        multiline={true}
+        textAlignVertical="top"
+        value={content}
+        onChangeText={setContent}
+      />
     </KeyboardAvoidingView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   block: {

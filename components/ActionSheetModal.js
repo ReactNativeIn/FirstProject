@@ -1,7 +1,11 @@
 import React from 'react';
 import {StyleSheet, Modal, View, Pressable, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+/*
+Modal은 반복문 안에 넣지 않기(여러개 중첩됨)
+실수하는 작업이 Flatlist의 renderitem함수에 넣게되는데 그럴경우 반복하는 곳에 넣는거임
+map도 그렇고
+*/
 function ActionSheetModal({visible, onClose, actions}) {
   return (
     <Modal
