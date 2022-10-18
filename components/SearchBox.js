@@ -52,7 +52,7 @@ const SearchBox = () => {
           zIndex: 1,
           right: 25,
         }}
-      />
+        onPress={() => onChangeText('')}></Ionic>
       <Ionic
         name="search"
         style={{
