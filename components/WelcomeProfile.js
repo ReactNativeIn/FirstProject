@@ -5,6 +5,7 @@ import {useUserContext} from '../contexts/UserContext';
 import BorderedInput from './BorderedInput';
 import CustomButton from './CustomButton';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {v4 as uuid} from 'uuid';
 
 function WelcomeProfile({form}) {
   const {user, setUser, joinUser, setJoinUser} = useUserContext();
@@ -30,17 +31,33 @@ function WelcomeProfile({form}) {
   };
 
   const onSubmit = () => {
+    const uid = uuid();
     setUser(
       // user 정보 추가
-      {...form, nickname: displayName, profileImage: response}, // profileImage 에 response 정보를 담는다.
+      {...form, nickname: displayName, profileImage: response, uid: uid}, // profileImage 에 response 정보를 담는다.
     );
-    setJoinUser(joinUser.concat(user));
+    setJoinUser(
+      joinUser.concat({
+        ...form,
+        nickname: displayName,
+        profileImage: response,
+        uid: uid,
+      }),
+    );
     navigation.navigate('Main');
   };
 
   const onCancel = () => {
-    setUser({...form, nickname: '', profileImage: null});
-    setJoinUser(joinUser.concat(user));
+    const uid = uuid();
+    setUser({...form, nickname: '', profileImage: null, uid});
+    setJoinUser(
+      joinUser.concat({
+        ...form,
+        nickname: displayName,
+        profileImage: response,
+        uid,
+      }),
+    );
     navigation.navigate('Main');
   };
 

@@ -14,16 +14,7 @@ const UserContext = createContext(null);
 
 export function UserContextProvider({children}) {
   /* 테스트를 위한 임시 데이터 */
-  const [user, setUser] = useState({
-    email: 'test@first.com',
-    name: '테스트',
-    password: '123456',
-    birthday: '22-10-10',
-    nickname: 'test',
-    gender: '남',
-    profileImage: null,
-    introduce: '',
-  }); // 로그인 회원 정보
+  const [user, setUser] = useState(null); // 로그인 회원 정보
 
   const [joinUser, setJoinUser] = useState([
     {
@@ -35,6 +26,7 @@ export function UserContextProvider({children}) {
       gender: '남',
       profileImage: '../storage/images/post1.jpg',
       introduce: '',
+      uid: 1,
     },
     {
       email: 'test1@first.com',
@@ -45,6 +37,7 @@ export function UserContextProvider({children}) {
       gender: '남',
       profileImage: '../storage/images/post2.jpg',
       introduce: '',
+      uid: 2,
     },
     {
       email: 'test2@first.com',
@@ -55,6 +48,7 @@ export function UserContextProvider({children}) {
       gender: '남',
       profileImage: '../storage/images/post3.jpg',
       introduce: '',
+      uid: 3,
     },
     {
       email: 'test3@first.com',
@@ -65,6 +59,7 @@ export function UserContextProvider({children}) {
       gender: '남',
       profileImage: '../storage/images/post3.jpg',
       introduce: '',
+      uid: 4,
     },
   ]); // 회원 배열저장 임시
 

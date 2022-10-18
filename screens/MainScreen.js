@@ -10,9 +10,10 @@ const Tab = createBottomTabNavigator();
 
 function MainScreen() {
   const {user, joinUser} = useUserContext();
-  useEffect(() => {
-    console.log(joinUser);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log('joinUser : ', JSON.stringify(joinUser, null, '\t'));
+  //   console.log('user : ', JSON.stringify(user, null, '\t'));
+  // }, [joinUser]);
 
   return (
     <Tab.Navigator

@@ -26,6 +26,7 @@ function SignInScreen({navigation, route}) {
     profileImage: null,
     nickname: '',
     introduce: '',
+    uid: '', // 식별키
   });
   // console.log('form : ', form);
   const {isSignUp} = route.params ?? {}; // 로그인인지 회원가입인지 SignInButton 에서 받아옴
@@ -37,10 +38,6 @@ function SignInScreen({navigation, route}) {
     // form의 내용을 name과 value에 맞춰서 변경
     setForm({...form, [name]: value});
   };
-  // 유저 저장 로그 확인용
-  // useEffect(() => {
-  //   console.log('joinUser 목록: ', joinUser);
-  // }, [joinUser]);
 
   const onSubmit = () => {
     // 입력창에 내용을 전부 입력하고 확인 버튼을 눌렀을때
@@ -61,6 +58,21 @@ function SignInScreen({navigation, route}) {
         /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/; // 비밀번호 정규 표현식
       return pass != '' && pass != 'undefined' && check.test(pass);
     }
+    function email_check2(email) {
+      // 회원가입시 이메일 중복확인
+      let i = 0;
+      for (i = 0; i < joinUser.length; i++) {
+        if (joinUser[i].email === email) return joinUser[i];
+        break;
+      }
+    }
+    function password_check2(email) {
+      // 로그인시 비밀번호 일치 확인
+      for (let i = 0; i < joinUser.length; i++) {
+        if (email === joinUser[i].email) return joinUser[i].password;
+        break;
+      }
+    }
 
     if (!email_check(email)) {
       Alert.alert('실패', '이메일을 입력해주세요');
@@ -76,31 +88,35 @@ function SignInScreen({navigation, route}) {
     else if (isSignUp && password !== confirmPassword) {
       Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
       return;
-    } else if ((isSignUp && name === '') || null) {
+    } else if ((isSignUp && name === '') || undefined) {
       Alert.alert('실패', '이름을 입력해주세요');
       return;
     } else if (isSignUp && !phone_check(phone)) {
       Alert.alert('실패', '전화번호를 입력해 주세요');
       return;
-    } else if ((isSignUp && birthday === '') || null) {
+    } else if ((isSignUp && birthday === '') || undefined) {
       Alert.alert('실패', '생일을 입력해주세요');
       return;
-    }
-    setLoading(true);
-    const info = {email, password}; // 회원가입시 사용한 정보가 들어감
-    // console.log('info : ', info);
-    setLoading(false);
-    if (isSignUp) {
-      navigation.navigate('Welcome', {form});
-    } else {
+    } else if (isSignUp && email_check2(email)) {
+      Alert.alert('실패', '이미 존재하는 이메일 입니다.');
+      return;
       /*
       TODO: 이메일이 존재하지 않았을때, 비밀번호가 틀렸을때,
       */
-      navigation.navigate('Main');
+    } else if (!isSignUp && password !== password_check2(email)) {
+      Alert.alert('실패', '아이디 또는 비밀번호가 틀렸습니다.');
+      return;
     }
-
-    // navigation.navigate()    // 로그인 후 메인탭으로 이동
-
+    // setLoading(true);
+    // const info = {email, password}; // 회원가입시 사용한 정보가 들어감
+    // // console.log('info : ', info);
+    // setLoading(false);
+    if (isSignUp) {
+      navigation.navigate('Welcome', {form});
+    } else {
+      setUser(email_check2(email));
+      navigation.navigate('Main'); // 로그인 제대로 됐을때
+    }
     /*  데이터베이스에 정보를 저장되어있는거랑 비교할때 쓰는 기능
     try {
         const {user} = isSignUp ? await signUp(info) : await signIn(info);

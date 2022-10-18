@@ -1,12 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ProfileGridview from '../components/ProfileGridview';
+import {useUserContext} from '../contexts/UserContext';
 
 const ProfileScreen = () => {
   let circuls = [];
   let numberofcircels = 10;
+  const {user, joinUser} = useUserContext();
+
+  useEffect(() => {
+    console.log('joinUser : ', JSON.stringify(joinUser, null, 2));
+    console.log('User : ', JSON.stringify(user, null, 2));
+  }, [user]);
 
   for (let index = 0; index < numberofcircels; index++) {
     circuls.push(

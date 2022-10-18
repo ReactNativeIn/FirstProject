@@ -49,22 +49,25 @@ function EditProfile({route, navigation}) {
   };
 
   const onSubmit = () => {
-    setUser({
-      ...user,
+    setUser(prev => ({
+      ...prev,
       name: name,
-      nickname,
+      nickname: nickname,
       profileImage: response,
-      introduce,
-    });
-    if (joinUser.email === user.email) {
-      setJoinUser({
-        ...joinUser,
-        name: name,
-        nickname,
-        profileImage: response,
-        introduce,
-      });
+      introduce: introduce,
+    }));
+    for (let i = 0; i < joinUser.length; i++) {
+      if (user.uid === joinUser[i].uid) {
+        joinUser[i] = {
+          ...user,
+          name: name,
+          nickname: nickname,
+          profileImage: response,
+          introduce: introduce,
+        };
+      }
     }
+    console.log(joinUser);
     setModalShown(false);
   };
   return (
@@ -193,7 +196,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   headerText: {
-    fontSize: 14,
+    fontSize: 24,
     fontWeight: 'bold',
   },
   textColor: {

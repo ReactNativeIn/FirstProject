@@ -57,12 +57,12 @@ const Post = () => {
         setLike(true);
       }
     }
-    console.log(item.postIndex);
-    console.log('------');
-    liking.map((i, index) => {
-      console.log(i);
-    });
-    console.log('------');
+    // console.log(item.postIndex);
+    // console.log('------');
+    // liking.map((i, index) => {
+    //   console.log(i);
+    // });
+    // console.log('------');
 
     const likeClick = () => {
       setLiking([
@@ -88,9 +88,9 @@ const Post = () => {
               onPress={() => navigation.push('ProfileTab', item.email)}>
               <Image
                 source={
-                  me.profileImage
-                    ? {uri: me.profileImage?.assets[0]?.uri}
-                    : require('../storage/images/user.png')
+                  // me.profileImage
+                  //   ? {uri: me.profileImage?.assets[0]?.uri}
+                  require('../storage/images/user.png')
                 }
                 style={styles.avatarImage}
               />

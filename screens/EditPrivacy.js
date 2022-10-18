@@ -13,7 +13,7 @@ import Ionic from 'react-native-vector-icons/Ionicons';
 import {useUserContext} from '../contexts/UserContext';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {format} from 'date-fns';
-import {setStatusBarNetworkActivityIndicatorVisible} from 'expo-status-bar';
+import PrivacyHeader from '../components/PrivacyHeader';
 
 export default function EditPrivacy({navigation}) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -23,6 +23,10 @@ export default function EditPrivacy({navigation}) {
   const [phone, setPhone] = useState(user.phone);
   const [gender, setGender] = useState(user.gender);
   const [birthday, setBirthday] = useState(user.birthday);
+
+  useEffect(() => {
+    console.log(gender);
+  }, [gender]);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -39,31 +43,30 @@ export default function EditPrivacy({navigation}) {
   };
 
   const onSubmit = () => {
-    Alert.alert('저장', '저장되었습니다.');
-    setUser({
-      ...user,
-      email,
-      phone,
-      gender,
-      birthday,
-    });
-    // if() 개인정보 설정할때 정보비교용 uuid 만들자!
-    navigation.navigate('ProfileTab');
-  };
+    setUser(prev => ({
+      ...prev,
+      email: email,
+      phone: phone,
+      gender: gender,
+      birthday: birthday,
+    }));
 
-  useEffect(() => {
-    navigation.setOptions({
-      title: '개인정보',
-      headerRight: () => (
-        <Pressable onPress={() => onSubmit()}>
-          <Ionic name="checkmark" style={{fontSize: 35, color: '#3493D9'}} />
-        </Pressable>
-      ),
-    });
-  }, [navigation]);
+    for (let i = 0; i < joinUser.length; i++) {
+      if (user.uid === joinUser[i].uid) {
+        joinUser[i] = {
+          ...user,
+          email,
+          phone,
+          gender,
+          birthday,
+        };
+      }
+    }
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+      <PrivacyHeader onSubmit={onSubmit} />
       <View
         style={{
           alignItems: 'center',

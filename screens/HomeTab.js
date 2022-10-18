@@ -3,9 +3,9 @@ import {
   View,
   Text,
   StatusBar,
-  ScrollView,
   StyleSheet,
   Pressable,
+  BackHandler,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Stories from '../components/Stories';
@@ -20,7 +20,20 @@ const imagePickerOption = {
   includeBase64: Platform.OS === 'android',
 };
 
-const HomeTab = ({navigation}) => {
+const HomeTab = ({navigation, route}) => {
+  const handlePressBack = () => {
+    if (route.name === 'HomeTab') {
+      navigation.navigate('SignIn');
+      return true;
+    }
+    return false;
+  };
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handlePressBack);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
+    };
+  }, [handlePressBack]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const onPickImage = res => {

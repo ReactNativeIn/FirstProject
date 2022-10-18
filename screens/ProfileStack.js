@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ProfileTab from './ProfileTab';
 import EditProfile from './EditProfile';
 import EditPrivacy from './EditPrivacy';
+import PrivacyHeader from '../components/PrivacyHeader';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +16,13 @@ function ProfileStack() {
         component={EditProfile}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="EditPrivacy" component={EditPrivacy} />
+      <Stack.Screen
+        name="EditPrivacy"
+        component={EditPrivacy}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }
