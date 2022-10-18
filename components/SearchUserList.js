@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   block: {flex: 1},
   separator: {
     backgroundColor: '#e0e0e0',
-    height: 1,
+    height: 1.2,
     width: '100%',
   },
 });
