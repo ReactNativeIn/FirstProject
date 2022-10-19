@@ -1,4 +1,5 @@
-import React, {useContext, createContext, useState} from 'react';
+import React, {useContext, useEffect, createContext, useState} from 'react';
+import ItemStorage from '../asyncstorage/ItemStorage';
 /*
 (postIndex fk
 email fk) pk
@@ -7,20 +8,18 @@ email fk) pk
 const LikingContext = createContext(null);
 
 export function LikingContextProvider({children}) {
-  const [liking, setLiking] = useState([
-    {
-      postIndex: 1,
-      email: 'test@first.com',
-    },
-    {
-      postIndex: 1,
-      email: 'test1@first.com',
-    },
-    {
-      postIndex: 2,
-      email: 'test@first.com',
-    },
-  ]);
+  const [liking, setLiking] = useState();
+
+  // 불러오기
+  useEffect(() => {
+    ItemStorage.get('liking').then(setLiking).catch(console.error);
+  }, []);
+
+  // 저장
+  useEffect(() => {
+    ItemStorage.set('liking', liking).catch(console.error);
+  }, [liking]);
+
   return (
     <LikingContext.Provider
       children={children}

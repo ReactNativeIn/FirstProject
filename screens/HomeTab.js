@@ -3,15 +3,16 @@ import {
   View,
   Text,
   StatusBar,
-  ScrollView,
   StyleSheet,
   Pressable,
+  BackHandler,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Stories from '../components/Stories';
 import Post from '../components/Post';
 import ActionSheetModal from '../components/ActionSheetModal';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+import {useUserContext} from '../contexts/UserContext';
 
 const imagePickerOption = {
   mediaType: 'photo',
@@ -20,14 +21,14 @@ const imagePickerOption = {
   includeBase64: Platform.OS === 'android',
 };
 
-const HomeTab = ({navigation}) => {
+const HomeTab = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const onPickImage = res => {
     if (res.didCancel || !res) {
       return;
     }
-    navigation.push('Upload', {res});
+    navigation.push('UploadScrenn', {res});
   };
 
   const onLaunchCamera = () => {

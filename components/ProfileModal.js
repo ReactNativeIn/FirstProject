@@ -1,6 +1,7 @@
-import {Modal, Pressable, StyleSheet, Text, View} from 'react-native';
+import {useState} from 'react';
+import {Modal, Platform, Pressable, StyleSheet, Text, View} from 'react-native';
 
-function ProfileModal({modalShown, setModalShown}) {
+function ProfileModal({modalShown, setModalShown, onSelectImage, normalImage}) {
   return (
     <>
       <Modal // 배경용 모달
@@ -28,7 +29,8 @@ function ProfileModal({modalShown, setModalShown}) {
                 android_ripple={{
                   color: 'gray',
                 }}
-                style={[styles.whiteBox]}>
+                style={[styles.whiteBox]}
+                onPress={onSelectImage}>
                 <Text style={[styles.text, {fontSize: 16}]}>
                   새 프로필 사진
                 </Text>
@@ -37,7 +39,8 @@ function ProfileModal({modalShown, setModalShown}) {
                 android_ripple={{
                   color: 'gray',
                 }}
-                style={[styles.whiteBox]}>
+                style={[styles.whiteBox]}
+                onPress={normalImage}>
                 <Text style={[styles.text, {fontSize: 16}]}>
                   기본 이미지 사용
                 </Text>
