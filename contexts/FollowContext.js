@@ -1,5 +1,5 @@
-import React, {useContext, createContext, useState} from 'react';
-
+import React, {useContext, useEffect, createContext, useState} from 'react';
+import ItemStorage from '../asyncstorage/ItemStorage';
 /*
 (
 from_member fk
@@ -9,20 +9,18 @@ to_member fk
 const FollowContext = createContext(null);
 
 export function FollowContextProvider({children}) {
-  const [follow, setFollow] = useState([
-    {
-      from_member: 'test@first.com',
-      to_member: 'test1@first.com',
-    },
-    {
-      from_member: 'test@first.com',
-      to_member: 'test2@first.com',
-    },
-    {
-      from_member: 'test1@first.com',
-      to_member: 'test2@first.com',
-    },
-  ]);
+  const [follow, setFollow] = useState();
+
+  // 불러오기
+  useEffect(() => {
+    ItemStorage.get('follow').then(setFollow).catch(console.error);
+  }, []);
+
+  // 저장
+  useEffect(() => {
+    ItemStorage.set('follow', follow).catch(console.error);
+  }, [follow]);
+
   return (
     <FollowContext.Provider
       children={children}

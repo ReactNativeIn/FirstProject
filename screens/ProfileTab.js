@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ProfileGridview from '../components/ProfileGridview';
+import {useUserContext} from '../contexts/UserContext';
 
 const ProfileScreen = () => {
   let circuls = [];

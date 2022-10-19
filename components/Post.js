@@ -22,7 +22,6 @@ import {useFollowContext} from '../contexts/FollowContext';
 
 const Post = () => {
   const navigation = useNavigation();
-  const [hidden, setHidden] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
   const {post, setPost} = usePostContext(); // post 목록
@@ -85,7 +84,6 @@ const Post = () => {
     const date = item.date.split('-');
 
     const likeClick = () => {
-      console.log(item.likeSet);
       if (item.likeSet) {
         console.log('te');
         setLiking(
@@ -122,8 +120,8 @@ const Post = () => {
               <Image
                 source={
                   item.userAvatar
-                    ? require('../storage/images/user.png')
-                    : {uri: item.userAvatar}
+                    ? {uri: item.userAvatar}
+                    : require('../storage/images/user.png')
                 }
                 style={styles.avatarImage}
               />
@@ -159,8 +157,8 @@ const Post = () => {
           <Image
             source={
               item.photoURL
-                ? require('../storage/images/post1.jpg')
-                : {uri: item.photoURL}
+                ? {uri: item.photoURL}
+                : require('../storage/images/post1.jpg')
             }
             style={styles.postImage}
           />

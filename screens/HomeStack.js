@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeTab from './HomeTab';
 import ProfileTab from './ProfileTab';
 import CommentScreen from './CommentScreen';
 import EditPostScreen from './EditPostScreen';
-import UploadScreen from './UploadScreen';
+import {useUserContext} from '../contexts/UserContext';
 
 const Stack = createNativeStackNavigator();
 /*
@@ -13,6 +13,13 @@ UploadScreen -> 사진 올리기 화면
 그리고 로그인 상태에서만 접근 가능
 */
 function HomeStack() {
+  const {joinUser, user} = useUserContext();
+
+  useEffect(() => {
+    console.log('joinUser : ', JSON.stringify(joinUser, null, 2));
+    console.log('User : ', JSON.stringify(user, null, 2));
+  }, [user]);
+
   return (
     <Stack.Navigator>
       <Stack.Screen name="HomeTab" component={HomeTab} />

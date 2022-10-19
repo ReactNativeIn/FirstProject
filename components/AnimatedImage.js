@@ -40,7 +40,7 @@ const AnimatedImage = ({uri}) => {
 
   return (
     <Animated.Image
-      source={uri ? require('../storage/images/post2.jpg') : {uri: uri}}
+      source={uri ? {uri: uri} : require('../storage/images/post2.jpg')}
       style={[styles.image, {height: animation}]}
       resizeMode="cover"
     />

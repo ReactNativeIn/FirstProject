@@ -10,7 +10,7 @@ const Stories = () => {
   const navigation = useNavigation();
   const {follow} = useFollowContext();
   const {user, joinUser} = useUserContext();
-  console.log(joinUser);
+  // console.log(joinUser);
 
   let storyInfo = [user];
 
@@ -18,7 +18,6 @@ const Stories = () => {
 
   //팔로우된 계정 조회
   for (let i = 0; i < follows.length; i++) {
-    console.log('확');
     for (let j = 0; j < joinUser.length; j++) {
       if (joinUser[j].email === follows[i].to_member) {
         storyInfo = [...storyInfo, joinUser[j]];
@@ -47,8 +46,8 @@ const Stories = () => {
             <Image
               source={
                 item.profileImage
-                  ? require('../storage/images/user.png')
-                  : {uri: item.profileImage}
+                  ? {uri: item.profileImage}
+                  : require('../storage/images/user.png')
               }
               style={styles.image}
             />

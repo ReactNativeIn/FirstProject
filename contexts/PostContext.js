@@ -1,5 +1,5 @@
-import React, {useContext, createContext, useState} from 'react';
-
+import React, {useContext, useEffect, createContext, useState} from 'react';
+import ItemStorage from '../asyncstorage/ItemStorage';
 /*
 postIndex pk
 photoURL
@@ -11,40 +11,17 @@ email fk
 const PostContext = createContext(null);
 
 export function PostContextProvider({children}) {
-  const [post, setPost] = useState([
-    {
-      postIndex: 1,
-      photoURL: '../storage/images/post1',
-      nickname: 'test',
-      content: '테스트다',
-      date: '22-10-15',
-      email: 'test@first.com',
-    },
-    {
-      postIndex: 2,
-      photoURL: '../storage/images/post2',
-      nickname: 'test1',
-      content: '테스트다2',
-      date: '22-10-12',
-      email: 'test1@first.com',
-    },
-    {
-      postIndex: 3,
-      photoURL: '../storage/images/post3',
-      nickname: 'test3',
-      content: '테스트다3',
-      date: '22-10-13',
-      email: 'test3@first.com',
-    },
-    {
-      postIndex: 4,
-      photoURL: '../storage/images/post4',
-      nickname: 'test1',
-      content: '테스트다4',
-      date: '22-10-14',
-      email: 'test1@first.com',
-    },
-  ]);
+  const [post, setPost] = useState();
+
+  // 불러오기
+  useEffect(() => {
+    ItemStorage.get('post').then(setPost).catch(console.error);
+  }, []);
+
+  // 저장
+  useEffect(() => {
+    ItemStorage.set('post', post).catch(console.error);
+  }, [post]);
 
   return (
     <PostContext.Provider
