@@ -18,6 +18,7 @@ import {usePostContext} from '../contexts/PostContext';
 import {useLikingContext} from '../contexts/LikingContext';
 import {useUserContext} from '../contexts/UserContext';
 import {useCommentsContext} from '../contexts/CommentsContext';
+import {useFollowContext} from '../contexts/FollowContext';
 
 const Post = () => {
   const navigation = useNavigation();
@@ -28,6 +29,14 @@ const Post = () => {
   const {comments} = useCommentsContext(); // 댓글 목록
   const {liking, setLiking} = useLikingContext(); //좋아요 목록
   const {user, joinUser} = useUserContext(); // 로그인 유저, 유저 목록
+  const {follow, setFollow} = useFollowContext(); // 팔로우 목록
+
+  const follows = follow.filter(f => f.from_member === user.email); //팔로우 조회
+
+  //팔로우 테스트
+  follows.map(fo => {
+    console.log('팔 : ' + fo.to_member);
+  });
 
   let commentNum = 0,
     likeNum = 0,
@@ -90,9 +99,18 @@ const Post = () => {
       }
     };
 
-    const follow = () => {
-      alert('팔로우');
-      setHidden(false);
+    const follow = follow => {
+      alert(follow + '팔로우');
+      follows.map(fo => {
+        console.log(fo);
+      });
+      setFollow([
+        ...follows,
+        {
+          from_member: user.email,
+          to_member: follow,
+        },
+      ]);
     };
 
     return (
@@ -115,26 +133,26 @@ const Post = () => {
             </View>
           </View>
           <View>
-            {/*자신의 게시물이면 ... , 타인의 게시물이면 팔로우 버튼 */}
-            {item.isLiked ? (
-              hidden ? (
-                <Pressable style={styles.follow} onPress={follow}>
+            {!follows.some(fo => fo.to_member === item.email) ? (
+              user.email !== item.email ? (
+                <Pressable
+                  style={styles.follow}
+                  onPress={() => follow(item.email)}>
                   <Text>팔로우</Text>
                 </Pressable>
-              ) : null
-            ) : (
-              <>
-                <Pressable
-                  hitSlop={8}
-                  onPress={() => {
-                    setModalVisible(true);
-                    postIndex.current = item.postIndex;
-                    console.log('해당1 - ' + postIndex.current);
-                  }}>
-                  <Feather name="more-vertical" style={{fontSize: 20}} />
-                </Pressable>
-              </>
-            )}
+              ) : (
+                <>
+                  <Pressable
+                    hitSlop={8}
+                    onPress={() => {
+                      setModalVisible(true);
+                      postIndex.current = item.postIndex;
+                    }}>
+                    <Feather name="more-vertical" style={{fontSize: 20}} />
+                  </Pressable>
+                </>
+              )
+            ) : null}
           </View>
         </View>
         <View style={styles.postWrapper}>

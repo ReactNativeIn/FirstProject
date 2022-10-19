@@ -8,19 +8,13 @@ import {useUserContext} from '../contexts/UserContext';
 
 const Stories = () => {
   const navigation = useNavigation();
-  const {follow, setFollow} = useFollowContext();
+  const {follow} = useFollowContext();
   const {user, joinUser} = useUserContext();
   console.log(joinUser);
 
   let storyInfo = [user];
 
   const follows = follow.filter(f => f.from_member === user.email); //팔로우 조회
-  console.log(follows);
-  follows.map(f => console.log('팔로우 조회 확인'.concat(f.to_member)));
-  joinUser.map(u => console.log('확2'.concat(u.email)));
-
-  const test = joinUser.filter(u => u.email === 'test1@first.com');
-  console.log('test'.concat(test[0].email));
 
   //팔로우된 계정 조회
   for (let i = 0; i < follows.length; i++) {
@@ -33,12 +27,6 @@ const Stories = () => {
   }
 
   storyInfo.map(s => console.log('확인'.concat(s.profileImage)));
-
-  // const userInfo = follows.filter(f =>
-  //   joinUser.filter(u => u.email === f.to_member),
-  // );
-
-  // console.log('확'.concat(userInfo[0].email));
 
   /*
   Image컴포넌트의 require는 동적으로 이미지를 변경할 수 없음. 고정 되어 있어야함
