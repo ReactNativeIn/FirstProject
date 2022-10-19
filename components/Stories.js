@@ -14,10 +14,12 @@ const Stories = () => {
 
   let storyInfo = [user];
 
+  console.log('확인' + follow);
   const follows = follow.filter(f => f.from_member === user.email); //팔로우 조회
 
   //팔로우된 계정 조회
   for (let i = 0; i < follows.length; i++) {
+    // console.log('확');
     for (let j = 0; j < joinUser.length; j++) {
       if (joinUser[j].email === follows[i].to_member) {
         storyInfo = [...storyInfo, joinUser[j]];

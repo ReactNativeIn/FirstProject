@@ -15,7 +15,7 @@ const UploadScrenn = () => {
 
   const [content, setContent] = useState('');
 
-  const nextIndex = Math.max(...post.map(pos => pos.postIndex)) + 1;
+  const nextIndex = Math.max(...post?.map(pos => pos.postIndex)) + 1;
 
   const onSubmit = useCallback(() => {
     const date = new Date();

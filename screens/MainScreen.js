@@ -4,8 +4,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import HomeStack from './HomeStack';
 import SearchTab from './SearchTab';
 import ProfileStack from './ProfileStack';
-import {useUserContext} from '../contexts/UserContext';
-import {BackHandler} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 

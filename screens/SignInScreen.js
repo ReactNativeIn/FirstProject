@@ -60,8 +60,8 @@ function SignInScreen({navigation, route}) {
 
     function email_check2(email) {
       // 회원가입시 이메일 중복확인 및 해당 joinUser정보 가져오기
-      if (joinUser.length === undefined) return;
-      for (let i = 0; i < joinUser.length; i++) {
+      if (joinUser?.length === undefined) return;
+      for (let i = 0; i < joinUser?.length; i++) {
         if (joinUser[i].email === email) {
           return joinUser[i];
         }
@@ -70,8 +70,8 @@ function SignInScreen({navigation, route}) {
 
     // 로그인시 비밀번호 일치 확인
     function password_check2(email) {
-      if (joinUser.length === undefined) return;
-      for (let i = 0; i < joinUser.length; i++) {
+      if (joinUser?.length === undefined) return;
+      for (let i = 0; i < joinUser?.length; i++) {
         console.log('for' + joinUser[i].email);
         if (email === joinUser[i].email) {
           return joinUser[i].password;

@@ -1,13 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  FlatList,
-  Pressable,
-  Button,
-} from 'react-native';
+import {View, Text, Image, StyleSheet, FlatList, Pressable} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionic from 'react-native-vector-icons/Ionicons';

@@ -16,7 +16,7 @@ const UserContext = createContext(null);
 
 export function UserContextProvider({children}) {
   /* 테스트를 위한 임시 데이터 */
-  const [user, setUser] = useState(null); // 로그인 회원 정보
+  const [user, setUser] = useState(); // 로그인 회원 정보
 
   const [joinUser, setJoinUser] = useState(); // 회원 배열저장 임시
 
