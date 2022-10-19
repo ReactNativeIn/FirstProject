@@ -25,6 +25,13 @@ function RootStack() {
             component={UploadScreen}
             options={{title: '새 게시물', headerBackTitle: '뒤로가기'}}
           />
+          <Stack.Screen
+            name="CommentScreen"
+            component={CommentScreen}
+            options={{
+              title: '댓글',
+            }}
+          />
         </>
       ) : (
         <>

@@ -209,7 +209,6 @@ const Post = () => {
                 icon: 'edit',
                 text: '설명 수정',
                 onPress: () => {
-                  console.log('해당2' + postIndex.current);
                   navigation.push('EditPostScreen', {
                     postIndex: postIndex.current,
                   });
@@ -219,7 +218,6 @@ const Post = () => {
                 icon: 'delete',
                 text: '게시물 삭제',
                 onPress: () => {
-                  console.log('내부' + postIndex.current);
                   setComments(
                     comments.filter(com => com.postIndex !== postIndex.current),
                   );
