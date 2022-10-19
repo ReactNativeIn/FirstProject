@@ -38,7 +38,7 @@ function EditProfile({route, navigation}) {
         if (res.didCancel) {
           return;
         }
-        setResponse(res);
+        setResponse(res?.assets[0]?.uri);
       },
     );
     setModalShown(false);
@@ -56,6 +56,7 @@ function EditProfile({route, navigation}) {
       profileImage: response,
       introduce: introduce,
     }));
+    if (joinUser.length === undefined) return;
     for (let i = 0; i < joinUser.length; i++) {
       if (user.uid === joinUser[i].uid) {
         joinUser[i] = {
@@ -103,7 +104,7 @@ function EditProfile({route, navigation}) {
               <Image
                 source={
                   response
-                    ? {uri: response?.assets[0]?.uri}
+                    ? {uri: response}
                     : require('../storage/images/user.png')
                 } // 내 디렉토리에 있는 이미지 썼음 나중엔 데이터베이스에 있는 프로필 사진 경로로 가야함
                 style={{width: 80, height: 80, borderRadius: 100}}

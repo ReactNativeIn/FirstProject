@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignInScreen from './SignInScreen';
 import WelcomeScreen from './WelcomeScreen';
 import MainScreen from './MainScreen';
+import UploadScreen from './UploadScreen';
 import {useUserContext} from '../contexts/UserContext';
 
 const Stack = createNativeStackNavigator();
@@ -18,6 +19,11 @@ function RootStack() {
             name="Main"
             component={MainScreen}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="UploadScrenn"
+            component={UploadScreen}
+            options={{title: '새 게시물', headerBackTitle: '뒤로가기'}}
           />
         </>
       ) : (

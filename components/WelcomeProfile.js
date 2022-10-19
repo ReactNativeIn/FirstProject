@@ -34,29 +34,44 @@ function WelcomeProfile({form}) {
     const uid = uuid();
     setUser(
       // user 정보 추가
-      {...form, nickname: displayName, profileImage: response, uid: uid}, // profileImage 에 response 정보를 담는다.
-    );
-    setJoinUser(
-      joinUser.concat({
+      {
         ...form,
         nickname: displayName,
-        profileImage: response,
+        profileImage: response?.assets[0]?.uri,
         uid: uid,
-      }),
+      }, // profileImage 에 response 정보를 담는다.
     );
+    // setJoinUser(
+    //   joinUser.concat({
+    //     ...form,
+    //     nickname: displayName,
+    //     profileImage: response.assets[0].uri,
+    //     uid: uid,
+    //   }),
+    // );
+    setJoinUser([
+      ...joinUser,
+      {
+        ...form,
+        nickname: displayName,
+        profileImage: response?.assets[0]?.uri,
+        uid: uid,
+      },
+    ]);
   };
 
   const onCancel = () => {
     const uid = uuid();
     setUser({...form, nickname: '', profileImage: null, uid});
-    setJoinUser(
-      joinUser.concat({
+    setJoinUser([
+      ...joinUser,
+      {
         ...form,
         nickname: displayName,
-        profileImage: response,
-        uid,
-      }),
-    );
+        profileImage: response?.assets[0].uri,
+        uid: uid,
+      },
+    ]);
   };
 
   return (

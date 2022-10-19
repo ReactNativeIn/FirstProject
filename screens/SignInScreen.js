@@ -25,7 +25,7 @@ function SignInScreen({navigation, route}) {
     phone: '',
     profileImage: null,
     nickname: '',
-    introduce: '',
+    introduce: '', //소개
     uid: '', // 식별키
   });
   // console.log('form : ', form);
@@ -33,7 +33,6 @@ function SignInScreen({navigation, route}) {
   const [loading, setLoading] = useState(false); // 로딩상태를 표시할지 말지 나타냄
   const {joinUser, setJoinUser} = useUserContext(); // 유저가 회원가입에 성공했을 경우, 해당 유저의 정보를 앱 실행하는 동안 저장해둠 (자동 로그인의 경우 지속적으로 저장)
   const {setUser} = useUserContext(); // 지금 내 유저 정보
-
   const createChangeTextHandler = name => value => {
     // form의 내용을 name과 value에 맞춰서 변경
     setForm({...form, [name]: value});
@@ -58,32 +57,38 @@ function SignInScreen({navigation, route}) {
         /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/; // 비밀번호 정규 표현식
       return pass != '' && pass != 'undefined' && check.test(pass);
     }
+
     function email_check2(email) {
       // 회원가입시 이메일 중복확인 및 해당 joinUser정보 가져오기
-      let i = 0;
-      for (i = 0; i < joinUser.length; i++) {
-        if (joinUser[i].email === email) return joinUser[i];
+      if (joinUser.length === undefined) return;
+      for (let i = 0; i < joinUser.length; i++) {
+        if (joinUser[i].email === email) {
+          return joinUser[i];
+        }
       }
     }
+
+    // 로그인시 비밀번호 일치 확인
     function password_check2(email) {
-      // 로그인시 비밀번호 일치 확인
+      if (joinUser.length === undefined) return;
       for (let i = 0; i < joinUser.length; i++) {
-        if (email === joinUser[i].email) return joinUser[i].password;
+        console.log('for' + joinUser[i].email);
+        if (email === joinUser[i].email) {
+          return joinUser[i].password;
+        }
       }
     }
 
     if (!email_check(email)) {
       Alert.alert('실패', '이메일을 입력해주세요');
       return;
-    }
-    // else if (!password_check(password)) {
-    //   Alert.alert('실패', '비밀번호를 입력해주세요(8~15자리)');
-    //   return;
-    // } else if ((isSignUp && confirmPassword === '') || undefined) {
-    //   Alert.alert('실패', '비밀번호 확인란을 입력해주세요');
-    //   return;
-    // }
-    else if (isSignUp && password !== confirmPassword) {
+    } else if (!password_check(password)) {
+      Alert.alert('실패', '비밀번호를 입력해주세요(8~15자리)');
+      return;
+    } else if ((isSignUp && confirmPassword === '') || undefined) {
+      Alert.alert('실패', '비밀번호 확인란을 입력해주세요');
+      return;
+    } else if (isSignUp && password !== confirmPassword) {
       Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
       return;
     } else if ((isSignUp && name === '') || undefined) {

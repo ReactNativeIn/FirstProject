@@ -1,11 +1,13 @@
 import React, {useContext, createContext, useState, useEffect} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import ItemStorage from '../asyncstorage/ItemStorage';
+
 /*
-email pk
+email pk 
 name 
 password
 birthday
 nickname
+introduce
 gender
 profileImage
 */
@@ -16,44 +18,16 @@ export function UserContextProvider({children}) {
   /* 테스트를 위한 임시 데이터 */
   const [user, setUser] = useState(null); // 로그인 회원 정보
 
-  const [joinUser, setJoinUser] = useState([
-    {
-      email: 'test@first.com',
-      name: '테스트',
-      password: '123456',
-      birthday: '22-10-10',
-      nickname: 'test',
-      gender: '남',
-      profileImage: null,
-      introduce: '',
-      uid: 1,
-    },
-  ]); // 회원 배열저장 임시
+  const [joinUser, setJoinUser] = useState(); // 회원 배열저장 임시
 
   // 불러오기
   useEffect(() => {
-    async function load() {
-      try {
-        const rawJoinUser = await AsyncStorage.getItem('joinUser');
-        const savedJoinUser = JSON.parse(rawJoinUser);
-        setJoinUser(savedJoinUser);
-      } catch (e) {
-        console.log('Failed to load joinUser');
-      }
-    }
-    load();
+    ItemStorage.get('joinUser').then(setJoinUser).catch(console.error);
   }, []);
 
   // 저장
   useEffect(() => {
-    async function save() {
-      try {
-        await AsyncStorage.setItem('joinUser', JSON.stringify(joinUser));
-      } catch (e) {
-        console.log('Failed to save joinUser');
-      }
-    }
-    save();
+    ItemStorage.set('joinUser', joinUser).catch(console.error);
   }, [joinUser]);
 
   return (

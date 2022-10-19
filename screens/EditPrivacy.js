@@ -46,7 +46,7 @@ export default function EditPrivacy({navigation}) {
       gender: gender,
       birthday: birthday,
     }));
-
+    if (joinUser.length === undefined) return;
     for (let i = 0; i < joinUser.length; i++) {
       if (user.uid === joinUser[i].uid) {
         joinUser[i] = {
