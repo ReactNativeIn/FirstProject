@@ -5,16 +5,11 @@ import HomeStack from './HomeStack';
 import SearchTab from './SearchTab';
 import ProfileStack from './ProfileStack';
 import {useUserContext} from '../contexts/UserContext';
+import {BackHandler} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
 function MainScreen() {
-  const {user, joinUser} = useUserContext();
-  // useEffect(() => {
-  //   console.log('joinUser : ', JSON.stringify(joinUser, null, '\t'));
-  //   console.log('user : ', JSON.stringify(user, null, '\t'));
-  // }, [joinUser]);
-
   return (
     <Tab.Navigator
       initialRouteName="HomeStack"

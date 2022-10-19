@@ -24,10 +24,6 @@ export default function EditPrivacy({navigation}) {
   const [gender, setGender] = useState(user.gender);
   const [birthday, setBirthday] = useState(user.birthday);
 
-  useEffect(() => {
-    console.log(gender);
-  }, [gender]);
-
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };

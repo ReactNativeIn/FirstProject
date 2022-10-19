@@ -67,7 +67,6 @@ function EditProfile({route, navigation}) {
         };
       }
     }
-    console.log(joinUser);
     setModalShown(false);
   };
   return (

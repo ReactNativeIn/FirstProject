@@ -88,9 +88,9 @@ const Post = () => {
               onPress={() => navigation.push('ProfileTab', item.email)}>
               <Image
                 source={
-                  // me.profileImage
-                  //   ? {uri: me.profileImage?.assets[0]?.uri}
-                  require('../storage/images/user.png')
+                  me.profileImage
+                    ? {uri: me.profileImage?.assets[0]?.uri}
+                    : require('../storage/images/user.png')
                 }
                 style={styles.avatarImage}
               />

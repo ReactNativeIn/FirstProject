@@ -59,7 +59,7 @@ function SignInScreen({navigation, route}) {
       return pass != '' && pass != 'undefined' && check.test(pass);
     }
     function email_check2(email) {
-      // 회원가입시 이메일 중복확인
+      // 회원가입시 이메일 중복확인 및 해당 joinUser정보 가져오기
       let i = 0;
       for (i = 0; i < joinUser.length; i++) {
         if (joinUser[i].email === email) return joinUser[i];
@@ -114,31 +114,8 @@ function SignInScreen({navigation, route}) {
     if (isSignUp) {
       navigation.navigate('Welcome', {form});
     } else {
-      setUser(email_check2(email));
-      navigation.navigate('Main'); // 로그인 제대로 됐을때
+      setUser(email_check2(email)); // 로그인 제대로 됐을때 로그인 정보를 user에 넣어주면서 MainScreen으로 이동
     }
-    /*  데이터베이스에 정보를 저장되어있는거랑 비교할때 쓰는 기능
-    try {
-        const {user} = isSignUp ? await signUp(info) : await signIn(info);
-        const profile = await getUser(user.uid);
-        if (!profile) {
-          navigation.navigate('Welcome', {uid: user.uid});
-        } else {
-          setUser(profile);
-        }
-      } catch (e) {
-        const messages = {
-          'auth/email-already-in-use': '이미 가입된 이메일입니다.',
-          'auth/wrong-password': '잘못된 비밀번호입니다.',
-          'auth/user-not-found': '존재하지 않는 계정입니다.',
-          'auth/invalid-email': '유효하지 않은 이메일 주소입니다.',
-        };
-        const msg = messages[e.code] || `${isSignUp ? '가입' : '로그인'} 실패`;
-        Alert.alert('실패', msg);
-      } finally {
-        setLoading(false);
-      }
-      */
   };
 
   return (

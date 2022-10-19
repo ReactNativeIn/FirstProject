@@ -10,7 +10,7 @@ import {v4 as uuid} from 'uuid';
 function WelcomeProfile({form}) {
   const {user, setUser, joinUser, setJoinUser} = useUserContext();
   const [displayName, setDisplayName] = useState('');
-  const [response, setResponse] = useState('');
+  const [response, setResponse] = useState(null);
   const navigation = useNavigation();
 
   const selectImage = () => {

@@ -12,6 +12,7 @@ import Stories from '../components/Stories';
 import Post from '../components/Post';
 import ActionSheetModal from '../components/ActionSheetModal';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+import {useUserContext} from '../contexts/UserContext';
 
 const imagePickerOption = {
   mediaType: 'photo',
@@ -21,19 +22,21 @@ const imagePickerOption = {
 };
 
 const HomeTab = ({navigation, route}) => {
-  const handlePressBack = () => {
-    if (route.name === 'HomeTab') {
-      navigation.navigate('SignIn');
-      return true;
-    }
-    return false;
-  };
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handlePressBack);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
-    };
-  }, [handlePressBack]);
+  // const {setUser} = useUserContext();
+  // const handlePressBack = () => {
+  //   if (route.name === 'HomeTab') {
+  //     setUser(null);
+  //     navigation.navigate('SignIn');
+  //     return true;
+  //   }
+  //   return false;
+  // };
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', handlePressBack);
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
+  //   };
+  // }, [handlePressBack]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const onPickImage = res => {
