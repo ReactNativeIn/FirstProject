@@ -31,13 +31,6 @@ function HomeStack() {
         }}
       />
       <Stack.Screen
-        name="CommentScreen"
-        component={CommentScreen}
-        options={{
-          title: '댓글',
-        }}
-      />
-      <Stack.Screen
         name="EditPostScreen"
         component={EditPostScreen}
         options={{
