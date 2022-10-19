@@ -5,21 +5,16 @@ import {
   TextInput,
   Platform,
   KeyboardAvoidingView,
-  Image,
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import Feather from 'react-native-vector-icons/Feather';
 import IconRightButton from '../components/IconRightButton';
 import {usePostContext} from '../contexts/PostContext';
+import AnimatedImage from '../components/AnimatedImage';
 
-const EditPostScreen = () => {
+const EditPostScreen = ({route}) => {
   const navigation = useNavigation();
   const {post, setPost} = usePostContext();
-  const route = useRoute();
-  const {params} = route.params || {};
-  const {res} = route.params || {};
 
-  const selectPost = post.find(po => po.postIndex === params.postIndex);
+  const selectPost = post.find(po => po.postIndex === route.params.postIndex);
 
   const [content, setContent] = useState(selectPost.content);
 
@@ -35,7 +30,7 @@ const EditPostScreen = () => {
         item.postIndex === selectPost.postIndex
           ? {
               ...item,
-              photoURL: res ? res.assets[0]?.uri : selectPost.photoURL,
+              photoURL: selectPost.photoURL,
               content: content,
               date: year + '-' + month + '-' + day,
             }
@@ -43,7 +38,7 @@ const EditPostScreen = () => {
       ),
     );
     navigation.pop();
-  }, [res, navigation, post, content]);
+  }, [navigation, post, content]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -58,15 +53,7 @@ const EditPostScreen = () => {
       keyboardVerticalOffset={Platform.select({
         ios: 88,
       })}>
-      <AnimatedImage res={res} />
-      <Image
-        source={
-          selectPost.photoURL
-            ? require('../storage/images/post1.jpg')
-            : {uri: selectPost.photoURL}
-        }
-        style={styles.postImage}
-      />
+      <AnimatedImage uri={selectPost.photoURL} />
       <TextInput
         style={styles.input}
         multiline={true}

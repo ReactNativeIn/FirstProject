@@ -4,18 +4,9 @@ import {
   Animated,
   Keyboard,
   StyleSheet,
-  Pressable,
 } from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
 
-const imagePickerOption = {
-  mediaType: 'photo',
-  maxWidth: 768,
-  maxHeight: 768,
-  includeBase64: Platform.OS === 'android',
-};
-
-const AnimatedImage = ({res, photoURL}) => {
+const AnimatedImage = ({uri}) => {
   const {width} = useWindowDimensions();
 
   // KeyboardAvoidingView를 사용해 키보드가 컴포넌트를 가리지 않도록 구현할 수 있지만, 지금과 같은 레이아웃일 때는 구현하기가 좀 복잡
@@ -47,25 +38,12 @@ const AnimatedImage = ({res, photoURL}) => {
     }).start();
   }, [isKeyboardOpen, width, animation]);
 
-  const onPickImage = res => {
-    if (res.didCancel || !res) {
-      return;
-    }
-    navigation.push('EditPostScreen', {res, postIndex: selectPost.postIndex});
-  };
-
-  const onLaunchImageLibrary = () => {
-    launchImageLibrary(imagePickerOption, onPickImage);
-  };
-
   return (
-    <Pressable style={styles.block} onPress={onLaunchImageLibrary}>
-      <Animated.Image
-        source={{uri: res.assets[0]?.uri}}
-        style={[styles.image, {height: animation}]}
-        resizeMode="cover"
-      />
-    </Pressable>
+    <Animated.Image
+      source={uri ? require('../storage/images/post2.jpg') : {uri: uri}}
+      style={[styles.image, {height: animation}]}
+      resizeMode="cover"
+    />
   );
 };
 

@@ -1,16 +1,5 @@
 import React, {useEffect, useState, useRef, useCallback} from 'react';
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-  Platform,
-  Text,
-  useWindowDimensions,
-  TextInput,
-  Animated,
-  Keyboard,
-} from 'react-native';
+import {StyleSheet, View, TextInput} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import IconRightButton from '../components/IconRightButton';
 import {usePostContext} from '../contexts/PostContext';
@@ -56,7 +45,7 @@ const UploadScrenn = () => {
 
   return (
     <View style={styles.wrapper}>
-      <AnimatedImage res={res} />
+      <AnimatedImage uri={res.assets[0]?.uri} />
       <TextInput
         style={styles.input}
         multiline={true}

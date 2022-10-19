@@ -1,27 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StatusBar,
-  ScrollView,
-  StyleSheet,
-  Pressable,
-  KeyboardAvoidingView,
-} from 'react-native';
+import {View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import {FlatList, TextInput} from 'react-native-gesture-handler';
 import {useRoute} from '@react-navigation/native';
 import {useCommentsContext} from '../contexts/CommentsContext';
 import {useUserContext} from '../contexts/UserContext';
 
-const MessageScreen = () => {
+const MessageScreen = ({route}) => {
   const [text, setText] = useState('');
   const {comments, setComments} = useCommentsContext();
   const {user} = useUserContext();
-
-  const route = useRoute();
-  comments.map(com => {
-    console.log('오우' + com.commentIndex);
-  });
 
   //commentIndex값은 원래는 자동으로 들어감
   const setComment = () => {

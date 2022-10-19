@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -70,11 +70,7 @@ const Post = () => {
   });
 
   const postInfo = [...imsi];
-  const [postIndex, setPostIndex] = useState();
-
-  post.map(po => {
-    console.log('레전드' + po.content);
-  });
+  const postIndex = useRef('');
 
   const renderItem = ({item}) => {
     const date = item.date.split('-');
@@ -132,7 +128,8 @@ const Post = () => {
                   hitSlop={8}
                   onPress={() => {
                     setModalVisible(true);
-                    setPostIndex(item.postIndex);
+                    postIndex.current = item.postIndex;
+                    console.log('해당1 - ' + postIndex.current);
                   }}>
                   <Feather name="more-vertical" style={{fontSize: 20}} />
                 </Pressable>
@@ -193,8 +190,9 @@ const Post = () => {
             icon: 'edit',
             text: '설명 수정',
             onPress: () => {
+              console.log('해당2' + postIndex.current);
               navigation.push('EditPostScreen', {
-                postIndex: postIndex,
+                postIndex: postIndex.current,
               });
             },
           },
@@ -202,7 +200,7 @@ const Post = () => {
             icon: 'delete',
             text: '게시물 삭제',
             onPress: () => {
-              setPost(post.filter(pos => pos.postIndex !== postIndex));
+              setPost(post.filter(pos => pos.postIndex !== postIndex.current));
             },
           },
         ]}
