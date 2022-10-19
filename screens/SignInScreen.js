@@ -63,14 +63,12 @@ function SignInScreen({navigation, route}) {
       let i = 0;
       for (i = 0; i < joinUser.length; i++) {
         if (joinUser[i].email === email) return joinUser[i];
-        break;
       }
     }
     function password_check2(email) {
       // 로그인시 비밀번호 일치 확인
       for (let i = 0; i < joinUser.length; i++) {
         if (email === joinUser[i].email) return joinUser[i].password;
-        break;
       }
     }
 

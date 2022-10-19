@@ -22,21 +22,6 @@ const imagePickerOption = {
 };
 
 const HomeTab = ({navigation, route}) => {
-  // const {setUser} = useUserContext();
-  // const handlePressBack = () => {
-  //   if (route.name === 'HomeTab') {
-  //     setUser(null);
-  //     navigation.navigate('SignIn');
-  //     return true;
-  //   }
-  //   return false;
-  // };
-  // useEffect(() => {
-  //   BackHandler.addEventListener('hardwareBackPress', handlePressBack);
-  //   return () => {
-  //     BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
-  //   };
-  // }, [handlePressBack]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const onPickImage = res => {

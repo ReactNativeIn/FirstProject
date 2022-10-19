@@ -16,7 +16,19 @@ export function UserContextProvider({children}) {
   /* 테스트를 위한 임시 데이터 */
   const [user, setUser] = useState(null); // 로그인 회원 정보
 
-  const [joinUser, setJoinUser] = useState([]); // 회원 배열저장 임시
+  const [joinUser, setJoinUser] = useState([
+    {
+      email: 'test@first.com',
+      name: '테스트',
+      password: '123456',
+      birthday: '22-10-10',
+      nickname: 'test',
+      gender: '남',
+      profileImage: null,
+      introduce: '',
+      uid: 1,
+    },
+  ]); // 회원 배열저장 임시
 
   // 불러오기
   useEffect(() => {
