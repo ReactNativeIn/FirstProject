@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StatusBar,
-  StyleSheet,
-  Pressable,
-  BackHandler,
-} from 'react-native';
+import {View, Text, StatusBar, StyleSheet, Pressable} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Stories from '../components/Stories';
 import Post from '../components/Post';

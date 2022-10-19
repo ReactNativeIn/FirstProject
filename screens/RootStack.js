@@ -5,6 +5,7 @@ import WelcomeScreen from './WelcomeScreen';
 import MainScreen from './MainScreen';
 import UploadScreen from './UploadScreen';
 import {useUserContext} from '../contexts/UserContext';
+import CommentScreen from './CommentScreen';
 
 const Stack = createNativeStackNavigator();
 
