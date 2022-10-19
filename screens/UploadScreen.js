@@ -5,6 +5,7 @@ import IconRightButton from '../components/IconRightButton';
 import {usePostContext} from '../contexts/PostContext';
 import {useUserContext} from '../contexts/UserContext';
 import AnimatedImage from '../components/AnimatedImage';
+import ItemEmpty from '../lib/ItemEmpty';
 
 const UploadScrenn = () => {
   const navigation = useNavigation();
@@ -15,25 +16,41 @@ const UploadScrenn = () => {
 
   const [content, setContent] = useState('');
 
-  const nextIndex = Math.max(...post?.map(pos => pos.postIndex)) + 1;
+  const checkP = ItemEmpty.check(post);
+
+  let nextIndex = 1;
+
+  if (checkP) {
+    nextIndex = Math.max(...post?.map(pos => pos.postIndex)) + 1;
+  }
 
   const onSubmit = useCallback(() => {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-
-    setPost([
-      ...post,
-      {
-        postIndex: nextIndex,
-        photoURL: res.assets[0]?.uri,
-        nickname: user.nickname,
-        content: content,
-        date: year + '-' + month + '-' + day,
-        email: user.email,
-      },
-    ]);
+    checkP
+      ? setPost([
+          ...post,
+          {
+            postIndex: nextIndex,
+            photoURL: res.assets[0]?.uri,
+            nickname: user.nickname,
+            content: content,
+            date: year + '-' + month + '-' + day,
+            email: user.email,
+          },
+        ])
+      : setPost([
+          {
+            postIndex: nextIndex,
+            photoURL: res.assets[0]?.uri,
+            nickname: user.nickname,
+            content: content,
+            date: year + '-' + month + '-' + day,
+            email: user.email,
+          },
+        ]);
     navigation.pop();
   }, [res, user, content, navigation]);
 

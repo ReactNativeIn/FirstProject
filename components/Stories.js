@@ -1,33 +1,31 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, Text, Image, StyleSheet, FlatList, Pressable} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useFollowContext} from '../contexts/FollowContext';
 import {useUserContext} from '../contexts/UserContext';
-
+import ItemEmpty from '../lib/ItemEmpty';
 const Stories = () => {
   const navigation = useNavigation();
   const {follow} = useFollowContext();
   const {user, joinUser} = useUserContext();
-  // console.log(joinUser);
 
+  const checkF = ItemEmpty.check(follow);
   let storyInfo = [user];
 
-  console.log('확인' + follow);
-  const follows = follow.filter(f => f.from_member === user.email); //팔로우 조회
+  if (checkF) {
+    const follows = follow.filter(f => f.from_member === user.email); //팔로우 조회
 
-  //팔로우된 계정 조회
-  for (let i = 0; i < follows.length; i++) {
-    // console.log('확');
-    for (let j = 0; j < joinUser.length; j++) {
-      if (joinUser[j].email === follows[i].to_member) {
-        storyInfo = [...storyInfo, joinUser[j]];
+    //팔로우된 계정 조회
+    for (let i = 0; i < follows.length; i++) {
+      for (let j = 0; j < joinUser.length; j++) {
+        if (joinUser[j].email === follows[i].to_member) {
+          storyInfo = [...storyInfo, joinUser[j]];
+        }
       }
     }
   }
-
-  storyInfo.map(s => console.log('확인'.concat(s.profileImage)));
 
   /*
   Image컴포넌트의 require는 동적으로 이미지를 변경할 수 없음. 고정 되어 있어야함

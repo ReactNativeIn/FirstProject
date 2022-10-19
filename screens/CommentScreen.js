@@ -1,14 +1,16 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import {FlatList, TextInput} from 'react-native-gesture-handler';
-import {useRoute} from '@react-navigation/native';
 import {useCommentsContext} from '../contexts/CommentsContext';
 import {useUserContext} from '../contexts/UserContext';
+import ItemEmpty from '../lib/ItemEmpty';
 
 const MessageScreen = ({route}) => {
   const [text, setText] = useState('');
   const {comments, setComments} = useCommentsContext();
   const {user} = useUserContext();
+
+  const checkC = ItemEmpty.check(comments);
 
   //commentIndex값은 원래는 자동으로 들어감
   const setComment = () => {
@@ -17,22 +19,31 @@ const MessageScreen = ({route}) => {
     const month = date.getMonth() + 1;
     const day = date.getDate();
 
-    const nextCommentIndex =
-      comments.length > 0
-        ? Math.max(...comments.map(com => com.commentIndex)) + 1
-        : 1;
-
-    setComments([
-      ...comments,
-      {
-        commentIndex: nextCommentIndex,
-        nickname: user.nickname,
-        content: text,
-        date: new Date(),
-        postIndex: route.params.postIndex,
-        email: user.email,
-      },
-    ]);
+    const nextCommentIndex = checkC
+      ? Math.max(...comments.map(com => com.commentIndex)) + 1
+      : 1;
+    checkC
+      ? setComments([
+          ...comments,
+          {
+            commentIndex: nextCommentIndex,
+            nickname: user.nickname,
+            content: text,
+            date: year + '-' + month + '-' + day,
+            postIndex: route.params.postIndex,
+            email: user.email,
+          },
+        ])
+      : setComments([
+          {
+            commentIndex: nextCommentIndex,
+            nickname: user.nickname,
+            content: text,
+            date: year + '-' + month + '-' + day,
+            postIndex: route.params.postIndex,
+            email: user.email,
+          },
+        ]);
     setText('');
   };
 

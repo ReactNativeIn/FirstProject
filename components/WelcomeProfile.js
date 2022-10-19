@@ -1,17 +1,19 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Image, Platform, Pressable, StyleSheet, View} from 'react-native';
 import {useUserContext} from '../contexts/UserContext';
 import BorderedInput from './BorderedInput';
 import CustomButton from './CustomButton';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {v4 as uuid} from 'uuid';
+import ItemEmpty from '../lib/ItemEmpty';
 
 function WelcomeProfile({form}) {
   const {user, setUser, joinUser, setJoinUser} = useUserContext();
   const [displayName, setDisplayName] = useState('');
   const [response, setResponse] = useState(null);
-  const navigation = useNavigation();
+
+  const checkJ = ItemEmpty.check(joinUser);
 
   const selectImage = () => {
     launchImageLibrary(
@@ -24,55 +26,59 @@ function WelcomeProfile({form}) {
       res => {
         if (res.didCancel) {
           return;
+        } else if (ItemEmpty.check(res)) {
+          setResponse(res.assets[0]?.uri);
+          return;
         }
-        setResponse(res);
       },
     );
   };
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     const uid = uuid();
+    console.log(response);
     setUser(
       // user 정보 추가
       {
         ...form,
         nickname: displayName,
-        profileImage: response?.assets[0]?.uri,
+        profileImage: response,
         uid: uid,
       }, // profileImage 에 response 정보를 담는다.
     );
-    // setJoinUser(
-    //   joinUser.concat({
-    //     ...form,
-    //     nickname: displayName,
-    //     profileImage: response.assets[0].uri,
-    //     uid: uid,
-    //   }),
-    // );
-    setJoinUser([
-      ...joinUser,
-      {
-        ...form,
-        nickname: displayName,
-        profileImage: response?.assets[0]?.uri,
-        uid: uid,
-      },
-    ]);
-  };
+    checkJ
+      ? setJoinUser([
+          ...joinUser,
+          {
+            ...form,
+            nickname: displayName,
+            profileImage: response,
+            uid: uid,
+          },
+        ])
+      : setJoinUser([
+          {
+            ...form,
+            nickname: displayName,
+            profileImage: response,
+            uid: uid,
+          },
+        ]);
+  }, [user, response, displayName, joinUser]);
 
-  const onCancel = () => {
+  const onCancel = useCallback(() => {
     const uid = uuid();
-    setUser({...form, nickname: '', profileImage: null, uid});
+    setUser({...form, nickname: '', profileImage: response, uid});
     setJoinUser([
       ...joinUser,
       {
         ...form,
         nickname: displayName,
-        profileImage: response?.assets[0].uri,
+        profileImage: response,
         uid: uid,
       },
     ]);
-  };
+  }, [user, response, displayName, joinUser]);
 
   return (
     <View style={styles.block}>
@@ -80,9 +86,7 @@ function WelcomeProfile({form}) {
         <Image
           style={styles.circle}
           source={
-            response
-              ? {uri: response?.assets[0]?.uri}
-              : require('../storage/images/user.png')
+            response ? {uri: response} : require('../storage/images/user.png')
           }
         />
       </Pressable>
