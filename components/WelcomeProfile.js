@@ -44,7 +44,6 @@ function WelcomeProfile({form}) {
         uid: uid,
       }),
     );
-    navigation.navigate('Main');
   };
 
   const onCancel = () => {
@@ -58,7 +57,6 @@ function WelcomeProfile({form}) {
         uid,
       }),
     );
-    navigation.navigate('Main');
   };
 
   return (
