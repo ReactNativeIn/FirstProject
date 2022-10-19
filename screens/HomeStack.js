@@ -18,7 +18,7 @@ function HomeStack() {
   useEffect(() => {
     console.log('joinUser : ', JSON.stringify(joinUser, null, 2));
     console.log('User : ', JSON.stringify(user, null, 2));
-  }, [user]);
+  }, [user, joinUser]);
 
   return (
     <Stack.Navigator>

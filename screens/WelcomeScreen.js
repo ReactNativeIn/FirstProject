@@ -9,6 +9,7 @@ import WelcomeProfile from '../components/WelcomeProfile';
 
 function WelcomeScreen({route}) {
   const {form} = route.params;
+  console.log('ddd --  ' + form);
   return (
     <KeyboardAvoidingView
       style={styles.keyboardAvoidingView}

@@ -1,13 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  FlatList,
-  Pressable,
-  Button,
-} from 'react-native';
+import {View, Text, Image, StyleSheet, FlatList, Pressable} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionic from 'react-native-vector-icons/Ionicons';
@@ -19,73 +11,73 @@ import {useLikingContext} from '../contexts/LikingContext';
 import {useUserContext} from '../contexts/UserContext';
 import {useCommentsContext} from '../contexts/CommentsContext';
 import {useFollowContext} from '../contexts/FollowContext';
+import ItemEmpty from '../lib/ItemEmpty';
 
 const Post = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
   const {post, setPost} = usePostContext(); // post 목록
-  const {comments} = useCommentsContext(); // 댓글 목록
+  const {comments, setComments} = useCommentsContext(); // 댓글 목록
   const {liking, setLiking} = useLikingContext(); //좋아요 목록
   const {user, joinUser} = useUserContext(); // 로그인 유저, 유저 목록
   const {follow, setFollow} = useFollowContext(); // 팔로우 목록
+  const postIndex = useRef(''); //수정할 post 번호값 저장
 
-  const follows = follow.filter(f => f.from_member === user.email); //팔로우 조회
+  const checkF = ItemEmpty.check(follow);
+  const checkP = ItemEmpty.check(post);
+  const checkL = ItemEmpty.check(liking);
 
-  //팔로우 테스트
-  follows.map(fo => {
-    console.log('팔 : ' + fo.to_member);
-  });
+  let follows,
+    imsi = [{}];
 
   let commentNum = 0,
     likeNum = 0,
     userAvatar = '',
     likeSet = false;
 
-  console.log('랜더 확인');
-  post.map(lik => {
-    console.log(lik);
-  });
+  if (checkF) {
+    follows = follow.filter(f => f.from_member === user.email); //팔로우 조회
+  }
 
-  const imsi = post.map(po => {
-    (commentNum = 0), (likeNum = 0), (userAvatar = ''), (likeSet = false);
-    comments.map(com => {
-      if (po.postIndex === com.postIndex) {
-        commentNum = commentNum + 1;
-      }
+  if (checkP) {
+    imsi = post.map(po => {
+      (commentNum = 0), (likeNum = 0), (userAvatar = ''), (likeSet = false);
+      comments?.map(com => {
+        if (po.postIndex === com.postIndex) {
+          commentNum = commentNum + 1;
+        }
+      });
+      liking?.map(lik => {
+        if (po.postIndex === lik.postIndex) {
+          likeNum = likeNum + 1;
+        }
+      });
+      joinUser?.map(jo => {
+        if (po.email === jo.email) {
+          userAvatar = jo.profileImage;
+        }
+      });
+      liking?.map(lik => {
+        if (po.postIndex === lik.postIndex && lik.email === user.email) {
+          likeSet = true;
+        }
+      });
+      po.commentNum = commentNum;
+      po.likeNum = likeNum;
+      po.userAvatar = userAvatar;
+      po.likeSet = likeSet;
+      return po; //{}했기 때문에 return 해줘야함
     });
-    liking.map(lik => {
-      if (po.postIndex === lik.postIndex) {
-        likeNum = likeNum + 1;
-      }
-    });
-    joinUser.map(jo => {
-      if (po.email === jo.email) {
-        userAvatar = jo.profileImage;
-      }
-    });
-    liking.map(lik => {
-      if (po.postIndex === lik.postIndex && lik.email === user.email) {
-        likeSet = true;
-      }
-    });
-    po.commentNum = commentNum;
-    po.likeNum = likeNum;
-    po.userAvatar = userAvatar;
-    po.likeSet = likeSet;
-    console.log('확인!!' + po.postIndex + ' _ ' + po.userAvatar);
-    return po; //{}했기 때문에 return 해줘야함
-  });
+  }
 
   const postInfo = [...imsi];
-  const postIndex = useRef('');
 
   const renderItem = ({item}) => {
     const date = item.date.split('-');
 
     const likeClick = () => {
       if (item.likeSet) {
-        console.log('te');
         setLiking(
           liking.filter(
             lik => lik.postIndex !== item.postIndex || lik.email !== user.email,
@@ -93,22 +85,31 @@ const Post = () => {
         );
         item = {...item, likeSet: false};
       } else {
-        setLiking([...liking, {postIndex: item.postIndex, email: user.email}]);
+        checkL
+          ? setLiking([
+              ...liking,
+              {postIndex: item.postIndex, email: user.email},
+            ])
+          : setLiking([{postIndex: item.postIndex, email: user.email}]);
       }
     };
 
     const follow = follow => {
       alert(follow + '팔로우');
-      follows.map(fo => {
-        console.log(fo);
-      });
-      setFollow([
-        ...follows,
-        {
-          from_member: user.email,
-          to_member: follow,
-        },
-      ]);
+      checkF
+        ? setFollow([
+            ...follows,
+            {
+              from_member: user.email,
+              to_member: follow,
+            },
+          ])
+        : setFollow([
+            {
+              from_member: user.email,
+              to_member: follow,
+            },
+          ]);
     };
 
     return (
@@ -131,7 +132,7 @@ const Post = () => {
             </View>
           </View>
           <View>
-            {!follows.some(fo => fo.to_member === item.email) ? (
+            {!follows?.some(fo => fo.to_member === item.email) ? (
               user.email !== item.email ? (
                 <Pressable
                   style={styles.follow}
@@ -193,34 +194,49 @@ const Post = () => {
 
   return (
     <SafeAreaView>
-      <FlatList
-        data={postInfo}
-        renderItem={renderItem}
-        keyExtractor={item => item.postIndex}
-      />
-      <ActionSheetModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        actions={[
-          {
-            icon: 'edit',
-            text: '설명 수정',
-            onPress: () => {
-              console.log('해당2' + postIndex.current);
-              navigation.push('EditPostScreen', {
-                postIndex: postIndex.current,
-              });
-            },
-          },
-          {
-            icon: 'delete',
-            text: '게시물 삭제',
-            onPress: () => {
-              setPost(post.filter(pos => pos.postIndex !== postIndex.current));
-            },
-          },
-        ]}
-      />
+      {checkP ? (
+        <>
+          <FlatList
+            data={postInfo}
+            renderItem={renderItem}
+            keyExtractor={item => item.postIndex}
+          />
+          <ActionSheetModal
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            actions={[
+              {
+                icon: 'edit',
+                text: '설명 수정',
+                onPress: () => {
+                  console.log('해당2' + postIndex.current);
+                  navigation.push('EditPostScreen', {
+                    postIndex: postIndex.current,
+                  });
+                },
+              },
+              {
+                icon: 'delete',
+                text: '게시물 삭제',
+                onPress: () => {
+                  console.log('내부' + postIndex.current);
+                  setComments(
+                    comments.filter(com => com.postIndex !== postIndex.current),
+                  );
+                  setLiking(
+                    liking.filter(lik => lik.postIndex !== postIndex.current),
+                  );
+                  setPost(
+                    post.filter(pos => pos.postIndex !== postIndex.current),
+                  );
+                },
+              },
+            ]}
+          />
+        </>
+      ) : (
+        <View style={{backgroundColor: 'red', flex: 1}}></View>
+      )}
     </SafeAreaView>
   );
 };
