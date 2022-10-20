@@ -46,17 +46,19 @@ export default function EditPrivacy({navigation}) {
       birthday: birthday,
     }));
     if (joinUser?.length === undefined) return;
-    for (let i = 0; i < joinUser?.length; i++) {
-      if (user.uid === joinUser[i].uid) {
-        joinUser[i] = {
-          ...user,
-          email,
-          phone,
-          gender,
-          birthday,
-        };
-      }
-    }
+
+    const rejoin = joinUser.map(re =>
+      re.uid === user.uid
+        ? {
+            ...user,
+            email,
+            phone,
+            gender,
+            birthday,
+          }
+        : re,
+    );
+    setJoinUser(rejoin);
   };
 
   return (
@@ -136,10 +138,10 @@ export default function EditPrivacy({navigation}) {
             }}
             style={[styles.whiteBox]}
             onPress={() => {
-              setGender('녀');
+              setGender('여');
               setModalVisible(false);
             }}>
-            <Text style={[styles.text, {fontSize: 16}]}>녀</Text>
+            <Text style={[styles.text, {fontSize: 16}]}>여</Text>
           </Pressable>
           <Pressable
             android_ripple={{

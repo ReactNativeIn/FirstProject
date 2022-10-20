@@ -7,7 +7,7 @@ import ProfileStack from './ProfileStack';
 
 const Tab = createBottomTabNavigator();
 
-function MainScreen() {
+function MainScreen({navigation}) {
   return (
     <Tab.Navigator
       initialRouteName="HomeStack"

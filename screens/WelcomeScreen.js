@@ -18,7 +18,8 @@ function WelcomeScreen({route}) {
         <Text style={styles.title}>환영합니다!</Text>
         <Text style={styles.description}>프로필을 설정하세요.</Text>
         <WelcomeProfile form={form} />
-        <Text>프로필 설정은 나중에 하셔도 됩니다.</Text>
+        <Text>닉네임 설정은 무조건 해주셔야 합니다.</Text>
+        <Text>프로필 사진 설정은 나중에 하셔도 됩니다.</Text>
       </SafeAreaView>
     </KeyboardAvoidingView>
   );

@@ -1,6 +1,13 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
-import {Image, Platform, Pressable, StyleSheet, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  Platform,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {useUserContext} from '../contexts/UserContext';
 import BorderedInput from './BorderedInput';
 import CustomButton from './CustomButton';
@@ -35,6 +42,10 @@ function WelcomeProfile({form}) {
   };
 
   const onSubmit = useCallback(() => {
+    if (displayName === '') {
+      Alert.alert('안됨!', '닉네임은 무조건 설정해주셔야 합니다!!!');
+      return;
+    }
     const uid = uuid();
     console.log(response);
     setUser(
@@ -66,19 +77,28 @@ function WelcomeProfile({form}) {
         ]);
   }, [user, response, displayName, joinUser]);
 
-  const onCancel = useCallback(() => {
-    const uid = uuid();
-    setUser({...form, nickname: '', profileImage: response, uid});
-    setJoinUser([
-      ...joinUser,
-      {
-        ...form,
-        nickname: displayName,
-        profileImage: response,
-        uid: uid,
-      },
-    ]);
-  }, [user, response, displayName, joinUser]);
+  // const onCancel = useCallback(() => {
+  //   const uid = uuid();
+  //   setUser({...form, nickname: '', profileImage: response, uid});
+  //   checkJ
+  //     ? setJoinUser([
+  //         ...joinUser,
+  //         {
+  //           ...form,
+  //           nickname: displayName,
+  //           profileImage: response,
+  //           uid: uid,
+  //         },
+  //       ])
+  //     : setJoinUser([
+  //         {
+  //           ...form,
+  //           nickname: displayName,
+  //           profileImage: response,
+  //           uid: uid,
+  //         },
+  //       ]);
+  // }, [user, response, displayName, joinUser]);
 
   return (
     <View style={styles.block}>
@@ -100,7 +120,7 @@ function WelcomeProfile({form}) {
         />
         <View style={styles.buttons}>
           <CustomButton title="입력완료" onPress={onSubmit} hasMarginBottom />
-          <CustomButton title="다음에" onPress={onCancel} theme="secondary" />
+          {/* <CustomButton title="다음에" onPress={onCancel} theme="secondary" /> */}
         </View>
       </View>
     </View>
