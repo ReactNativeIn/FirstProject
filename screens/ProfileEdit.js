@@ -1,7 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 function ProfileTab() {
   const navigation = useNavigation();

@@ -1,5 +1,5 @@
-import React, {useContext, createContext, useState} from 'react';
-
+import React, {useContext, useEffect, createContext, useState} from 'react';
+import ItemStorage from '../asyncstorage/ItemStorage';
 /*
 commentIndex pk
 nickname 
@@ -11,32 +11,18 @@ email fk
 const CommentsContext = createContext(null);
 
 export function CommentsContextProvider({children}) {
-  const [comments, setComments] = useState([
-    {
-      commentIndex: 1,
-      nickname: 'test',
-      content: '테스트 댓글',
-      date: '22-10-13',
-      postIndex: 1,
-      email: 'test@first.com',
-    },
-    {
-      commentIndex: 2,
-      nickname: 'test',
-      content: '테스트 댓글2',
-      date: '22-10-12',
-      postIndex: 1,
-      email: 'test@first.com',
-    },
-    {
-      commentIndex: 3,
-      nickname: 'test',
-      content: '테스트 댓글3',
-      date: '22-10-14',
-      postIndex: 2,
-      email: 'test@first.com',
-    },
-  ]);
+  const [comments, setComments] = useState();
+
+  // 불러오기
+  useEffect(() => {
+    ItemStorage.get('comments').then(setComments).catch(console.error);
+  }, []);
+
+  // 저장
+  useEffect(() => {
+    ItemStorage.set('comments', comments).catch(console.error);
+  }, [comments]);
+
   return (
     <CommentsContext.Provider
       children={children}

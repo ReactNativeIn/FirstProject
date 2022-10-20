@@ -8,7 +8,7 @@ function SearchUserList({logs}) {
       data={logs}
       style={styles.block}
       renderItem={({item}) => <SearchUserListItem log={item} />}
-      keyExtractor={log => log.id}
+      keyExtractor={log => log.uid}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
     />
   );

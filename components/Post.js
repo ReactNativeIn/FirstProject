@@ -1,13 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  FlatList,
-  Pressable,
-  Button,
-} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {View, Text, Image, StyleSheet, FlatList, Pressable} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionic from 'react-native-vector-icons/Ionicons';
@@ -18,66 +10,106 @@ import {usePostContext} from '../contexts/PostContext';
 import {useLikingContext} from '../contexts/LikingContext';
 import {useUserContext} from '../contexts/UserContext';
 import {useCommentsContext} from '../contexts/CommentsContext';
+import {useFollowContext} from '../contexts/FollowContext';
+import ItemEmpty from '../lib/ItemEmpty';
 
 const Post = () => {
   const navigation = useNavigation();
-  const [hidden, setHidden] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const {post, setPost} = usePostContext();
+  const {post, setPost} = usePostContext(); // post 목록
+  const {comments, setComments} = useCommentsContext(); // 댓글 목록
+  const {liking, setLiking} = useLikingContext(); //좋아요 목록
+  const {user, joinUser} = useUserContext(); // 로그인 유저, 유저 목록
+  const {follow, setFollow} = useFollowContext(); // 팔로우 목록
+  const postIndex = useRef(''); //수정할 post 번호값 저장
 
-  const [like, setLike] = useState(false);
-  const {comments} = useCommentsContext();
-  const {liking, setLiking} = useLikingContext();
-  const {joinUser} = useUserContext();
+  const checkF = ItemEmpty.check(follow);
+  const checkP = ItemEmpty.check(post);
+  const checkL = ItemEmpty.check(liking);
+
+  let follows,
+    imsi = [{}];
+
+  let commentNum = 0,
+    likeNum = 0,
+    userAvatar = '',
+    likeSet = false;
+
+  if (checkF) {
+    follows = follow.filter(f => f.from_member === user.email); //팔로우 조회
+  }
+
+  if (checkP) {
+    imsi = post.map(po => {
+      (commentNum = 0), (likeNum = 0), (userAvatar = ''), (likeSet = false);
+      comments?.map(com => {
+        if (po.postIndex === com.postIndex) {
+          commentNum = commentNum + 1;
+        }
+      });
+      liking?.map(lik => {
+        if (po.postIndex === lik.postIndex) {
+          likeNum = likeNum + 1;
+        }
+      });
+      joinUser?.map(jo => {
+        if (po.email === jo.email) {
+          userAvatar = jo.profileImage;
+        }
+      });
+      liking?.map(lik => {
+        if (po.postIndex === lik.postIndex && lik.email === user.email) {
+          likeSet = true;
+        }
+      });
+      po.commentNum = commentNum;
+      po.likeNum = likeNum;
+      po.userAvatar = userAvatar;
+      po.likeSet = likeSet;
+      return po; //{}했기 때문에 return 해줘야함
+    });
+  }
+
+  const postInfo = [...imsi];
 
   const renderItem = ({item}) => {
     const date = item.date.split('-');
 
-    let commentNum = 0,
-      likeNum = 0,
-      user = {};
-
-    for (let i = 0; i < post.length; i++) {
-      if (post[i].postIndex === item.postIndex) {
-        commentNum = commentNum + 1;
-      }
-    }
-
-    for (let i = 0; i < joinUser.length; i++) {
-      if (joinUser[i].email === item.email) {
-        user = joinUser[i];
-        break;
-      }
-    }
-
-    for (let i = 0; i < liking.length - 1; i++) {
-      if (liking[i].postIndex === item.postIndex) {
-        likeNum = likeNum + 1;
-        setLike(true);
-      }
-    }
-    console.log(item.postIndex);
-    console.log('------');
-    liking.map((i, index) => {
-      console.log(i);
-    });
-    console.log('------');
-
     const likeClick = () => {
-      setLiking([
-        ...liking,
-        {
-          postIndex: item.postIndex,
-          email: item.email,
-        },
-      ]);
-      setLike(!like);
+      if (item.likeSet) {
+        setLiking(
+          liking.filter(
+            lik => lik.postIndex !== item.postIndex || lik.email !== user.email,
+          ),
+        );
+        item = {...item, likeSet: false};
+      } else {
+        checkL
+          ? setLiking([
+              ...liking,
+              {postIndex: item.postIndex, email: user.email},
+            ])
+          : setLiking([{postIndex: item.postIndex, email: user.email}]);
+      }
     };
 
-    const follow = () => {
-      alert('팔로우');
-      setHidden(false);
+    const follow = follow => {
+      alert(follow + '팔로우');
+      checkF
+        ? setFollow([
+            ...follows,
+            {
+              from_member: user.email,
+              to_member: follow,
+            },
+          ])
+        : setFollow([
+            {
+              from_member: user.email,
+              to_member: follow,
+            },
+          ]);
     };
 
     return (
@@ -88,9 +120,9 @@ const Post = () => {
               onPress={() => navigation.push('ProfileTab', item.email)}>
               <Image
                 source={
-                  user.profileImage
-                    ? require('../storage/images/user.png')
-                    : {uri: user.profileImage}
+                  item.userAvatar
+                    ? {uri: item.userAvatar}
+                    : require('../storage/images/user.png')
                 }
                 style={styles.avatarImage}
               />
@@ -100,72 +132,57 @@ const Post = () => {
             </View>
           </View>
           <View>
-            {/*자신의 게시물이면 ... , 타인의 게시물이면 팔로우 버튼 */}
-            {item.isLiked ? (
-              hidden ? (
-                <Pressable style={styles.follow} onPress={follow}>
+            {!follows?.some(fo => fo.to_member === item.email) ? (
+              user.email !== item.email ? (
+                <Pressable
+                  style={styles.follow}
+                  onPress={() => follow(item.email)}>
                   <Text>팔로우</Text>
                 </Pressable>
-              ) : null
-            ) : (
-              <>
-                <Pressable
-                  hitSlop={8}
-                  onPress={() => {
-                    setModalVisible(true);
-                  }}>
-                  <Feather name="more-vertical" style={{fontSize: 20}} />
-                </Pressable>
-                <ActionSheetModal
-                  visible={modalVisible}
-                  onClose={() => setModalVisible(false)}
-                  actions={[
-                    {
-                      icon: 'edit',
-                      text: '설명 수정',
-                      onPress: () => {
-                        navigation.push('EditPostScreen', {
-                          description: item.description,
-                          postImage: item.postImage,
-                        });
-                      },
-                    },
-                    {
-                      icon: 'delete',
-                      text: '게시물 삭제',
-                      onPress: () => {
-                        post.filter(pos => pos.postIndex !== item.postIndex);
-                      },
-                    },
-                  ]}
-                />
-              </>
-            )}
+              ) : (
+                <>
+                  <Pressable
+                    hitSlop={8}
+                    onPress={() => {
+                      setModalVisible(true);
+                      postIndex.current = item.postIndex;
+                    }}>
+                    <Feather name="more-vertical" style={{fontSize: 20}} />
+                  </Pressable>
+                </>
+              )
+            ) : null}
           </View>
         </View>
         <View style={styles.postWrapper}>
-          <Image source={item.photoURL} style={styles.postImage} />
+          <Image
+            source={
+              item.photoURL
+                ? {uri: item.photoURL}
+                : require('../storage/images/post1.jpg')
+            }
+            style={styles.postImage}
+          />
         </View>
         <View style={styles.postFooter}>
           <View style={styles.likeCommentWrapper}>
             <Pressable onPress={likeClick}>
               <AntDesign
-                name={like ? 'heart' : 'hearto'}
-                style={[styles.like, {color: like ? 'red' : 'black'}]}
+                name={item.likeSet ? 'heart' : 'hearto'}
+                style={[styles.like, {color: item.likeSet ? 'red' : 'black'}]}
               />
             </Pressable>
             <Pressable
               onPress={() => {
-                navigation.push('CommentScreen');
+                navigation.push('CommentScreen', {postIndex: item.postIndex});
               }}>
               <Ionic name="ios-chatbubble-outline" style={styles.comment} />
             </Pressable>
           </View>
         </View>
         <View style={{paddingHorizontal: 15}}>
-          <Text>
-            Liked by {like ? 'you and' : ''} {likeNum} others
-          </Text>
+          <Text>좋아요 개수: {item.likeNum}</Text>
+          <Text>댓글 개수: {item.commentNum}</Text>
           <Text style={styles.explanation}>{item.content}</Text>
           <Text>
             {date[0]}년 {date[1]}월 {date[2]}일
@@ -177,11 +194,47 @@ const Post = () => {
 
   return (
     <SafeAreaView>
-      <FlatList
-        data={post}
-        renderItem={renderItem}
-        keyExtractor={item => item.postIndex}
-      />
+      {checkP ? (
+        <>
+          <FlatList
+            data={postInfo}
+            renderItem={renderItem}
+            keyExtractor={item => item.postIndex}
+          />
+          <ActionSheetModal
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            actions={[
+              {
+                icon: 'edit',
+                text: '설명 수정',
+                onPress: () => {
+                  navigation.push('EditPostScreen', {
+                    postIndex: postIndex.current,
+                  });
+                },
+              },
+              {
+                icon: 'delete',
+                text: '게시물 삭제',
+                onPress: () => {
+                  setComments(
+                    comments.filter(com => com.postIndex !== postIndex.current),
+                  );
+                  setLiking(
+                    liking.filter(lik => lik.postIndex !== postIndex.current),
+                  );
+                  setPost(
+                    post.filter(pos => pos.postIndex !== postIndex.current),
+                  );
+                },
+              },
+            ]}
+          />
+        </>
+      ) : (
+        <View style={{backgroundColor: 'red', flex: 1}}></View>
+      )}
     </SafeAreaView>
   );
 };

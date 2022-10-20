@@ -1,13 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {
-  View,
-  StatusBar,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  Text,
-} from 'react-native';
+import React, {useContext} from 'react';
+import {View, StyleSheet} from 'react-native';
 import SearchBox from '../components/SearchBox';
 import SearchContext from '../contexts/SearchContext';
 import SearchUserList from '../components/SearchUserList';
@@ -30,13 +22,7 @@ function SearchScreen({}) {
 
   if (keyword === '') {
     return (
-      <View
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-        }}>
+      <View style={styles.filteredStyle}>
         <SearchBox />
         <SearchUserList logs={filtered} />
         <EmptySearchResult type="EMPTY_KEYWORD" />
@@ -46,13 +32,7 @@ function SearchScreen({}) {
 
   if (filtered.length === 0) {
     return (
-      <View
-        style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'white',
-          position: 'relative',
-        }}>
+      <View style={styles.filteredStyle}>
         <SearchBox />
         <SearchUserList logs={filtered} />
         <EmptySearchResult type="NOT_FOUND" />
@@ -61,17 +41,20 @@ function SearchScreen({}) {
   }
 
   return (
-    <View
-      style={{
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'white',
-        position: 'relative',
-      }}>
+    <View style={styles.filteredStyle}>
       <SearchBox />
       <SearchUserList logs={filtered} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  filteredStyle: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'white',
+    position: 'relative',
+  },
+});
 
 export default SearchScreen;

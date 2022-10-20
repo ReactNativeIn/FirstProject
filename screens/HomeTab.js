@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StatusBar,
-  ScrollView,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import {View, Text, StatusBar, StyleSheet, Pressable} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Stories from '../components/Stories';
 import Post from '../components/Post';
@@ -20,14 +13,14 @@ const imagePickerOption = {
   includeBase64: Platform.OS === 'android',
 };
 
-const HomeTab = ({navigation}) => {
+const HomeTab = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const onPickImage = res => {
     if (res.didCancel || !res) {
       return;
     }
-    navigation.push('Upload', {res});
+    navigation.push('UploadScrenn', {res});
   };
 
   const onLaunchCamera = () => {

@@ -3,11 +3,13 @@ import {KeyboardAvoidingView, Platform, StyleSheet, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomButton from '../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
+import WelcomeProfile from '../components/WelcomeProfile';
 
 // import SetupProfile from '../components/SetupProfile';
 
-function WelcomeScreen() {
-  const navigation = useNavigation();
+function WelcomeScreen({route}) {
+  const {form} = route.params;
+  console.log('ddd --  ' + form);
   return (
     <KeyboardAvoidingView
       style={styles.keyboardAvoidingView}
@@ -15,13 +17,8 @@ function WelcomeScreen() {
       <SafeAreaView style={styles.block}>
         <Text style={styles.title}>환영합니다!</Text>
         <Text style={styles.description}>프로필을 설정하세요.</Text>
-        <Text>프로필 설정 이미지 및 별명 입력란 만들기</Text>
+        <WelcomeProfile form={form} />
         <Text>프로필 설정은 나중에 하셔도 됩니다.</Text>
-        <CustomButton
-          title="다음"
-          onPress={() => navigation.navigate('Main')}
-        />
-        {/* <SetupProfile /> 프로필 세팅 컴포넌트*/}
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
