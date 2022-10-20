@@ -102,6 +102,8 @@ export const ProfileButtons = ({email}) => {
   const {follow, setFollow} = useFollowContext();
   const {user} = useUserContext();
 
+  console.log('랜더 확인');
+
   const checkF = ItemEmpty.check(follow);
   let follows = [],
     checkFollows = false;
@@ -110,6 +112,7 @@ export const ProfileButtons = ({email}) => {
     follows = follow.filter(data => data.from_member === user.email);
 
     checkFollows = follows.some(fo => fo.to_member === email);
+    console.log(checkFollows);
   }
 
   const followsSet = fow => {
@@ -134,7 +137,7 @@ export const ProfileButtons = ({email}) => {
     alert(fow + '팔로우 취소');
     setFollow(
       follow.filter(
-        fo => fo.from_member === user.email && fo.to_member === email,
+        fo => fo.from_member !== user.email || fo.to_member !== fow,
       ),
     );
   };
@@ -155,47 +158,49 @@ export const ProfileButtons = ({email}) => {
             </View>
           </Pressable>
         </View> // 프로필수정 - End
-      ) : checkFollows ? (
-        <View style={styles.EditProfiles}>
-          <TouchableOpacity
-            onPress={() => followsDelete(email)}
-            style={{flex: 1}}>
-            <View
-              style={[
-                styles.followButton,
-                {
-                  backgroundColor: null,
-                  borderWidth: 1,
-                },
-              ]}>
-              <Text
-                style={{
-                  color: 'black',
-                }}>
-                팔로잉
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
       ) : (
         <View style={styles.EditProfiles}>
-          <TouchableOpacity onPress={() => followsSet(email)} style={{flex: 1}}>
-            <View
-              style={[
-                styles.followButton,
-                {
-                  backgroundColor: '#3493D9',
-                  borderWidth: 0,
-                },
-              ]}>
-              <Text
-                style={{
-                  color: 'white',
-                }}>
-                팔로우
-              </Text>
-            </View>
-          </TouchableOpacity>
+          {checkFollows ? (
+            <TouchableOpacity
+              onPress={() => followsDelete(email)}
+              style={{flex: 1}}>
+              <View
+                style={[
+                  styles.followButton,
+                  {
+                    backgroundColor: null,
+                    borderWidth: 1,
+                  },
+                ]}>
+                <Text
+                  style={{
+                    color: 'black',
+                  }}>
+                  팔로잉
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => followsSet(email)}
+              style={{flex: 1}}>
+              <View
+                style={[
+                  styles.followButton,
+                  {
+                    backgroundColor: '#3493D9',
+                    borderWidth: 0,
+                  },
+                ]}>
+                <Text
+                  style={{
+                    color: 'white',
+                  }}>
+                  팔로우
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       )}
     </>
