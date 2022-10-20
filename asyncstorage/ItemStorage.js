@@ -1,4 +1,3 @@
-import React, {useContext, createContext, useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ItemStorage = {
@@ -9,6 +8,7 @@ const ItemStorage = {
       if (!rawItem) {
         // 저장된 데이터가 없으면 사용하지 않음
         console.log('No saved Item');
+        return;
       }
       const savedItem = JSON.parse(rawItem);
       return savedItem;

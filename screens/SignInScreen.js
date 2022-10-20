@@ -12,6 +12,7 @@ import SignInButton from '../components/SignInButton';
 import SignInForm from '../components/SignInForm';
 import {ScrollView} from 'react-native';
 import {useUserContext} from '../contexts/UserContext';
+import ItemEmpty from '../lib/ItemEmpty';
 
 function SignInScreen({navigation, route}) {
   const [form, setForm] = useState({
@@ -33,6 +34,9 @@ function SignInScreen({navigation, route}) {
   const [loading, setLoading] = useState(false); // 로딩상태를 표시할지 말지 나타냄
   const {joinUser, setJoinUser} = useUserContext(); // 유저가 회원가입에 성공했을 경우, 해당 유저의 정보를 앱 실행하는 동안 저장해둠 (자동 로그인의 경우 지속적으로 저장)
   const {setUser} = useUserContext(); // 지금 내 유저 정보
+
+  const checkJ = ItemEmpty.check(joinUser);
+
   const createChangeTextHandler = name => value => {
     // form의 내용을 name과 value에 맞춰서 변경
     setForm({...form, [name]: value});
@@ -60,21 +64,23 @@ function SignInScreen({navigation, route}) {
 
     function email_check2(email) {
       // 회원가입시 이메일 중복확인 및 해당 joinUser정보 가져오기
-      if (joinUser.length === undefined) return;
-      for (let i = 0; i < joinUser.length; i++) {
-        if (joinUser[i].email === email) {
-          return joinUser[i];
+      if (checkJ) {
+        for (let i = 0; i < joinUser?.length; i++) {
+          if (joinUser[i].email === email) {
+            return joinUser[i];
+          }
         }
       }
     }
 
     // 로그인시 비밀번호 일치 확인
     function password_check2(email) {
-      if (joinUser.length === undefined) return;
-      for (let i = 0; i < joinUser.length; i++) {
-        console.log('for' + joinUser[i].email);
-        if (email === joinUser[i].email) {
-          return joinUser[i].password;
+      if (checkJ) {
+        for (let i = 0; i < joinUser?.length; i++) {
+          console.log('for' + joinUser[i].email);
+          if (email === joinUser[i].email) {
+            return joinUser[i].password;
+          }
         }
       }
     }

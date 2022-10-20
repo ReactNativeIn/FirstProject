@@ -5,6 +5,7 @@ import WelcomeScreen from './WelcomeScreen';
 import MainScreen from './MainScreen';
 import UploadScreen from './UploadScreen';
 import {useUserContext} from '../contexts/UserContext';
+import CommentScreen from './CommentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,13 @@ function RootStack() {
             name="UploadScrenn"
             component={UploadScreen}
             options={{title: '새 게시물', headerBackTitle: '뒤로가기'}}
+          />
+          <Stack.Screen
+            name="CommentScreen"
+            component={CommentScreen}
+            options={{
+              title: '댓글',
+            }}
           />
         </>
       ) : (

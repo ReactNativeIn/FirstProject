@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Ionic from 'react-native-vector-icons/Ionicons';
 import {useUserContext} from '../contexts/UserContext';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {format} from 'date-fns';
@@ -46,8 +45,8 @@ export default function EditPrivacy({navigation}) {
       gender: gender,
       birthday: birthday,
     }));
-    if (joinUser.length === undefined) return;
-    for (let i = 0; i < joinUser.length; i++) {
+    if (joinUser?.length === undefined) return;
+    for (let i = 0; i < joinUser?.length; i++) {
       if (user.uid === joinUser[i].uid) {
         joinUser[i] = {
           ...user,

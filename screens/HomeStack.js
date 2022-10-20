@@ -18,7 +18,7 @@ function HomeStack() {
   useEffect(() => {
     console.log('joinUser : ', JSON.stringify(joinUser, null, 2));
     console.log('User : ', JSON.stringify(user, null, 2));
-  }, [user]);
+  }, [user, joinUser]);
 
   return (
     <Stack.Navigator>
@@ -28,13 +28,6 @@ function HomeStack() {
         component={ProfileTab}
         options={{
           title: '프로필',
-        }}
-      />
-      <Stack.Screen
-        name="CommentScreen"
-        component={CommentScreen}
-        options={{
-          title: '댓글',
         }}
       />
       <Stack.Screen
