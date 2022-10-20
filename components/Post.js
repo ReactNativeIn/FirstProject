@@ -94,20 +94,20 @@ const Post = () => {
       }
     };
 
-    const follow = follow => {
-      alert(follow + '팔로우');
+    const followSet = fow => {
+      alert(fow + '팔로우');
       checkF
         ? setFollow([
-            ...follows,
+            ...follow,
             {
               from_member: user.email,
-              to_member: follow,
+              to_member: fow,
             },
           ])
         : setFollow([
             {
               from_member: user.email,
-              to_member: follow,
+              to_member: fow,
             },
           ]);
     };
@@ -117,7 +117,9 @@ const Post = () => {
         <View style={styles.posteHeader}>
           <View style={styles.avatarWrapper}>
             <Pressable
-              onPress={() => navigation.push('ProfileTab', item.email)}>
+              onPress={() =>
+                navigation.push('ProfileTab', {email: item.email})
+              }>
               <Image
                 source={
                   item.userAvatar
@@ -136,7 +138,7 @@ const Post = () => {
               user.email !== item.email ? (
                 <Pressable
                   style={styles.follow}
-                  onPress={() => follow(item.email)}>
+                  onPress={() => followSet(item.email)}>
                   <Text>팔로우</Text>
                 </Pressable>
               ) : (
