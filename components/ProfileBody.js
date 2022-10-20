@@ -7,56 +7,39 @@ import {
   Pressable,
   StyleSheet,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+
 import {useNavigation} from '@react-navigation/native';
 import {useUserContext} from '../contexts/UserContext';
 import {useFollowContext} from '../contexts/FollowContext';
 import ItemEmpty from '../lib/ItemEmpty';
 export const ProfileBody = ({
-  nickname,
-  profileImage,
+  selectUser,
   postCount,
   followerCount,
   followingCount,
 }) => {
   return (
     <View>
-      {nickname ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-              }}>
-              {nickname}
-            </Text>
-          </View>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Feather
-              name="menu"
-              style={{
-                fontSize: 25,
-              }}
-            />
-          </View>
-        </View>
-      ) : null}
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'space-around',
-          paddingVertical: 20,
+          justifyContent: 'space-between',
+        }}>
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: 'bold',
+          }}>
+          {selectUser.nickname}
+        </Text>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingTop: 20,
         }}>
         <View
           style={{
@@ -64,8 +47,8 @@ export const ProfileBody = ({
           }}>
           <Image
             source={
-              profileImage
-                ? {uri: profileImage}
+              selectUser.profileImage
+                ? {uri: selectUser.profileImage}
                 : require('../storage/images/user.png')
             }
             style={{
@@ -91,6 +74,19 @@ export const ProfileBody = ({
             {followingCount}
           </Text>
           <Text>팔로잉</Text>
+        </View>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginVertical: 5,
+        }}>
+        <View
+          style={{
+            alignItems: 'flex-start',
+            width: '70%',
+          }}>
+          <Text>{selectUser.introduce}</Text>
         </View>
       </View>
     </View>

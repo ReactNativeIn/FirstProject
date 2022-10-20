@@ -2,10 +2,11 @@ import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeTab from './HomeTab';
 import ProfileTab from './ProfileTab';
-import CommentScreen from './CommentScreen';
 import EditPostScreen from './EditPostScreen';
 import {useUserContext} from '../contexts/UserContext';
 import {useFollowContext} from '../contexts/FollowContext';
+import EditProfile from './EditProfile';
+import EditPrivacy from './EditPrivacy';
 
 const Stack = createNativeStackNavigator();
 /*
@@ -38,6 +39,18 @@ function HomeStack() {
         component={EditPostScreen}
         options={{
           title: '게시물 수정',
+        }}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditPrivacy"
+        component={EditPrivacy}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
