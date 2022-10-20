@@ -14,6 +14,8 @@ import SearchUserList from '../components/SearchUserList';
 import useUserContext from '../contexts/UserContext';
 import {UserContext} from '../contexts/UserContext';
 import EmptySearchResult from '../components/EmptySearchResult';
+import {UserProfileBody} from '../components/UserProfileBody';
+import {NavigationContainer} from '@react-navigation/native';
 
 function SearchScreen({}) {
   const {keyword} = useContext(SearchContext);
