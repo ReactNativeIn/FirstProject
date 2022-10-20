@@ -1,13 +1,14 @@
-import React from 'react';
-import {View, Text, ScrollView, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
 import ProfileGridview from '../components/ProfileGridview';
 import {useUserContext} from '../contexts/UserContext';
 import ItemEmpty from '../lib/ItemEmpty';
 import {usePostContext} from '../contexts/PostContext';
 import {useFollowContext} from '../contexts/FollowContext';
+import Feather from 'react-native-vector-icons/Feather';
 
-const ProfileScreen = ({route}) => {
+const ProfileScreen = ({navigation, route}) => {
   const {user, joinUser} = useUserContext();
   const {post} = usePostContext();
   const {follow} = useFollowContext();
@@ -44,13 +45,31 @@ const ProfileScreen = ({route}) => {
     });
   }
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable
+          hitSlop={8}
+          onPress={() => {
+            alert('설정');
+          }}>
+          <Feather
+            name="menu"
+            style={{
+              fontSize: 25,
+            }}
+          />
+        </Pressable>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <ScrollView>
       <View style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
         <View style={{width: '100%', padding: 10}}>
           <ProfileBody
-            nickname={selectUser.nickname}
-            profileImage={selectUser.profileImage}
+            selectUser={selectUser}
             followerCount={followerCount}
             followingCount={followingCount}
             postCount={postCount}
