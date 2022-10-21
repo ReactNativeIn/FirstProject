@@ -2,9 +2,11 @@ import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeTab from './HomeTab';
 import ProfileTab from './ProfileTab';
-import CommentScreen from './CommentScreen';
 import EditPostScreen from './EditPostScreen';
 import {useUserContext} from '../contexts/UserContext';
+import {useFollowContext} from '../contexts/FollowContext';
+import EditProfile from './EditProfile';
+import EditPrivacy from './EditPrivacy';
 
 const Stack = createNativeStackNavigator();
 /*
@@ -14,11 +16,13 @@ UploadScreen -> 사진 올리기 화면
 */
 function HomeStack() {
   const {joinUser, user} = useUserContext();
+  const {follow} = useFollowContext();
 
   useEffect(() => {
     console.log('joinUser : ', JSON.stringify(joinUser, null, 2));
     console.log('User : ', JSON.stringify(user, null, 2));
-  }, [user, joinUser]);
+    console.log('follow : ', JSON.stringify(follow, null, 2));
+  }, [user, joinUser, follow]);
 
   return (
     <Stack.Navigator>
@@ -35,6 +39,18 @@ function HomeStack() {
         component={EditPostScreen}
         options={{
           title: '게시물 수정',
+        }}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditPrivacy"
+        component={EditPrivacy}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

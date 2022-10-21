@@ -1,63 +1,86 @@
-import React from 'react';
-import {View, Text, ScrollView, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
 import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
-import Entypo from 'react-native-vector-icons/Entypo';
 import ProfileGridview from '../components/ProfileGridview';
+import {useUserContext} from '../contexts/UserContext';
+import ItemEmpty from '../lib/ItemEmpty';
+import {usePostContext} from '../contexts/PostContext';
+import {useFollowContext} from '../contexts/FollowContext';
+import Feather from 'react-native-vector-icons/Feather';
 
-const ProfileScreen = () => {
-  let circuls = [];
-  let numberofcircels = 10;
+const ProfileScreen = ({navigation, route}) => {
+  const {user, joinUser} = useUserContext();
+  const {post} = usePostContext();
+  const {follow} = useFollowContext();
 
-  for (let index = 0; index < numberofcircels; index++) {
-    circuls.push(
-      <View key={index}>
-        {index === 0 ? (
-          <View
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: 100,
-              borderWidth: 1,
-              opacity: 0.7,
-              marginHorizontal: 5,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Entypo name="plus" style={{fontSize: 40, color: 'black'}} />
-          </View>
-        ) : (
-          <View
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: 100,
-              backgroundColor: 'black',
-              opacity: 0.1,
-              marginHorizontal: 5,
-            }}></View>
-        )}
-      </View>,
-    );
+  const checkR = ItemEmpty.check(route.params);
+  const checkP = ItemEmpty.check(post);
+  const checkF = ItemEmpty.check(follow);
+
+  console.log('랜더 확인' + checkR);
+  const userEmail = checkR ? route.params.email : user.email;
+
+  if (checkR) {
+    console.log('확인 : ' + route.params.email);
+  } else {
+    console.log('안 넘어옴');
   }
+
+  const selectUser = joinUser.find(data => data.email === userEmail);
+
+  let postCount = 0;
+  let followingCount = 0;
+  let followerCount = 0;
+
+  if (checkP) {
+    post.map(data => {
+      if (data.email === selectUser.email) {
+        postCount = postCount + 1;
+      }
+    });
+  }
+
+  if (checkF) {
+    follow.map(data => {
+      if (data.from_member === selectUser.email) {
+        followingCount = followingCount + 1;
+      }
+      if (data.to_member === selectUser.email) {
+        followerCount = followerCount + 1;
+      }
+    });
+  }
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Pressable
+          hitSlop={8}
+          onPress={() => {
+            alert('설정');
+          }}>
+          <Feather
+            name="menu"
+            style={{
+              fontSize: 25,
+            }}
+          />
+        </Pressable>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <ScrollView>
       <View style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
         <View style={{width: '100%', padding: 10}}>
           <ProfileBody
-            name="SadCat"
-            accountName="Sad_Cat"
-            profileImage={require('../storage/images/userProfile.png')}
-            followers="3.6M"
-            following="35"
-            post="458"
+            selectUser={selectUser}
+            followerCount={followerCount}
+            followingCount={followingCount}
+            postCount={postCount}
           />
-          <ProfileButtons
-            id={0}
-            name="SadCat"
-            accountName="Sad_Cat"
-            profileImage={require('../storage/images/userProfile.png')}
-          />
+          <ProfileButtons email={selectUser.email} />
         </View>
         <ScrollView>
           <ProfileGridview />

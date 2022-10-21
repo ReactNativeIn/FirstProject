@@ -49,6 +49,10 @@ function EditProfile({route, navigation}) {
   };
 
   const onSubmit = () => {
+    if (nickname === '') {
+      Alert.alert('안됨!!!', '닉네임은 꼭 입력해주셔야됩니다~');
+      return;
+    }
     setUser(prev => ({
       ...prev,
       name: name,
@@ -72,10 +76,12 @@ function EditProfile({route, navigation}) {
     setJoinUser(rejoin);
 
     setModalShown(false);
+
+    navigation.goBack();
   };
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView>
         <View style={{flex: 1, backgroundColor: 'white'}}>
           <View style={styles.headerStyle} /* 헤더부분 */>
@@ -91,11 +97,8 @@ function EditProfile({route, navigation}) {
             <Text style={styles.headerText}>프로필 편집</Text>
             <TouchableOpacity
               onPress={() => {
-                Alert.alert('눌렸음', '변경이 눌렸따!');
                 //  TODO: 변경이 눌린 후 변경사항을 저장하고(현재 컴포넌트(EditProfile.js의 상태를 저장))
                 onSubmit();
-
-                navigation.pop();
               }}>
               <Ionic
                 name="checkmark"

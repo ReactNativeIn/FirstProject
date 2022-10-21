@@ -1,5 +1,13 @@
 import React, {useState, useRef} from 'react';
-import {View, Text, Image, StyleSheet, FlatList, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  Pressable,
+  RefreshControl,
+} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionic from 'react-native-vector-icons/Ionicons';
@@ -12,6 +20,8 @@ import {useUserContext} from '../contexts/UserContext';
 import {useCommentsContext} from '../contexts/CommentsContext';
 import {useFollowContext} from '../contexts/FollowContext';
 import ItemEmpty from '../lib/ItemEmpty';
+import {format, formatDistanceToNow} from 'date-fns';
+import {ko} from 'date-fns/locale';
 
 const Post = () => {
   const navigation = useNavigation();
@@ -73,8 +83,24 @@ const Post = () => {
 
   const postInfo = [...imsi];
 
+  const formatDate = date => {
+    const d = new Date(date);
+    const now = Date.now();
+    const diff = (now - d.getTime()) / 1000;
+
+    if (diff < 60 * 1) {
+      //글이 작성된 시간이 1분 미만
+      return '방금 전';
+    }
+    if (diff < 60 * 60 * 24 * 3) {
+      // 3일 미만
+      return formatDistanceToNow(d, {addSuffix: true, locale: ko});
+    }
+    return format(d, 'PPP EEE p', {locale: ko}); // 3일 이상
+  };
+
   const renderItem = ({item}) => {
-    const date = item.date.split('-');
+    const date = formatDate(item.date);
 
     const likeClick = () => {
       if (item.likeSet) {
@@ -94,20 +120,20 @@ const Post = () => {
       }
     };
 
-    const follow = follow => {
-      alert(follow + '팔로우');
+    const followSet = fow => {
+      alert(fow + '팔로우');
       checkF
         ? setFollow([
-            ...follows,
+            ...follow,
             {
               from_member: user.email,
-              to_member: follow,
+              to_member: fow,
             },
           ])
         : setFollow([
             {
               from_member: user.email,
-              to_member: follow,
+              to_member: fow,
             },
           ]);
     };
@@ -117,7 +143,9 @@ const Post = () => {
         <View style={styles.posteHeader}>
           <View style={styles.avatarWrapper}>
             <Pressable
-              onPress={() => navigation.push('ProfileTab', item.email)}>
+              onPress={() =>
+                navigation.push('ProfileTab', {email: item.email})
+              }>
               <Image
                 source={
                   item.userAvatar
@@ -136,7 +164,7 @@ const Post = () => {
               user.email !== item.email ? (
                 <Pressable
                   style={styles.follow}
-                  onPress={() => follow(item.email)}>
+                  onPress={() => followSet(item.email)}>
                   <Text>팔로우</Text>
                 </Pressable>
               ) : (
@@ -184,9 +212,7 @@ const Post = () => {
           <Text>좋아요 개수: {item.likeNum}</Text>
           <Text>댓글 개수: {item.commentNum}</Text>
           <Text style={styles.explanation}>{item.content}</Text>
-          <Text>
-            {date[0]}년 {date[1]}월 {date[2]}일
-          </Text>
+          <Text>{date}</Text>
         </View>
       </View>
     );

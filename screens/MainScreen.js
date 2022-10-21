@@ -2,17 +2,18 @@ import React, {useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import HomeStack from './HomeStack';
-import SearchTab from './SearchTab';
+import SearchStack from './SearchStack';
 import ProfileStack from './ProfileStack';
 
 const Tab = createBottomTabNavigator();
 
-function MainScreen() {
+function MainScreen({navigation}) {
   return (
     <Tab.Navigator
       initialRouteName="HomeStack"
       screenOptions={{
         tabBarShowLabel: false,
+        headerShown: false,
       }}>
       <Tab.Screen
         name="HomeStack"
@@ -21,12 +22,11 @@ function MainScreen() {
           tabBarIcon: ({color, size}) => (
             <Icon name="home" color={color} size={size} />
           ),
-          headerShown: false,
         }}
       />
       <Tab.Screen
-        name="검색"
-        component={SearchTab}
+        name="SearchStack"
+        component={SearchStack}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="search" color={color} size={size} />
@@ -40,7 +40,6 @@ function MainScreen() {
           tabBarIcon: ({color, size}) => (
             <Icon name="person" color={color} size={size} />
           ),
-          headerShown: false,
         }}
       />
     </Tab.Navigator>

@@ -3,11 +3,8 @@ import {View, StyleSheet} from 'react-native';
 import SearchBox from '../components/SearchBox';
 import SearchContext from '../contexts/SearchContext';
 import SearchUserList from '../components/SearchUserList';
-import useUserContext from '../contexts/UserContext';
 import {UserContext} from '../contexts/UserContext';
 import EmptySearchResult from '../components/EmptySearchResult';
-import {UserProfileBody} from '../components/UserProfileBody';
-import {NavigationContainer} from '@react-navigation/native';
 
 function SearchScreen({}) {
   const {keyword} = useContext(SearchContext);
@@ -23,7 +20,6 @@ function SearchScreen({}) {
   if (keyword === '') {
     return (
       <View style={styles.filteredStyle}>
-        <SearchBox />
         <SearchUserList logs={filtered} />
         <EmptySearchResult type="EMPTY_KEYWORD" />
       </View>
@@ -42,7 +38,6 @@ function SearchScreen({}) {
 
   return (
     <View style={styles.filteredStyle}>
-      <SearchBox />
       <SearchUserList logs={filtered} />
     </View>
   );

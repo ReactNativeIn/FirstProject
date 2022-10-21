@@ -1,20 +1,30 @@
 import React, {useState, useContext} from 'react';
-import {Pressable, View, TextInput, StyleSheet} from 'react-native';
+import {
+  Pressable,
+  View,
+  TextInput,
+  StyleSheet,
+  useWindowDimensions,
+} from 'react-native';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import SearchContext from '../contexts/SearchContext';
 
 const SearchBox = () => {
+  const {width} = useWindowDimensions();
+
   const [focusIn, setFocusIn] = useState(false);
   const {keyword, onChangeText} = useContext(SearchContext);
+
   const focusInEvent = () => {
     setFocusIn(true);
   };
+
   const focusOut = () => {
     setFocusIn(false);
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {width: width - 10}]}>
       <TextInput
         onFocus={focusInEvent}
         onBlur={focusOut}
@@ -37,11 +47,8 @@ const SearchBox = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
+    flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
-    paddingVertical: 10,
-    position: 'relative',
   },
   textInput: {
     width: '94%',
@@ -51,21 +58,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 15,
     padding: 4,
-    paddingLeft: 40,
+    paddingLeft: 38,
   },
   clearButton: {
     fontSize: 18,
     opacity: 0.7,
     position: 'absolute',
     zIndex: 1,
-    right: 25,
+    right: 35,
   },
   searchIcon: {
     fontSize: 18,
     opacity: 0.7,
     position: 'absolute',
     zIndex: 1,
-    left: 25,
+    left: 10,
   },
 });
 export default SearchBox;

@@ -29,7 +29,6 @@ function SignInScreen({navigation, route}) {
     introduce: '', //소개
     uid: '', // 식별키
   });
-  // console.log('form : ', form);
   const {isSignUp} = route.params ?? {}; // 로그인인지 회원가입인지 SignInButton 에서 받아옴
   const [loading, setLoading] = useState(false); // 로딩상태를 표시할지 말지 나타냄
   const {joinUser, setJoinUser} = useUserContext(); // 유저가 회원가입에 성공했을 경우, 해당 유저의 정보를 앱 실행하는 동안 저장해둠 (자동 로그인의 경우 지속적으로 저장)
@@ -77,7 +76,6 @@ function SignInScreen({navigation, route}) {
     function password_check2(email) {
       if (checkJ) {
         for (let i = 0; i < joinUser?.length; i++) {
-          console.log('for' + joinUser[i].email);
           if (email === joinUser[i].email) {
             return joinUser[i].password;
           }
@@ -118,7 +116,6 @@ function SignInScreen({navigation, route}) {
     }
     // setLoading(true);
     // const info = {email, password}; // 회원가입시 사용한 정보가 들어감
-    // // console.log('info : ', info);
     // setLoading(false);
     if (isSignUp) {
       navigation.navigate('Welcome', {form});

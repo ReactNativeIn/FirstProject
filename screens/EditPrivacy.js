@@ -138,10 +138,10 @@ export default function EditPrivacy({navigation}) {
             }}
             style={[styles.whiteBox]}
             onPress={() => {
-              setGender('녀');
+              setGender('여');
               setModalVisible(false);
             }}>
-            <Text style={[styles.text, {fontSize: 16}]}>녀</Text>
+            <Text style={[styles.text, {fontSize: 16}]}>여</Text>
           </Pressable>
           <Pressable
             android_ripple={{

@@ -3,15 +3,6 @@ import React from 'react';
 import {Platform, Pressable, StyleSheet, Text, Image, View} from 'react-native';
 import {useUserContext} from '../contexts/UserContext';
 
-// function truncate(text) {
-//   // 정규식을 사용해 모든 줄 바꿈 문자 제거
-//   const replaced = text.replace(/\n/g, ' ');
-//   if (replaced.length <= 100) {
-//     return replaced;
-//   }
-//   return replaced.slice(0, 100).concat('...');
-// }
-
 function SearchUserListItem({log}) {
   const navigation = useNavigation();
   const {email, nickname, profileImage} = log; // 사용하기 편하게 객체 구조 분해 할당
@@ -24,8 +15,7 @@ function SearchUserListItem({log}) {
         Platform.OS === 'ios' && pressed && {backgroundColor: '#efefef'},
       ]}
       onPress={() => {
-        console.log(email);
-        navigation.navigate('ProfileTab'), {email};
+        navigation.navigate('ProfileTab', {email: email});
       }}
       android_ripple={{color: '#ededed'}}>
       <View style={styles.container}>
