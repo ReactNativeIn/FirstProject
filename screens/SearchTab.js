@@ -1,8 +1,15 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, StyleSheet} from 'react-native';
 import SearchScreen from './SearchScreen';
+import SearchBox from '../components/SearchBox';
 
-function SearchTab() {
+function SearchTab({navigation}) {
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => <SearchBox />,
+    });
+  }, [navigation]);
+
   return (
     <View style={style.container}>
       <SearchScreen />

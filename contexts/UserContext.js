@@ -12,7 +12,7 @@ gender
 profileImage
 */
 
-const UserContext = createContext(null);
+export const UserContext = createContext(null);
 
 export function UserContextProvider({children}) {
   /* 테스트를 위한 임시 데이터 */
