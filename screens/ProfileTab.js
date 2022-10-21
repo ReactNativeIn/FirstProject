@@ -17,17 +17,11 @@ const ProfileScreen = ({navigation, route}) => {
   const checkP = ItemEmpty.check(post);
   const checkF = ItemEmpty.check(follow);
 
-  console.log('랜더 확인' + checkR);
   const userEmail = checkR ? route.params.email : user.email;
-
-  if (checkR) {
-    console.log('확인 : ' + route.params.email);
-  } else {
-    console.log('안 넘어옴');
-  }
 
   const selectUser = joinUser.find(data => data.email === userEmail);
 
+  console.log('----- ' + selectUser.email);
   let postCount = 0;
   let followingCount = 0;
   let followerCount = 0;
