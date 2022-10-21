@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  BackHandler,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native';
 import Ionic from 'react-native-vector-icons/Ionicons';
@@ -25,6 +26,17 @@ function EditProfile({route, navigation}) {
   const [name, setName] = useState(user.name); // 유저 이름
   const [nickname, setNickname] = useState(user.nickname); // 닉네임
   const [introduce, setIntroduce] = useState(user.introduce); // 소개
+
+  const changeCheck = () => {
+    // 변경사항이 있을 시 true
+    if (
+      name !== user.name ||
+      nickname !== user.nickname ||
+      introduce !== user.introduce ||
+      response !== user.profileImage
+    )
+      return true;
+  };
 
   const onSelectImage = () => {
     launchImageLibrary(
@@ -80,6 +92,31 @@ function EditProfile({route, navigation}) {
     navigation.goBack();
   };
 
+  const handlePressBack = () => {
+    if (changeCheck()) {
+      Alert.alert('주의', '변경사항을 저장하지 않고 나가시겠습니까?', [
+        {
+          text: '취소',
+          onPress: () => null,
+        },
+        {
+          text: '넵',
+          onPress: () => {
+            navigation.goBack();
+          },
+        },
+      ]);
+      return true;
+    }
+    return false;
+  };
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handlePressBack);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
+    };
+  }, [handlePressBack]);
+
   return (
     <KeyboardAvoidingView style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView>
@@ -87,10 +124,24 @@ function EditProfile({route, navigation}) {
           <View style={styles.headerStyle} /* 헤더부분 */>
             <TouchableOpacity
               onPress={() => {
-                Alert.alert('취소눌렀음', '취소!!!!');
-                /* 변경사항 없이 뒤로가기
-                 */
-                navigation.goBack();
+                changeCheck()
+                  ? Alert.alert(
+                      '주의',
+                      '변경사항을 저장하지 않고 나가시겠습니까?',
+                      [
+                        {
+                          text: '취소',
+                          onPress: () => null,
+                        },
+                        {
+                          text: '넵',
+                          onPress: () => {
+                            navigation.goBack();
+                          },
+                        },
+                      ],
+                    )
+                  : navigation.goBack();
               }}>
               <Ionic name="close-outline" style={{fontSize: 35}} />
             </TouchableOpacity>
@@ -152,10 +203,10 @@ function EditProfile({route, navigation}) {
               style={{
                 opacity: 0.5,
               }}>
-              사용자 이름
+              닉네임
             </Text>
             <TextInput
-              placeholder="사용자 이름"
+              placeholder="닉네임"
               value={nickname}
               style={styles.textInputStyle}
               onChangeText={setNickname}

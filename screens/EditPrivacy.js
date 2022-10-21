@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   Alert,
+  BackHandler,
   Modal,
   Pressable,
   StyleSheet,
@@ -18,10 +19,19 @@ export default function EditPrivacy({navigation}) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const {user, setUser, joinUser, setJoinUser} = useUserContext();
-  const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
   const [gender, setGender] = useState(user.gender);
   const [birthday, setBirthday] = useState(user.birthday);
+
+  const changeCheck = () => {
+    // 변경사항이 있을 시 true
+    if (
+      phone !== user.phone ||
+      gender !== user.gender ||
+      birthday !== user.birthday
+    )
+      return true;
+  };
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -40,7 +50,6 @@ export default function EditPrivacy({navigation}) {
   const onSubmit = () => {
     setUser(prev => ({
       ...prev,
-      email: email,
       phone: phone,
       gender: gender,
       birthday: birthday,
@@ -51,7 +60,6 @@ export default function EditPrivacy({navigation}) {
       re.uid === user.uid
         ? {
             ...user,
-            email,
             phone,
             gender,
             birthday,
@@ -61,9 +69,34 @@ export default function EditPrivacy({navigation}) {
     setJoinUser(rejoin);
   };
 
+  const handlePressBack = () => {
+    if (changeCheck()) {
+      Alert.alert('주의', '변경사항을 저장하지 않고 나가시겠습니까?', [
+        {
+          text: '취소',
+          onPress: () => null,
+        },
+        {
+          text: '넵',
+          onPress: () => {
+            navigation.goBack();
+          },
+        },
+      ]);
+      return true;
+    }
+    return false;
+  };
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handlePressBack);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handlePressBack);
+    };
+  }, [handlePressBack]);
+
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
-      <PrivacyHeader onSubmit={onSubmit} />
+      <PrivacyHeader onSubmit={onSubmit} changeCheck={changeCheck} />
       <View
         style={{
           alignItems: 'center',
@@ -74,19 +107,22 @@ export default function EditPrivacy({navigation}) {
         }}>
         <Text>회원님의 정보를 정확히 입력해 주세요</Text>
       </View>
-      <View style={styles.viewPadding}>
-        <Text
-          style={{
-            opacity: 0.5,
-          }}>
-          이메일 주소
-        </Text>
-        <TextInput
-          placeholder="이메일"
-          value={email}
-          style={styles.textInputStyle}
-          onChangeText={setEmail}
-        />
+      <View style={[styles.viewPadding, {paddingTop: 16}]}>
+        <Text>이메일 주소</Text>
+        <View
+          style={[
+            styles.textInputStyle,
+            {
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingBottom: 6,
+            },
+          ]}>
+          <Text style={{fontSize: 18, opacity: 0.5}}>{user.email}</Text>
+          <Text style={{fontSize: 14, opacity: 0.5, color: 'red'}}>
+            이메일은 변경할 수 없습니다.
+          </Text>
+        </View>
       </View>
       <View style={styles.viewPadding}>
         <Text
