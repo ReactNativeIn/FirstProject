@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     borderColor: '#c13584',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 12,
   },
   image: {
     resizeMode: 'cover',
