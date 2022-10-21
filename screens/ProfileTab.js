@@ -1,5 +1,12 @@
 import React, {useEffect} from 'react';
-import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Pressable,
+  useWindowdimentsions,
+} from 'react-native';
 import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
 import ProfileGridview from '../components/ProfileGridview';
 import {useUserContext} from '../contexts/UserContext';
@@ -16,6 +23,11 @@ const ProfileScreen = ({navigation, route}) => {
   const checkR = ItemEmpty.check(route.params);
   const checkP = ItemEmpty.check(post);
   const checkF = ItemEmpty.check(follow);
+
+  const dimension = useWindowdimentsions();
+  const size = dimension.width / 3;
+
+  const posting = [];
 
   const userEmail = checkR ? route.params.email : user.email;
 
