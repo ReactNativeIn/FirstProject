@@ -8,47 +8,14 @@ import {useFollowContext} from '../contexts/FollowContext';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
-const ProfileHeader = () => {
+const ProfileHeader = ({
+  selectUser,
+  followerCount,
+  followingCount,
+  postCount,
+}) => {
   const navigation = useNavigation();
   const route = useRoute();
-
-  const {user, joinUser} = useUserContext();
-  const {post} = usePostContext();
-  const {follow} = useFollowContext();
-
-  const checkR = ItemEmpty.check(route.params);
-  const checkP = ItemEmpty.check(post);
-  const checkF = ItemEmpty.check(follow);
-
-  const posting = [];
-
-  const userEmail = checkR ? route.params.email : user.email;
-
-  const selectUser = joinUser.find(data => data.email === userEmail);
-
-  console.log('----- ' + selectUser.email);
-  let postCount = 0;
-  let followingCount = 0;
-  let followerCount = 0;
-
-  if (checkP) {
-    post.map(data => {
-      if (data.email === selectUser.email) {
-        postCount = postCount + 1;
-      }
-    });
-  }
-
-  if (checkF) {
-    follow.map(data => {
-      if (data.from_member === selectUser.email) {
-        followingCount = followingCount + 1;
-      }
-      if (data.to_member === selectUser.email) {
-        followerCount = followerCount + 1;
-      }
-    });
-  }
 
   useEffect(() => {
     navigation.setOptions({

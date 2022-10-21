@@ -98,8 +98,6 @@ export const ProfileButtons = ({email}) => {
   const {follow, setFollow} = useFollowContext();
   const {user} = useUserContext();
 
-  console.log('랜더 확인');
-
   const checkF = ItemEmpty.check(follow);
   let follows = [],
     checkFollows = false;
@@ -111,29 +109,29 @@ export const ProfileButtons = ({email}) => {
     console.log(checkFollows);
   }
 
-  const followsSet = fow => {
-    alert(fow + '팔로우');
+  const followsSet = email => {
+    alert(email + '팔로우');
     checkF
       ? setFollow([
           ...follow,
           {
             from_member: user.email,
-            to_member: fow,
+            to_member: email,
           },
         ])
       : setFollow([
           {
             from_member: user.email,
-            to_member: fow,
+            to_member: email,
           },
         ]);
   };
 
-  const followsDelete = fow => {
-    alert(fow + '팔로우 취소');
+  const followsDelete = email => {
+    alert(email + '팔로우 취소');
     setFollow(
       follow.filter(
-        fo => fo.from_member !== user.email || fo.to_member !== fow,
+        fo => fo.from_member !== user.email || fo.to_member !== email,
       ),
     );
   };

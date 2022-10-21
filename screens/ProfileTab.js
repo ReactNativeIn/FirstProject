@@ -1,48 +1,74 @@
 import React from 'react';
 import {View, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
+import {usePostContext} from '../contexts/PostContext';
 import ProfileHeader from './ProfileTabHeader';
+import {useUserContext} from '../contexts/UserContext';
+import {useFollowContext} from '../contexts/FollowContext';
+import ItemEmpty from '../lib/ItemEmpty';
+import {createIconSetFromFontello} from 'react-native-vector-icons';
+const ProfileTab = ({route, navigation}) => {
+  const {user, joinUser} = useUserContext();
+  const {post} = usePostContext();
+  const {follow} = useFollowContext();
 
-const ProfileTab = props => {
-  const searchData = [
-    {
-      id: 0,
-      images: [
-        require('../storage/images/post1.jpg'),
-        require('../storage/images/post7.jpg'),
-        require('../storage/images/post8.jpg'),
-        require('../storage/images/post9.jpg'),
-        require('../storage/images/post10.jpg'),
-        require('../storage/images/post11.jpg'),
-        require('../storage/images/post12.jpg'),
-        require('../storage/images/post13.jpg'),
-        require('../storage/images/post14.jpg'),
-        require('../storage/images/post15.jpg'),
-      ],
-    },
-  ];
+  const checkR = ItemEmpty.check(route.params);
+  const checkP = ItemEmpty.check(post);
+  const checkF = ItemEmpty.check(follow);
+  const userEmail = checkR ? route.params.email : user.email;
+
+  const selectUser = joinUser.find(data => data.email === userEmail);
+
+  console.log('----- ' + selectUser.email);
+  let postCount = 0;
+  let followingCount = 0;
+  let followerCount = 0;
+  let searchData;
+
+  if (checkP) {
+    post.map(data => {
+      if (data.email === selectUser.email) {
+        postCount = postCount + 1;
+      }
+    });
+    searchData = post.filter(data => data.email === selectUser.email);
+  }
+
+  if (checkF) {
+    follow.map(data => {
+      if (data.from_member === selectUser.email) {
+        followingCount = followingCount + 1;
+      }
+      if (data.to_member === selectUser.email) {
+        followerCount = followerCount + 1;
+      }
+    });
+  }
 
   const renderItem = ({item}) => {
-    console.log('ghgfjfkfgkl');
     return (
-      <View style={styles.wrapper}>
-        {item.images.map((imageData, imgIndex) => {
-          return (
-            <TouchableOpacity key={imgIndex} style={styles.imageWrapper}>
-              <Image source={imageData} style={styles.image} />
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+      <Image
+        source={item.photoURL ? {uri: item.photoURL} : null}
+        style={styles.image}
+      />
     );
   };
 
   return (
     <FlatList
-      ListHeaderComponent={<ProfileHeader />}
+      ListHeaderComponent={
+        <ProfileHeader
+          selectUser={selectUser}
+          followerCount={followerCount}
+          followingCount={followingCount}
+          postCount={postCount}
+          email={selectUser.email}
+        />
+      }
       data={searchData}
       renderItem={renderItem}
-      keyExtractor={item => item.id}
+      keyExtractor={item => item.postIndex}
+      numColumns={3}
     />
   );
 };
@@ -50,18 +76,12 @@ const ProfileTab = props => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  imageWrapper: {
-    paddingBottom: 2,
-    width: '33%',
+    backgroundColor: 'red',
   },
   image: {
-    width: '100%',
+    width: '33%',
     height: 150,
+    margin: 1,
   },
 });
 
