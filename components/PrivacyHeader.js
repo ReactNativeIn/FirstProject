@@ -31,7 +31,6 @@ export default function PrivacyHeader({onSubmit, changeCheck}) {
       <TouchableOpacity
         onPress={() => {
           onSubmit();
-          navigation.navigate('ProfileTab');
         }}>
         <Ionic name="checkmark" style={{fontSize: 35, color: '#3493D9'}} />
       </TouchableOpacity>

@@ -85,7 +85,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
           />
           <BorderedInput
             hasMarginBottom
-            placeholder="전화번호 (010-xxxx-xxxx)"
+            placeholder="전화번호 (하이픈(-)없이)"
             value={form.phone}
             ref={phoneRef}
             onChangeText={createChangeTextHandler('phone')}

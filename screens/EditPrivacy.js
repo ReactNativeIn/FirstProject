@@ -48,25 +48,35 @@ export default function EditPrivacy({navigation}) {
   };
 
   const onSubmit = () => {
-    setUser(prev => ({
-      ...prev,
-      phone: phone,
-      gender: gender,
-      birthday: birthday,
-    }));
-    if (joinUser?.length === undefined) return;
+    function phone_check(phone) {
+      const check = /^\d{10,11}$/; // 전화번호(스마트폰 기준) 정규표현식
+      return phone != '' && phone != 'undefined' && check.test(phone);
+    }
+    if (!phone_check(phone)) {
+      Alert.alert('전화번호!', '전화번호 입력 형식을 맞춰주세요');
+      return;
+    } else {
+      setUser(prev => ({
+        ...prev,
+        phone: phone,
+        gender: gender,
+        birthday: birthday,
+      }));
+      if (joinUser?.length === undefined) return;
 
-    const rejoin = joinUser.map(re =>
-      re.uid === user.uid
-        ? {
-            ...user,
-            phone,
-            gender,
-            birthday,
-          }
-        : re,
-    );
-    setJoinUser(rejoin);
+      const rejoin = joinUser.map(re =>
+        re.uid === user.uid
+          ? {
+              ...user,
+              phone,
+              gender,
+              birthday,
+            }
+          : re,
+      );
+      setJoinUser(rejoin);
+      navigation.navigate('ProfileTab');
+    }
   };
 
   const handlePressBack = () => {
