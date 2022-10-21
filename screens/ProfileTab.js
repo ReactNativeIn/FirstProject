@@ -1,94 +1,68 @@
-import React, {useEffect} from 'react';
-import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
-import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
-import ProfileGridview from '../components/ProfileGridview';
-import {useUserContext} from '../contexts/UserContext';
-import ItemEmpty from '../lib/ItemEmpty';
-import {usePostContext} from '../contexts/PostContext';
-import {useFollowContext} from '../contexts/FollowContext';
-import Feather from 'react-native-vector-icons/Feather';
+import React from 'react';
+import {View, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
+import ProfileHeader from './ProfileTabHeader';
 
-const ProfileScreen = ({navigation, route}) => {
-  const {user, joinUser} = useUserContext();
-  const {post} = usePostContext();
-  const {follow} = useFollowContext();
+const ProfileTab = props => {
+  const searchData = [
+    {
+      id: 0,
+      images: [
+        require('../storage/images/post1.jpg'),
+        require('../storage/images/post7.jpg'),
+        require('../storage/images/post8.jpg'),
+        require('../storage/images/post9.jpg'),
+        require('../storage/images/post10.jpg'),
+        require('../storage/images/post11.jpg'),
+        require('../storage/images/post12.jpg'),
+        require('../storage/images/post13.jpg'),
+        require('../storage/images/post14.jpg'),
+        require('../storage/images/post15.jpg'),
+      ],
+    },
+  ];
 
-  const checkR = ItemEmpty.check(route.params);
-  const checkP = ItemEmpty.check(post);
-  const checkF = ItemEmpty.check(follow);
-
-  const posting = [];
-
-  const userEmail = checkR ? route.params.email : user.email;
-
-  const selectUser = joinUser.find(data => data.email === userEmail);
-
-  console.log('----- ' + selectUser.email);
-  let postCount = 0;
-  let followingCount = 0;
-  let followerCount = 0;
-
-  if (checkP) {
-    post.map(data => {
-      if (data.email === selectUser.email) {
-        postCount = postCount + 1;
-      }
-    });
-  }
-
-  if (checkF) {
-    follow.map(data => {
-      if (data.from_member === selectUser.email) {
-        followingCount = followingCount + 1;
-      }
-      if (data.to_member === selectUser.email) {
-        followerCount = followerCount + 1;
-      }
-    });
-  }
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Pressable
-          hitSlop={8}
-          onPress={() => {
-            alert('설정');
-          }}>
-          <Feather
-            name="menu"
-            style={{
-              fontSize: 25,
-            }}
-          />
-        </Pressable>
-      ),
-    });
-  }, [navigation]);
+  const renderItem = ({item}) => {
+    console.log('ghgfjfkfgkl');
+    return (
+      <View style={styles.wrapper}>
+        {item.images.map((imageData, imgIndex) => {
+          return (
+            <TouchableOpacity key={imgIndex} style={styles.imageWrapper}>
+              <Image source={imageData} style={styles.image} />
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    );
+  };
 
   return (
-    <ScrollView>
-      <View style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
-        <View style={{width: '100%', padding: 10}}>
-          <ProfileBody
-            selectUser={selectUser}
-            followerCount={followerCount}
-            followingCount={followingCount}
-            postCount={postCount}
-          />
-          <ProfileButtons email={selectUser.email} />
-        </View>
-
-        <ProfileGridview />
-      </View>
-    </ScrollView>
+    <FlatList
+      ListHeaderComponent={<ProfileHeader />}
+      data={searchData}
+      renderItem={renderItem}
+      keyExtractor={item => item.id}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  margin: {
-    marginBottom: 40,
+  wrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  imageWrapper: {
+    paddingBottom: 2,
+    width: '33%',
+  },
+  image: {
+    width: '100%',
+    height: 150,
   },
 });
 
-export default ProfileScreen;
+export default ProfileTab;
