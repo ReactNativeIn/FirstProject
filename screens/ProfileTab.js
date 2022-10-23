@@ -1,12 +1,13 @@
-import React from 'react';
-import {View, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {Image, StyleSheet, Pressable} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {usePostContext} from '../contexts/PostContext';
 import ProfileHeader from './ProfileTabHeader';
 import {useUserContext} from '../contexts/UserContext';
 import {useFollowContext} from '../contexts/FollowContext';
 import ItemEmpty from '../lib/ItemEmpty';
-import {createIconSetFromFontello} from 'react-native-vector-icons';
+import Feather from 'react-native-vector-icons/Feather';
+
 const ProfileTab = ({route, navigation}) => {
   const {user, joinUser} = useUserContext();
   const {post} = usePostContext();
@@ -24,6 +25,27 @@ const ProfileTab = ({route, navigation}) => {
   let followingCount = 0;
   let followerCount = 0;
   let searchData;
+
+  useEffect(() => {
+    if (userEmail === user.email) {
+      navigation.setOptions({
+        headerRight: () => (
+          <Pressable
+            hitSlop={8}
+            onPress={() => {
+              navigation.push('SettingScreen');
+            }}>
+            <Feather
+              name="menu"
+              style={{
+                fontSize: 25,
+              }}
+            />
+          </Pressable>
+        ),
+      });
+    }
+  }, [navigation, userEmail, user]);
 
   if (checkP) {
     post.map(data => {

@@ -7,6 +7,7 @@ import {useUserContext} from '../contexts/UserContext';
 import {useFollowContext} from '../contexts/FollowContext';
 import EditProfile from './EditProfile';
 import EditPrivacy from './EditPrivacy';
+import SettingScreen from './SettingScreen';
 
 const Stack = createNativeStackNavigator();
 /*
@@ -53,6 +54,7 @@ function HomeStack() {
           headerShown: false,
         }}
       />
+      <Stack.Screen name="SettingScreen" component={SettingScreen} />
     </Stack.Navigator>
   );
 }
