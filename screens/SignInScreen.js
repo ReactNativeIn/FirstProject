@@ -52,7 +52,7 @@ function SignInScreen({navigation, route}) {
       return email != '' && email != 'undefined' && check.test(email);
     }
     function phone_check(phone) {
-      const check = /^\d{3}-\d{3,4}-\d{4}$/; // 전화번호(스마트폰 기준) 정규표현식
+      const check = /^\d{10,11}$/; // 전화번호(스마트폰 기준) 정규표현식
       return phone != '' && phone != 'undefined' && check.test(phone);
     }
     function password_check(pass) {

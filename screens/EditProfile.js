@@ -37,6 +37,12 @@ function EditProfile({route, navigation}) {
     )
       return true;
   };
+  const reset = () => {
+    setName(user.name);
+    setNickname(user.nickname);
+    setIntroduce(user.introduce);
+    setResponse(user.profileImage);
+  };
 
   const onSelectImage = () => {
     launchImageLibrary(
@@ -230,7 +236,27 @@ function EditProfile({route, navigation}) {
             android_ripple={{
               color: '#eee',
             }}
-            onPress={() => navigation.push('EditPrivacy')}>
+            onPress={() => {
+              changeCheck()
+                ? Alert.alert(
+                    '주의',
+                    '변경사항을 저장하지 않고 나가시겠습니까?',
+                    [
+                      {
+                        text: '취소',
+                        onPress: () => null,
+                      },
+                      {
+                        text: '넵',
+                        onPress: () => {
+                          reset();
+                          navigation.push('EditPrivacy');
+                        },
+                      },
+                    ],
+                  )
+                : navigation.push('EditPrivacy');
+            }}>
             <Text
               style={[
                 styles.textColor,
