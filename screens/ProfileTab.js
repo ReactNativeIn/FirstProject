@@ -1,14 +1,13 @@
-import React, {useEffect} from 'react';
-import {View, Text, ScrollView, StyleSheet, Pressable} from 'react-native';
-import {ProfileBody, ProfileButtons} from '../components/ProfileBody';
-import ProfileGridview from '../components/ProfileGridview';
-import {useUserContext} from '../contexts/UserContext';
-import ItemEmpty from '../lib/ItemEmpty';
+import React from 'react';
+import {View, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import {usePostContext} from '../contexts/PostContext';
+import ProfileHeader from './ProfileTabHeader';
+import {useUserContext} from '../contexts/UserContext';
 import {useFollowContext} from '../contexts/FollowContext';
-import Feather from 'react-native-vector-icons/Feather';
-
-const ProfileScreen = ({navigation, route}) => {
+import ItemEmpty from '../lib/ItemEmpty';
+import {createIconSetFromFontello} from 'react-native-vector-icons';
+const ProfileTab = ({route, navigation}) => {
   const {user, joinUser} = useUserContext();
   const {post} = usePostContext();
   const {follow} = useFollowContext();
@@ -16,7 +15,6 @@ const ProfileScreen = ({navigation, route}) => {
   const checkR = ItemEmpty.check(route.params);
   const checkP = ItemEmpty.check(post);
   const checkF = ItemEmpty.check(follow);
-
   const userEmail = checkR ? route.params.email : user.email;
 
   const selectUser = joinUser.find(data => data.email === userEmail);
@@ -25,6 +23,7 @@ const ProfileScreen = ({navigation, route}) => {
   let postCount = 0;
   let followingCount = 0;
   let followerCount = 0;
+  let searchData;
 
   if (checkP) {
     post.map(data => {
@@ -32,6 +31,7 @@ const ProfileScreen = ({navigation, route}) => {
         postCount = postCount + 1;
       }
     });
+    searchData = post.filter(data => data.email === selectUser.email);
   }
 
   if (checkF) {
@@ -45,49 +45,44 @@ const ProfileScreen = ({navigation, route}) => {
     });
   }
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Pressable
-          hitSlop={8}
-          onPress={() => {
-            alert('설정');
-          }}>
-          <Feather
-            name="menu"
-            style={{
-              fontSize: 25,
-            }}
-          />
-        </Pressable>
-      ),
-    });
-  }, [navigation]);
+  const renderItem = ({item}) => {
+    return (
+      <Image
+        source={item.photoURL ? {uri: item.photoURL} : null}
+        style={styles.image}
+      />
+    );
+  };
 
   return (
-    <ScrollView>
-      <View style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
-        <View style={{width: '100%', padding: 10}}>
-          <ProfileBody
-            selectUser={selectUser}
-            followerCount={followerCount}
-            followingCount={followingCount}
-            postCount={postCount}
-          />
-          <ProfileButtons email={selectUser.email} />
-        </View>
-        <ScrollView>
-          <ProfileGridview />
-        </ScrollView>
-      </View>
-    </ScrollView>
+    <FlatList
+      ListHeaderComponent={
+        <ProfileHeader
+          selectUser={selectUser}
+          followerCount={followerCount}
+          followingCount={followingCount}
+          postCount={postCount}
+          email={selectUser.email}
+        />
+      }
+      data={searchData}
+      renderItem={renderItem}
+      keyExtractor={item => item.postIndex}
+      numColumns={3}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  margin: {
-    marginBottom: 40,
+  wrapper: {
+    flex: 1,
+    backgroundColor: 'red',
+  },
+  image: {
+    width: '33%',
+    height: 150,
+    margin: 1,
   },
 });
 
-export default ProfileScreen;
+export default ProfileTab;
