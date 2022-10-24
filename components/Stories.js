@@ -20,7 +20,6 @@ const Stories = () => {
   const {follow} = useFollowContext();
   const {user, joinUser, setUser, setJoinUser} = useUserContext();
 
-  console.log('확인 : ' + user);
   const checkF = ItemEmpty.check(follow);
   let storyInfo = [user];
 

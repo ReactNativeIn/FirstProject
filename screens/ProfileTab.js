@@ -20,7 +20,6 @@ const ProfileTab = ({route, navigation}) => {
 
   const selectUser = joinUser.find(data => data.email === userEmail);
 
-  console.log('----- ' + selectUser.email);
   let postCount = 0;
   let followingCount = 0;
   let followerCount = 0;

@@ -106,7 +106,6 @@ export const ProfileButtons = ({email}) => {
     follows = follow.filter(data => data.from_member === user.email);
 
     checkFollows = follows.some(fo => fo.to_member === email);
-    console.log(checkFollows);
   }
 
   const followsSet = email => {

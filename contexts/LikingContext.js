@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, createContext, useState} from 'react';
 import ItemStorage from '../asyncstorage/ItemStorage';
 /*
-(postIndex fk
+postIndex fk
 email fk) pk
 
 */

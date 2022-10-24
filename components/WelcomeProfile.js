@@ -1,4 +1,3 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {
   Alert,
@@ -47,7 +46,6 @@ function WelcomeProfile({form}) {
       return;
     }
     const uid = uuid();
-    console.log(response);
     setUser(
       // user 정보 추가
       {
@@ -77,7 +75,7 @@ function WelcomeProfile({form}) {
         ]);
   }, [user, response, displayName, joinUser]);
 
-  // const onCancel = useCallback(() => {
+  // const onCancel = useCallback(() => { //다음에 버튼(삭제)
   //   const uid = uuid();
   //   setUser({...form, nickname: '', profileImage: response, uid});
   //   checkJ
