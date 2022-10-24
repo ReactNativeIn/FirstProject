@@ -17,6 +17,8 @@ import Ionic from 'react-native-vector-icons/Ionicons';
 import ProfileModal from '../components/ProfileModal';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {useUserContext} from '../contexts/UserContext';
+import {usePostContext} from '../contexts/PostContext';
+import ItemEmpty from '../lib/ItemEmpty';
 
 function EditProfile({route, navigation}) {
   const {user, setUser, joinUser, setJoinUser} = useUserContext(); // 사진의 res 정보를 바로 user에 담음
@@ -26,6 +28,9 @@ function EditProfile({route, navigation}) {
   const [name, setName] = useState(user.name); // 유저 이름
   const [nickname, setNickname] = useState(user.nickname); // 닉네임
   const [introduce, setIntroduce] = useState(user.introduce); // 소개
+  const {post, setPost} = usePostContext();
+
+  const checkP = ItemEmpty.check(post);
 
   const changeCheck = () => {
     // 변경사항이 있을 시 true
@@ -78,7 +83,6 @@ function EditProfile({route, navigation}) {
       profileImage: response,
       introduce: introduce,
     }));
-    if (joinUser.length === undefined) return;
 
     const rejoin = joinUser.map(re =>
       re.uid === user.uid
@@ -91,6 +95,15 @@ function EditProfile({route, navigation}) {
           }
         : re,
     );
+
+    if (checkP) {
+      setPost(
+        post.map(pos =>
+          pos.email === user.email ? {...pos, nickname: nickname} : pos,
+        ),
+      );
+    }
+
     setJoinUser(rejoin);
 
     setModalShown(false);
