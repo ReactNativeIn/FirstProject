@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     minWidth: 50,
+    paddingHorizontal: 5,
   },
 });
 export default MessageScreen;

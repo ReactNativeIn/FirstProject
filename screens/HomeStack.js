@@ -8,6 +8,9 @@ import {useFollowContext} from '../contexts/FollowContext';
 import EditProfile from './EditProfile';
 import EditPrivacy from './EditPrivacy';
 import SettingScreen from './SettingScreen';
+import {useLikingContext} from '../contexts/LikingContext';
+import {useCommentsContext} from '../contexts/CommentsContext';
+import {usePostContext} from '../contexts/PostContext';
 
 const Stack = createNativeStackNavigator();
 /*
@@ -18,12 +21,30 @@ UploadScreen -> 사진 올리기 화면
 function HomeStack() {
   const {joinUser, user} = useUserContext();
   const {follow} = useFollowContext();
+  const {liking} = useLikingContext();
+  const {comments} = useCommentsContext();
+  const {post} = usePostContext();
 
   useEffect(() => {
-    console.log('joinUser : ', JSON.stringify(joinUser, null, 2));
     console.log('User : ', JSON.stringify(user, null, 2));
+    console.log('joinUser : ', JSON.stringify(joinUser, null, 2));
+  }, [user, joinUser]);
+
+  useEffect(() => {
     console.log('follow : ', JSON.stringify(follow, null, 2));
-  }, [user, joinUser, follow]);
+  }, [follow]);
+
+  useEffect(() => {
+    console.log('liking : ', JSON.stringify(liking, null, 2));
+  }, [liking]);
+
+  useEffect(() => {
+    console.log('comments : ', JSON.stringify(comments, null, 2));
+  }, [comments]);
+
+  useEffect(() => {
+    console.log('post : ', JSON.stringify(post, null, 2));
+  }, [post]);
 
   return (
     <Stack.Navigator>

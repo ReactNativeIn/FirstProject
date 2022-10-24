@@ -1,15 +1,10 @@
 import React from 'react';
 import {KeyboardAvoidingView, Platform, StyleSheet, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import CustomButton from '../components/CustomButton';
-import {useNavigation} from '@react-navigation/native';
 import WelcomeProfile from '../components/WelcomeProfile';
-
-// import SetupProfile from '../components/SetupProfile';
 
 function WelcomeScreen({route}) {
   const {form} = route.params;
-  console.log('ddd --  ' + form);
   return (
     <KeyboardAvoidingView
       style={styles.keyboardAvoidingView}
