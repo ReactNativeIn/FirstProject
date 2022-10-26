@@ -16,7 +16,10 @@ const imagePickerOption = {
 
 const HomeTab = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState(false);
-
+  /*
+post 요청(url, null, 데이터)
+get 요청(url, 데이터)
+*/
   client
     .post('/test', null, {params: {email: 'test1@first.com'}})
     .then(console.log('안녕'))
