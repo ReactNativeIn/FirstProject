@@ -20,9 +20,14 @@ const HomeTab = ({navigation, route}) => {
 post 요청(url, null, 데이터)
 get 요청(url, 데이터)
 */
+  // client
+  //   .post('/test', null, {params: {email: 'test1@first.com'}})
+  //   .then(console.log('안녕'))
+  //   .catch(errer => console.log(errer));
+
   client
-    .post('/test', null, {params: {email: 'test1@first.com'}})
-    .then(console.log('안녕'))
+    .get('/test', {params: {email: 'test1@first.com'}})
+    .then(res => console.log(res))
     .catch(errer => console.log(errer));
 
   const onPickImage = res => {
