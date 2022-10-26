@@ -21,6 +21,7 @@ const HomeTab = ({navigation, route}) => {
     .get('/test')
     .then(console.log('안녕'))
     .catch(errer => console.log(errer));
+
   const onPickImage = res => {
     if (res.didCancel || !res) {
       return;
