@@ -18,7 +18,7 @@ const HomeTab = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   client
-    .get('/test')
+    .post('/test', null, {params: {email: 'test1@first.com'}})
     .then(console.log('안녕'))
     .catch(errer => console.log(errer));
 

@@ -8,24 +8,28 @@ import {CommentsContextProvider} from './contexts/CommentsContext';
 import {LikingContextProvider} from './contexts/LikingContext';
 import {FollowContextProvider} from './contexts/FollowContext';
 import {SearchContextProvider} from './contexts/SearchContext';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
+const queryClient = new QueryClient();
 function App() {
   return (
-    <UserContextProvider>
-      <SearchContextProvider>
-        <PostContextProvider>
-          <CommentsContextProvider>
-            <LikingContextProvider>
-              <FollowContextProvider>
-                <NavigationContainer>
-                  <RootStack />
-                </NavigationContainer>
-              </FollowContextProvider>
-            </LikingContextProvider>
-          </CommentsContextProvider>
-        </PostContextProvider>
-      </SearchContextProvider>
-    </UserContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserContextProvider>
+        <SearchContextProvider>
+          <PostContextProvider>
+            <CommentsContextProvider>
+              <LikingContextProvider>
+                <FollowContextProvider>
+                  <NavigationContainer>
+                    <RootStack />
+                  </NavigationContainer>
+                </FollowContextProvider>
+              </LikingContextProvider>
+            </CommentsContextProvider>
+          </PostContextProvider>
+        </SearchContextProvider>
+      </UserContextProvider>
+    </QueryClientProvider>
   );
 }
 
