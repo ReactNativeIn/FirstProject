@@ -12,7 +12,7 @@ import SignInButton from '../components/SignInButton';
 import SignInForm from '../components/SignInForm';
 import {ScrollView} from 'react-native';
 import {useUserContext} from '../contexts/UserContext';
-import ItemEmpty from '../lib/ItemEmpty';
+import Auth from '../api/Auth';
 
 function SignInScreen({navigation, route}) {
   const [form, setForm] = useState({
@@ -27,100 +27,37 @@ function SignInScreen({navigation, route}) {
     profileImage: null,
     nickname: '',
     introduce: '', //소개
-    uid: '', // 식별키
   });
   const {isSignUp} = route.params ?? {}; // 로그인인지 회원가입인지 SignInButton 에서 받아옴
   const [loading, setLoading] = useState(false); // 로딩상태를 표시할지 말지 나타냄
-  const {joinUser, setJoinUser} = useUserContext(); // 유저가 회원가입에 성공했을 경우, 해당 유저의 정보를 앱 실행하는 동안 저장해둠 (자동 로그인의 경우 지속적으로 저장)
   const {setUser} = useUserContext(); // 지금 내 유저 정보
-
-  const checkJ = ItemEmpty.check(joinUser);
 
   const createChangeTextHandler = name => value => {
     // form의 내용을 name과 value에 맞춰서 변경
     setForm({...form, [name]: value});
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     // 입력창에 내용을 전부 입력하고 확인 버튼을 눌렀을때
     Keyboard.dismiss();
-    const {email, password, confirmPassword, name, birthday, phone} = form;
-
-    function email_check(email) {
-      const check =
-        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; // 이메일 정규표현식
-      return email != '' && email != 'undefined' && check.test(email);
-    }
-    function phone_check(phone) {
-      const check = /^\d{10,11}$/; // 전화번호(스마트폰 기준) 정규표현식
-      return phone != '' && phone != 'undefined' && check.test(phone);
-    }
-    function password_check(pass) {
-      const check =
-        /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/; // 비밀번호 정규 표현식
-      return pass != '' && pass != 'undefined' && check.test(pass);
-    }
-
-    function email_check2(email) {
-      // 회원가입시 이메일 중복확인 및 해당 joinUser정보 가져오기
-      if (checkJ) {
-        for (let i = 0; i < joinUser?.length; i++) {
-          if (joinUser[i].email === email) {
-            return joinUser[i];
-          }
-        }
-      }
-    }
-
-    // 로그인시 비밀번호 일치 확인
-    function password_check2(email) {
-      if (checkJ) {
-        for (let i = 0; i < joinUser?.length; i++) {
-          if (email === joinUser[i].email) {
-            return joinUser[i].password;
-          }
-        }
-      }
-    }
-
-    if (!email_check(email)) {
-      Alert.alert('실패', '이메일을 입력해주세요');
-      return;
-    } else if (!password_check(password)) {
-      Alert.alert('실패', '비밀번호를 입력해주세요(8~15자리)');
-      return;
-    } else if ((isSignUp && confirmPassword === '') || undefined) {
-      Alert.alert('실패', '비밀번호 확인란을 입력해주세요');
-      return;
-    } else if (isSignUp && password !== confirmPassword) {
-      Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
-      return;
-    } else if ((isSignUp && name === '') || undefined) {
-      Alert.alert('실패', '이름을 입력해주세요');
-      return;
-    } else if (isSignUp && !phone_check(phone)) {
-      Alert.alert('실패', '전화번호를 입력해 주세요');
-      return;
-    } else if ((isSignUp && birthday === '') || undefined) {
-      Alert.alert('실패', '생일을 입력해주세요');
-      return;
-    } else if (isSignUp && email_check2(email)) {
-      Alert.alert('실패', '이미 존재하는 이메일 입니다.');
-      return;
-      /*
-      TODO: 이메일이 존재하지 않았을때, 비밀번호가 틀렸을때,
-      */
-    } else if (!isSignUp && password !== password_check2(email)) {
-      Alert.alert('실패', '아이디 또는 비밀번호가 틀렸습니다.');
-      return;
-    }
-    // setLoading(true);
-    // const info = {email, password}; // 회원가입시 사용한 정보가 들어감
-    // setLoading(false);
+    let check;
     if (isSignUp) {
-      navigation.navigate('Welcome', {form});
-    } else {
-      setUser(email_check2(email)); // 로그인 제대로 됐을때 로그인 정보를 user에 넣어주면서 MainScreen으로 이동
+      check = await Auth.join(form);
+      //회원가입 시도
+      if (check === 'true') {
+        //성공 시 welcome 이동
+        navigation.navigate('Welcome', {form});
+      } else {
+        return;
+      }
+    } else if (!isSignUp) {
+      //로그인 시도
+      check = await Auth.login(form);
+      if (check === null) {
+        return;
+      } else {
+        setUser(check); //성공시 MainScreen이동
+      }
     }
   };
 

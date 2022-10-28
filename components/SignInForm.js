@@ -13,6 +13,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const nameRef = useRef();
+  const nicknameRef = useRef();
   const phoneRef = useRef();
 
   const showDatePicker = () => {
@@ -78,6 +79,17 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
             value={form.name}
             ref={nameRef}
             onChangeText={createChangeTextHandler('name')}
+            returnKeyType="done"
+            onSubmitEditing={() => {
+              nicknameRef.current.focus();
+            }}
+          />
+          <BorderedInput
+            hasMarginBottom
+            placeholder="닉네임"
+            value={form.nickname}
+            ref={nicknameRef}
+            onChangeText={createChangeTextHandler('nickname')}
             returnKeyType="done"
             onSubmitEditing={() => {
               phoneRef.current.focus();

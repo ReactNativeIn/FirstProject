@@ -18,7 +18,7 @@ const imagePickerOption = {
 const Stories = () => {
   const navigation = useNavigation();
   const {follow} = useFollowContext();
-  const {user, joinUser, setUser, setJoinUser} = useUserContext();
+  const {user, setUser} = useUserContext();
 
   const checkF = ItemEmpty.check(follow);
   let storyInfo = [user];
@@ -41,13 +41,6 @@ const Stories = () => {
       return;
     }
     setUser({...user, profileImage: res.assets[0]?.uri});
-    setJoinUser(
-      joinUser.map(join =>
-        join.email === user.email
-          ? {...user, profileImage: res.assets[0]?.uri}
-          : join,
-      ),
-    );
   };
 
   const onLaunchImageLibrary = () => {

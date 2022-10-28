@@ -5,7 +5,6 @@ import Stories from '../components/Stories';
 import Post from '../components/Post';
 import ActionSheetModal from '../components/ActionSheetModal';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
-import client from '../api/client';
 
 const imagePickerOption = {
   mediaType: 'photo',
@@ -16,19 +15,6 @@ const imagePickerOption = {
 
 const HomeTab = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  /*
-post 요청(url, null, 데이터)
-get 요청(url, 데이터)
-*/
-  // client
-  //   .post('/test', null, {params: {email: 'test1@first.com'}})
-  //   .then(console.log('안녕'))
-  //   .catch(errer => console.log(errer));
-
-  client
-    .get('/test', {params: {email: 'test1@first.com'}})
-    .then(res => console.log(res))
-    .catch(errer => console.log(errer));
 
   const onPickImage = res => {
     if (res.didCancel || !res) {
