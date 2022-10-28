@@ -19,6 +19,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {useUserContext} from '../contexts/UserContext';
 import {usePostContext} from '../contexts/PostContext';
 import ItemEmpty from '../lib/ItemEmpty';
+import {useCommentsContext} from '../contexts/CommentsContext';
 
 function EditProfile({route, navigation}) {
   const {user, setUser, joinUser, setJoinUser} = useUserContext(); // 사진의 res 정보를 바로 user에 담음
@@ -29,8 +30,10 @@ function EditProfile({route, navigation}) {
   const [nickname, setNickname] = useState(user.nickname); // 닉네임
   const [introduce, setIntroduce] = useState(user.introduce); // 소개
   const {post, setPost} = usePostContext();
+  const {comments, setComments} = useCommentsContext();
 
   const checkP = ItemEmpty.check(post);
+  const checkC = ItemEmpty.check(comments);
 
   const changeCheck = () => {
     // 변경사항이 있을 시 true
@@ -100,6 +103,14 @@ function EditProfile({route, navigation}) {
       setPost(
         post.map(pos =>
           pos.email === user.email ? {...pos, nickname: nickname} : pos,
+        ),
+      );
+    }
+
+    if (checkC) {
+      setComments(
+        comments.map(com =>
+          com.email === user.email ? {...com, nickname: nickname} : com,
         ),
       );
     }

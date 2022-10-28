@@ -75,29 +75,6 @@ function WelcomeProfile({form}) {
         ]);
   }, [user, response, displayName, joinUser]);
 
-  // const onCancel = useCallback(() => { //다음에 버튼(삭제)
-  //   const uid = uuid();
-  //   setUser({...form, nickname: '', profileImage: response, uid});
-  //   checkJ
-  //     ? setJoinUser([
-  //         ...joinUser,
-  //         {
-  //           ...form,
-  //           nickname: displayName,
-  //           profileImage: response,
-  //           uid: uid,
-  //         },
-  //       ])
-  //     : setJoinUser([
-  //         {
-  //           ...form,
-  //           nickname: displayName,
-  //           profileImage: response,
-  //           uid: uid,
-  //         },
-  //       ]);
-  // }, [user, response, displayName, joinUser]);
-
   return (
     <View style={styles.block}>
       <Pressable onPress={selectImage}>
