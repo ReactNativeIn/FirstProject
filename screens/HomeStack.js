@@ -15,33 +15,6 @@ import {usePostContext} from '../contexts/PostContext';
 const Stack = createNativeStackNavigator();
 
 function HomeStack() {
-  const {joinUser, user} = useUserContext();
-  const {follow} = useFollowContext();
-  const {liking} = useLikingContext();
-  const {comments} = useCommentsContext();
-  const {post} = usePostContext();
-
-  // useEffect(() => {
-  //   console.log('User : ', JSON.stringify(user, null, 2));
-  //   console.log('joinUser : ', JSON.stringify(joinUser, null, 2));
-  // }, [user, joinUser]);
-
-  // useEffect(() => {
-  //   console.log('follow : ', JSON.stringify(follow, null, 2));
-  // }, [follow]);
-
-  // useEffect(() => {
-  //   console.log('liking : ', JSON.stringify(liking, null, 2));
-  // }, [liking]);
-
-  // useEffect(() => {
-  //   console.log('comments : ', JSON.stringify(comments, null, 2));
-  // }, [comments]);
-
-  // useEffect(() => {
-  //   console.log('post : ', JSON.stringify(post, null, 2));
-  // }, [post]);
-
   return (
     <Stack.Navigator>
       <Stack.Screen name="HomeTab" component={HomeTab} />

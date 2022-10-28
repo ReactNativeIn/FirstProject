@@ -87,7 +87,6 @@ const Auth = {
     const data = await client
       .post('/member', null, {params: {...value, choice: 4}})
       .then(res => {
-        Alert.alert(res.data[0], res.data[1]);
         return res;
       })
       .catch(error => console.log(error));
@@ -160,24 +159,72 @@ const Auth = {
     await client.get();
   },
 
-  //팔로우 등록(이메일, 팔로우 당한 이메일)
+  //팔로우 등록(이메일, 팔로우 당한 이메일) , choice 1
   async insertFollow(value) {
-    await client.post();
+    console.log('insertFollow');
+    const data = await client
+      .post('/follow', null, {params: {...value, choice: 1}})
+      .then(res => res.data)
+      .catch(error => console.log(error));
+    return data;
   },
 
-  //팔로우 삭제 - 이메일 and 팔로우 삭제 당하는 이메일
+  //팔로우 삭제 - 이메일 and 팔로우 삭제 당하는 이메일 , choice 2
   async deleteFollow(value) {
-    await client.post();
+    console.log('deleteFollow');
+    const data = await client
+      .post('/follow', null, {params: {...value, choice: 2}})
+      .then(res => res.data)
+      .catch(error => console.log(error));
+    return data;
   },
 
-  //팔로잉(개수) 조회 - from_이메일(내가 팔로우한 사람들)
+  //팔로잉한 회원 정보 조회(프로필, 닉네임 등) , choice 3
   async selectFromFollow(value) {
-    await client.get();
+    console.log('selectFromFollow');
+    const data = await client
+      .get('/follow', {params: {...value, choice: 3}})
+      .then(res => {
+        if (ItemEmpty.check(res.data)) {
+          return res.data;
+        } else {
+          return null;
+        }
+      })
+      .catch(error => console.log(error));
+    return data;
   },
 
-  //팔로워(개수) 조회 - to이메일(다른 사람이 날 팔로우 한 사람들)
+  //팔로잉(개수) 조회 - from_이메일(내가 팔로우한 사람들) , choice 4
+  async selectFromFollowNum(value) {
+    console.log('selectFromFollowNum');
+    const data = await client
+      .post('/follow', null, {params: {...value, choice: 4}})
+      .then(res => {
+        if (ItemEmpty.check(res.data)) {
+          return res.data;
+        } else {
+          return null;
+        }
+      })
+      .catch(error => console.log(error));
+    return data;
+  },
+
+  //팔로워(개수) 조회 - to이메일(다른 사람이 날 팔로우 한 사람들) , choice 5
   async selectToFollow(value) {
-    await client.get();
+    console.log('selectToFollow');
+    const data = await client
+      .post('/follow', null, {params: {...value, choice: 5}})
+      .then(res => {
+        if (ItemEmpty.check(res.data)) {
+          return res.data;
+        } else {
+          return null;
+        }
+      })
+      .catch(error => console.log(error));
+    return data;
   },
 };
 

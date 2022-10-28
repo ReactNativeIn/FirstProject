@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, StyleSheet, FlatList, Pressable} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
@@ -6,7 +6,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useFollowContext} from '../contexts/FollowContext';
 import {useUserContext} from '../contexts/UserContext';
 import ItemEmpty from '../lib/ItemEmpty';
-import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
+import Auth from '../api/Auth';
 
 const imagePickerOption = {
   mediaType: 'photo',
@@ -17,30 +18,35 @@ const imagePickerOption = {
 
 const Stories = () => {
   const navigation = useNavigation();
-  const {follow} = useFollowContext();
+  const [follow, setFollow] = useState();
   const {user, setUser} = useUserContext();
 
-  const checkF = ItemEmpty.check(follow);
   let storyInfo = [user];
+  let im;
 
-  if (checkF) {
-    const follows = follow.filter(f => f.from_member === user.email); //팔로우 조회
+  useEffect(() => {
+    const loadDate = async () => {
+      im = await Auth.selectFromFollow(user);
+      setFollow(im);
 
-    //팔로우된 계정 조회
-    for (let i = 0; i < follows.length; i++) {
-      for (let j = 0; j < joinUser.length; j++) {
-        if (joinUser[j].email === follows[i].to_member) {
-          storyInfo = [...storyInfo, joinUser[j]];
-        }
+      const checkF = ItemEmpty.check(follow);
+
+      console.log('불 : ' + checkF);
+
+      if (checkF) {
+        storyInfo = [...storyInfo, follow];
       }
-    }
-  }
+    };
+
+    loadDate();
+  }, []);
 
   const onPickImage = res => {
     if (res.didCancel || !res) {
       return;
     }
     setUser({...user, profileImage: res.assets[0]?.uri});
+    console.log(Auth.updateMember(user));
   };
 
   const onLaunchImageLibrary = () => {
