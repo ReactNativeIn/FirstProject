@@ -79,6 +79,7 @@ const Post = () => {
     const d = new Date(date);
     const now = Date.now();
     const diff = (now - d.getTime()) / 1000;
+    console.log('호ㅓㅣㅇㄴ : ' + d.getFullYear() + ' ' + diff + ' ::: ' + now);
 
     if (diff < 60 * 1) {
       //글이 작성된 시간이 1분 미만
