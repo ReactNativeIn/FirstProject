@@ -26,9 +26,7 @@ const UploadScrenn = () => {
 
   const onSubmit = useCallback(() => {
     const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+
     checkP
       ? setPost([
           ...post,
@@ -37,7 +35,7 @@ const UploadScrenn = () => {
             photoURL: res.assets[0]?.uri,
             nickname: user.nickname,
             content: content,
-            date: year + '-' + month + '-' + day,
+            date: date,
             email: user.email,
           },
         ])
@@ -47,7 +45,7 @@ const UploadScrenn = () => {
             photoURL: res.assets[0]?.uri,
             nickname: user.nickname,
             content: content,
-            date: year + '-' + month + '-' + day,
+            date: date,
             email: user.email,
           },
         ]);
